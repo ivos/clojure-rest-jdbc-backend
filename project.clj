@@ -36,7 +36,8 @@
             :handler backend.app/repl-handler
             :destroy backend.app/stop}
   :aliases {
-            "db-clean"   ["run" "-m" "backend.app/db-clean"]
-            "db-migrate" ["run" "-m" "backend.app/db-migrate"]
+            "db-clean"    ["run" "-m" "backend.app/db-clean"]
+            "db-migrate"  ["run" "-m" "backend.app/db-migrate"]
+            "db-recreate" ["run" "-m" "backend.app/db-recreate"]
             }
   )

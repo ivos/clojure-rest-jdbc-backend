@@ -58,7 +58,7 @@
   [handler datasource]
   (fn
     [request]
-    (let [request-wrapped (assoc request :ds datasource)]
+    (let [request-wrapped (assoc request :ds {:datasource datasource})]
       (handler request-wrapped))))
 
 (defn- wrap-conflict

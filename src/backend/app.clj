@@ -34,6 +34,14 @@
     (finally
       (close-datasource! datasource))))
 
+(defn db-recreate
+  []
+  (try
+    (clean! datasource)
+    (migrate! datasource)
+    (finally
+      (close-datasource! datasource))))
+
 (defn -main
   [& _]
   (try
