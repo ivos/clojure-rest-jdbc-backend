@@ -1,0 +1,20 @@
+{
+ :app   {
+         :deploy-url "http://localhost:3000/"
+         }
+ :db    {
+         :adapter "h2"
+         :url "jdbc:h2:file:./target/db/backend;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE;MVCC=TRUE"
+         :username "sa"
+         :password ""
+         :maximum-pool-size 2
+         :minimum-idle 2
+         }
+ :jetty {
+         :port 3000
+         }
+ :json  {
+         :keywords?    true
+         :bigdecimals? true
+         }
+ }
