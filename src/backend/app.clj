@@ -7,7 +7,7 @@
             [backend.router :refer :all]
             ))
 
-(def ^:private config (read-config))
+(def config (read-config))
 (def ^:private datasource (open-datasource! config))
 
 (defn start

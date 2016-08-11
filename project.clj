@@ -25,7 +25,9 @@
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
              :dev     {:dependencies [[midje "1.8.3"]
-                                      [ring/ring-mock "0.3.0"]]
+                                      [ring/ring-mock "0.3.0"]
+                                      [net.sf.lightair/light-air "3.0.0-SNAPSHOT"]
+                                      ]
                        :plugins      [[lein-midje "3.2"]]}}
   :plugins [[lein-ring "0.9.7"]
             [lein-uberwar "0.2.0"]]
