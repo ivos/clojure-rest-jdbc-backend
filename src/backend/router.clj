@@ -9,7 +9,6 @@
             [ring.middleware.keyword-params :refer :all]
             [slingshot.slingshot :refer [try+]]
             [backend.support.util :refer [filter-password]]
-            [backend.support.validation :refer [wrap-validation]]
             [backend.support.ring :refer :all]
             ;[backend.logic.user :refer :all]
             ;[backend.logic.session :refer :all]
@@ -60,6 +59,18 @@
     [request]
     (let [request-wrapped (assoc request :ds {:datasource datasource})]
       (handler request-wrapped))))
+
+(defn wrap-validation
+  "Ring middleware to catch :validation-failure and convert it to HTTP 422 Unprocessable Entity response."
+  [handler]
+  (fn
+    [request]
+    (try+ (handler request)
+          (catch [:type :validation-failure] {:keys [errors]}
+            (let [response {:status (status-code :unprocessable-entity)
+                            :body   errors}]
+              (log/info "Validation failure" response)
+              response)))))
 
 (defn- wrap-conflict
   [handler]

@@ -20,7 +20,8 @@
 
 (defn is-response-created
   [response expected-body config]
-  (let [location (get-in response [:headers "Location"])]
+  (let [location (get-in response [:headers "Location"] "")
+        location-start (get-in config [:app :deploy-url])]
     (fact "Status code"
           (:status response) => (status-code :created))
     (is-response-json response)
@@ -29,7 +30,7 @@
     (fact "Response body"
           (:body response) => expected-body)
     (fact "Location start"
-          (.startsWith location (get-in config [:app :deploy-url])) => true)
+          (subs location 0 (min (count location-start) (count location))) => location-start)
     ))
 
 (defn is-response-ok

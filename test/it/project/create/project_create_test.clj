@@ -23,7 +23,7 @@
           expected-body (read-json prefix "full-response")
           request (create-request request-body)
           response (t/do-at std-time (repl-handler request))
-          location (get-in response [:headers "Location"])
+          location (get-in response [:headers "Location"] "")
           id (-> location (.split "/") last)
           ]
       (is-response-created response expected-body config)

@@ -9,8 +9,8 @@
 		<appender-ref ref="stdout"/>
 	</root>
 
-	<logger name="backend" level="debug"/>
-	<!--<logger name="backend" level="trace"/>-->
+	<!--<logger name="backend" level="debug"/>-->
+	<logger name="backend" level="trace"/>
 
 	<logger name="net.sf.lightair.Api" level="info" />
 	<!--<logger name="net.sf.lightair" level="trace" />-->

@@ -13,7 +13,6 @@
                  [ring/ring-jetty-adapter "1.5.0"]
                  [ring/ring-json "0.4.0"]
                  [compojure "1.5.1"]
-                 [bouncer "1.0.0"]
                  [slingshot "0.12.2"]
                  [clj-time "0.12.0"]
                  [org.clojure/tools.logging "0.3.1"]
