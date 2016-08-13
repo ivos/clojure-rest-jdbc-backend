@@ -70,7 +70,7 @@
 (defn not-found-test
   [handler request]
   (let [response (handler request)
-        expected-body (read-json "backend/not-found-response")
+        expected-body (read-json "" "not-found-response")
         ]
     (fact "Status code"
           (:status response) => (status-code :not-found))
