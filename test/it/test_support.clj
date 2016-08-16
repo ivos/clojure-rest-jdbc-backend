@@ -3,11 +3,23 @@
             [cheshire.core :as json]
             [clj-time.core :as t]
             [midje.sweet :refer [fact]]
-            [backend.app :refer [config]]
             [backend.support.ring :refer :all]
+            [reloaded.repl :refer [system]]
             ))
 
 (def std-time (t/date-time 2015 10 11 12 34 56 123))
+
+(defn get-config
+  []
+  (get-in system [:config :config]))
+
+(defn get-handler
+  []
+  (get-in system [:handler :handler]))
+
+(defn call-handler-at-std-time
+  [request]
+  (t/do-at std-time ((get-handler) request)))
 
 (defn read-json
   [prefix path]
@@ -19,9 +31,9 @@
         (get-in response [:headers "Content-Type"]) => "application/json; charset=utf-8"))
 
 (defn is-response-created
-  [response expected-body config]
+  [response expected-body]
   (let [location (get-in response [:headers "Location"] "")
-        location-start (get-in config [:app :deploy-url])]
+        location-start (get-in (get-config) [:app :deploy-url])]
     (fact "Status code"
           (:status response) => (status-code :created))
     (is-response-json response)

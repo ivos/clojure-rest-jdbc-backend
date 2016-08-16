@@ -11,8 +11,8 @@
 
 (def ^:private attributes
   {
-   :name       {:required true :max-length 100}
    :code       {:required true :max-length 100}
+   :name       {:required true :max-length 100}
    :visibility {:required true :enum [:public :private]}
    })
 
