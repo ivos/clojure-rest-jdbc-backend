@@ -21,8 +21,8 @@
         (Api/shutdown)
         (assoc this :lightair nil)))))
 
-(defn new-lightair [properties-file-name]
-  (map->LightAirComponent {:properties-file-name properties-file-name}))
+(defn new-lightair []
+  (map->LightAirComponent {:properties-file-name "dev/resources/light-air.properties"}))
 
 
 (defn- process-files

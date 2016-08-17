@@ -44,9 +44,10 @@
             :handler backend.lein-ring/handler
             :destroy backend.lein-ring/destroy}
   :aliases {
-            "db-clean"    ["run" "-m" "backend.lein/db-clean"]
-            "db-migrate"  ["run" "-m" "backend.lein/db-migrate"]
-            "db-recreate" ["run" "-m" "backend.lein/db-recreate"]
+            "db-clean"    ["run" "-m" "lein-run/db-clean"]
+            "db-migrate"  ["run" "-m" "lein-run/db-migrate"]
+            "db-recreate" ["run" "-m" "lein-run/db-recreate"]
+            "db-update"   ["run" "-m" "lein-run/db-update"]
             "test"        ["run" "-m" "lein-test/run-test"]
             }
   )

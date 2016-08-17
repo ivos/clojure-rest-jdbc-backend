@@ -43,6 +43,10 @@ Cleanly re-create database
 
     lein db-recreate
 
+Update LightAir DB structure (call after each change in DB tables)
+
+    lein db-update
+
 ##### Application
 
 1. Start application via Leiningen
@@ -76,17 +80,22 @@ Cleanly re-create database
         (go)
 
 4. Invoke application
-5. Reload application after changing the source code
 
-        (reset)
+Reload application after changing the source code
 
-6. Stop system
+    (reset)
 
-        (stop)
+Stop system
 
-6. Start system
+    (stop)
 
-        (start)
+Start system
+
+    (start)
+
+Update LightAir DB structure (call after each change in DB tables)
+
+    (db-update)
 
 ##### Database
 

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:la="http://lightair.sourceforge.net/">
+	<xsd:import namespace="http://lightair.sourceforge.net/" schemaLocation="light-air-types.xsd"/>
+
+	<xsd:element name="dataset">
+		<xsd:complexType>
+			<xsd:choice minOccurs="0" maxOccurs="unbounded">
+				<xsd:element name="project" type="project__Type"/>
+				<xsd:element name="schema_version" type="schema_version__Type"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="project__Type">
+		<xsd:attribute name="id" use="optional" type="la:LongType"/>
+		<xsd:attribute name="version" use="optional" type="la:LongType"/>
+		<xsd:attribute name="name" use="optional" type="la:StringType"/>
+		<xsd:attribute name="code" use="optional" type="la:StringType"/>
+		<xsd:attribute name="visibility" use="optional" type="la:StringType"/>
+		<xsd:attribute name="created" use="optional" type="la:TimestampType"/>
+	</xsd:complexType>
+	<xsd:complexType name="schema_version__Type">
+		<xsd:attribute name="installed_rank" use="optional" type="la:IntegerType"/>
+		<xsd:attribute name="version" use="optional" type="la:StringNullableType"/>
+		<xsd:attribute name="description" use="optional" type="la:StringType"/>
+		<xsd:attribute name="type" use="optional" type="la:StringType"/>
+		<xsd:attribute name="script" use="optional" type="la:StringType"/>
+		<xsd:attribute name="checksum" use="optional" type="la:IntegerNullableType"/>
+		<xsd:attribute name="installed_by" use="optional" type="la:StringType"/>
+		<xsd:attribute name="installed_on" use="optional" type="la:TimestampType"/>
+		<xsd:attribute name="execution_time" use="optional" type="la:IntegerType"/>
+		<xsd:attribute name="success" use="optional" type="la:BooleanType"/>
+	</xsd:complexType>
+</xsd:schema>

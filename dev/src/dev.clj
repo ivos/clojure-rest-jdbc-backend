@@ -11,13 +11,12 @@
             [lightair :refer :all]
             [backend.support.flyway :refer :all]
             )
-  (:use midje.repl))
+  (:use midje.repl)
+  (:import (net.sf.lightair Api)))
 
 (defn new-system []
   (let [system-production (load-system-production)
-        system (assoc system-production
-                 :lightair (new-lightair "dev/resources/light-air.properties"
-                                         ))]
+        system (assoc system-production :lightair (new-lightair))]
     system))
 
 (reloaded.repl/set-init! new-system)
@@ -34,3 +33,7 @@
   []
   (clean (:flyway system))
   (migrate (:flyway system)))
+
+(defn db-update
+  []
+  (Api/generateXsd))
