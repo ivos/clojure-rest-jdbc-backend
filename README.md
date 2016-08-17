@@ -106,13 +106,15 @@ Cleanly re-create database
 
 #### CLI
 
-Run all test
+Run all tests
 
     lein test
 
 This includes also the integration tests so the system gets started (and stopped).
 
 #### REPL
+
+After the system has started and the database has been migrated
 
     (autotest)
 
