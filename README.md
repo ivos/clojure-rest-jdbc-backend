@@ -1,30 +1,57 @@
 # Clojure REST + JDBC backend
 
-Sample of a REST backend on JDBC written in Clojure.
+Sample REST backend on JDBC written in Clojure.
+
+## Technological stack
+
+- Language [Clojure](https://clojure.org/)
+- State management [Component](https://github.com/stuartsierra/component)
+- SQL access [HugSQL](http://www.hugsql.org/)
+- DB connection pool [HikariCP](http://brettwooldridge.github.io/HikariCP/)
+- DB migrations [Flyway](https://flywaydb.org/)
+- HTTP server [Ring](https://github.com/ring-clojure/ring)
+- Routes definition [Compojure](https://github.com/weavejester/compojure)
+- Logging [Logback](http://logback.qos.ch/)
+- Tests [Midje](https://github.com/marick/Midje)
+- DB tests [LightAir](http://lightair.sourceforge.net/)
+
+## Features
+
+- Production deployment as a .jar or .war
+- "[Reloaded](http://thinkrelevance.com/blog/2013/06/04/clojure-workflow-reloaded)" workflow in REPL
+- Comprehensive integration tests that exercise the application from the HTTP handler down to the database
+- CRUD on entities: project, user, session
+- Authentication and authorization
 
 ## Usage
 
 ### Development
 
-#### Database
+#### CLI
 
-Migrate database (bring DB structure up-to-date):
+##### Database
+
+Migrate database (bring DB structure up-to-date)
 
     lein db-migrate
 
-Clean database:
+Clean database
 
     lein db-clean
 
-#### Application
+Cleanly re-create database
+
+    lein db-recreate
+
+##### Application
 
 1. Start application via Leiningen
 
 		lein ring server-headless
 
-	Changes to source code are now automatically picked-up by the running application.
+	Changes to source code are not supported in this mode, see REPL below.
 
-2. Invoke application:
+2. Invoke application
 
 		curl -i -X POST -H "Content-Type: application/json" -d '{
 		    "code" : "code-1",
@@ -32,7 +59,66 @@ Clean database:
 		    "visibility" : "private"
 		}' "http://localhost:3000/projects"
 
+#### REPL
+
+##### Setup & application
+
+1. Open REPL
+
+        lein repl
+
+2. Load development environment
+
+        (dev)
+
+3. Start system
+
+        (go)
+
+4. Invoke application
+5. Reload application after changing the source code
+
+        (reset)
+
+6. Stop system
+
+        (stop)
+
+6. Start system
+
+        (start)
+
+##### Database
+
+Migrate database
+
+    (db-migrate)
+
+Clean database
+
+    (db-clean)
+
+Cleanly re-create database
+
+    (db-recreate)
+
+### Tests
+
+#### CLI
+
+Run all test
+
+    lein test
+
+This includes also the integration tests so the system gets started (and stopped).
+
+#### REPL
+
+    (autotest)
+
 ### Production
+
+#### JAR
 
 1. Build and package for production
 
@@ -41,6 +127,18 @@ Clean database:
 2. Run in production
 
 		java -jar target/uberjar/clojure-rest-jdbc-backend-*-standalone.jar
+
+#### WAR
+
+Build and package for production
+
+    lein uberwar
+
+WAR is built at
+
+    target/uberjar/clojure-rest-jdbc-backend-*-standalone.war
+
+and is deployable on a default installation of Tomcat 7.0.57.
 
 ## License
 

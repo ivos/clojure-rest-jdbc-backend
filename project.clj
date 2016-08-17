@@ -8,7 +8,7 @@
                  [com.stuartsierra/component "0.3.1"]
                  [com.h2database/h2 "1.3.176"]
                  [com.layerware/hugsql "0.4.7"]
-                 [com.zaxxer/HikariCP "2.4.7"]
+                 [hikari-cp "1.7.3"]
                  [org.flywaydb/flyway-core "4.0.3"]
                  [ring/ring-core "1.5.0"]
                  [ring/ring-json "0.4.0"]
@@ -20,6 +20,8 @@
                  [ch.qos.logback/logback-classic "1.1.7"]
                  ]
   :main ^:skip-aot backend.main
+  ;:uberjar-name "backend-standalone.jar"
+  ;:uberjar-name "backend-standalone.war"
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
              :dev     {:dependencies   [[reloaded.repl "0.2.2"]
@@ -35,12 +37,12 @@
              }
   :plugins [[lein-ring "0.9.7"]
             [lein-uberwar "0.2.0"]]
-  :ring {:init    backend.app/start
-         :handler backend.app/repl-handler
-         :destroy backend.app/stop}
-  :uberwar {:init    backend.app/start
-            :handler backend.app/repl-handler
-            :destroy backend.app/stop}
+  :ring {:init    backend.lein-ring/init
+         :handler backend.lein-ring/handler
+         :destroy backend.lein-ring/destroy}
+  :uberwar {:init    backend.lein-ring/init
+            :handler backend.lein-ring/handler
+            :destroy backend.lein-ring/destroy}
   :aliases {
             "db-clean"    ["run" "-m" "backend.lein/db-clean"]
             "db-migrate"  ["run" "-m" "backend.lein/db-migrate"]

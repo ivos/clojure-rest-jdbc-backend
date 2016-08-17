@@ -21,3 +21,16 @@
     system))
 
 (reloaded.repl/set-init! new-system)
+
+(defn db-clean
+  []
+  (clean (:flyway system)))
+
+(defn db-migrate
+  []
+  (migrate (:flyway system)))
+
+(defn db-recreate
+  []
+  (clean (:flyway system))
+  (migrate (:flyway system)))

@@ -9,6 +9,7 @@
 (defn run-test
   []
   (go)
+  (clean (:flyway system))
   (migrate (:flyway system))
   (load-facts '*)
   (stop))

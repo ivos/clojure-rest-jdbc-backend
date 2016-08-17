@@ -19,12 +19,17 @@
     :jetty (new-jetty)
     ))
 
+(defn- stop-system
+  [system]
+  (log/info "Backend is stopping...")
+  (component/stop system)
+  (log/info "Backend stopped OK."))
+
 (defn -main [& args]
   (let [system (load-system-production)]
     (log/info "Backend is starting...")
     (let [system (component/start system)
           flyway (:flyway system)]
-      (add-shutdown-hook ::stop-system #(component/stop system))
-      (migrate flyway)
-      )
+      (add-shutdown-hook ::stop-system #(stop-system system))
+      (migrate flyway))
     (log/info "Backend started OK.")))
