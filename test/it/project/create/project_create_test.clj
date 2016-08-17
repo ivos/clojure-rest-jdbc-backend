@@ -17,7 +17,7 @@
 (deftest project-create-full
   (facts
     "project-create-full"
-    (db-setup prefix "setup.xml")
+    (db-setup prefix)
     (let [request-body (read-json prefix "full-request")
           expected-body (read-json prefix "full-response")
           request (create-request request-body)
@@ -28,13 +28,13 @@
       (is-response-created response expected-body)
       (fact "Id"
             id => "code-1")
-      (db-verify prefix "full-verify.xml")
+      (db-verify prefix "full-verify")
       )))
 
 (deftest project-create-empty
   (facts
     "project-create-empty"
-    (db-setup prefix "setup.xml")
+    (db-setup prefix)
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request request-body)
@@ -45,5 +45,5 @@
       (is-response-json response)
       (fact "Response body"
             (:body response) => expected-body)
-      (db-verify prefix "setup.xml")
+      (db-verify prefix "empty-verify")
       )))

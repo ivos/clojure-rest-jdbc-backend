@@ -27,11 +27,11 @@
 
 (defn- process-files
   [prefix files]
-  (vec (map #(str "test/it/" prefix %1) files)))
+  (vec (map #(str "test/it/" prefix %1 ".xml") files)))
 
 (defn db-setup
   [prefix & files]
-  (Api/setup {Api/DEFAULT_PROFILE, (process-files prefix files)}))
+  (Api/setup {Api/DEFAULT_PROFILE, (conj (process-files prefix files) "test/it/delete-all.xml")}))
 
 (defn db-verify
   [prefix & files]

@@ -1,3 +1,3 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
-	<project id="@any" version="1" code="code-1" name="Name 1" visibility="private" created="2015-10-11T14:34:56.123"/>
+	<project/>
 </dataset>
