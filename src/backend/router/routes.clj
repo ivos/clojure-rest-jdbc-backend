@@ -28,7 +28,7 @@
              (GET "/" request (project-list request))
              (GET "/:code" request (project-read request))
              (PUT "/:code" request (project-update request))
-             ;(DELETE "/:code" request (project-delete request))
+             (DELETE "/:code" request (project-delete request))
              ))
 
 (defroutes app-handler

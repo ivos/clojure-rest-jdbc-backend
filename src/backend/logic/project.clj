@@ -77,3 +77,14 @@
                          (etag-header result))]
         (log/debug "Updated project" result)
         response))))
+
+(defn project-delete
+  [{:keys [ds params] :as request}]
+  (let [version (get-version request)
+        where (assoc params :version version)]
+    (log/debug "Deleting project where" where)
+    (db/with-db-transaction
+      [tc ds]
+      (repo/delete! tc :project where)
+      (log/debug "Deleted project where" where)
+      response-no-content)))

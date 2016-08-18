@@ -46,8 +46,7 @@
        (merge values set-map)))))
 
 (defn delete!
-  [db table values]
-  (log/debug "Deleting" table values)
-  (let [[result] (db/delete! db table (where-values values))]
-    (verify-result result table values)
-    values))
+  [db table where]
+  (log/debug "Deleting" table "where" where)
+  (let [[result] (db/delete! db table (where-values where))]
+    (verify-result result table where)))

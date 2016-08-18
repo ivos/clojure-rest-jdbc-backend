@@ -1,0 +1,59 @@
+(ns it.project.delete.project-delete-test
+  (:use midje.sweet)
+  (:require [backend.support.ring :refer :all]
+            [clojure.test :refer [deftest]]
+            [ring.mock.request :as mock]
+            [lightair :refer :all]
+            [it.test-support :refer :all]
+            ))
+
+(def ^:private prefix "project/delete/")
+
+(defn- create-request
+  [id version]
+  (-> (mock/request :delete (str "/projects/" id))
+      (if-match-header version)))
+
+(deftest project-delete-full
+  (facts
+    "project-delete-full"
+    (db-setup prefix "full-setup")
+    (let [request (create-request "code_2" 123)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :no-content})
+      (db-verify prefix "full-verify")
+      )))
+
+(deftest project-delete-not-found
+  (facts
+    "project-delete-not-found"
+    (db-setup prefix "full-setup")
+    (let [request (create-request "not_found" 123)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :precondition-failed})
+      (db-verify prefix "full-setup")
+      )))
+
+(deftest project-delete-conflict
+  (facts
+    "project-delete-conflict"
+    (db-setup prefix "full-setup")
+    (let [request (create-request "code_2" 122)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :precondition-failed})
+      (db-verify prefix "full-setup")
+      )))
+
+(deftest project-delete-no-version
+  (facts
+    "project-delete-no-version"
+    (db-setup prefix "full-setup")
+    (let [request (create-request "code_2" nil)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :precondition-required})
+      (db-verify prefix "full-setup")
+      )))
