@@ -32,18 +32,14 @@
 
 (defn is-response-created
   [response expected-body]
-  (let [location (get-in response [:headers "Location"] "")
-        location-start (get-in (get-config) [:app :deploy-url])]
-    (fact "Status code"
-          (:status response) => (status-code :created))
-    (is-response-json response)
-    (fact "ETag"
-          (get-in response [:headers "ETag"]) => "1")
-    (fact "Response body"
-          (:body response) => expected-body)
-    (fact "Location start"
-          (subs location 0 (min (count location-start) (count location))) => location-start)
-    ))
+  (fact "Status code"
+        (:status response) => (status-code :created))
+  (is-response-json response)
+  (fact "ETag"
+        (get-in response [:headers "ETag"]) => "1")
+  (fact "Response body"
+        (:body response) => expected-body)
+  )
 
 (defn is-response-ok
   [response expected-body]

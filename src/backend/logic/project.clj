@@ -1,11 +1,13 @@
 (ns backend.logic.project
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
-            [ring.util.response :refer :all]
+            [ring.util.response :as resp]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
+            [hugsql.core :refer [def-db-fns]]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
+            [backend.support.entity :refer :all]
             [backend.support.validation :refer :all]
             ))
 
@@ -18,7 +20,9 @@
 
 (defn- get-detail-uri
   [request data]
-  (get-url request "projects/" (:code data)))
+  (get-deploy-url request "projects/" (:code data)))
+
+(def-db-fns "backend/logic/project.sql")
 
 (defn project-create
   [request]
@@ -31,7 +35,22 @@
       (let [now (t/now)
             data (assoc data :created (tc/to-sql-time now))
             result (repo/create! tc :project data)
-            response (-> (created (get-detail-uri request result) (entity-result result))
+            response (-> (resp/created
+                           (get-detail-uri request result)
+                           (entity-result result))
                          (header-etag result))]
         (log/debug "Created project" result)
+        response))))
+
+(defn project-list
+  [request]
+  (let [ds (:ds request)
+        data (:body request)]
+    (log/debug "Listing projects" data)
+    (db/with-db-transaction
+      [tc ds]
+      (let [data (list-all-projects tc)
+            result (map (partial list-entity-result get-detail-uri request) data)
+            response (resp/response result)]
+        (log/debug "Listed projects" data)
         response))))

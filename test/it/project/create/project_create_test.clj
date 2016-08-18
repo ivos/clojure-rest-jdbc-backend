@@ -23,11 +23,10 @@
           request (create-request request-body)
           response (call-handler-at-std-time request)
           location (get-in response [:headers "Location"] "")
-          id (-> location (.split "/") last)
           ]
       (is-response-created response expected-body)
-      (fact "Id"
-            id => "code-1")
+      (fact "Location"
+            location => "http://localhost:3000/projects/code-1")
       (db-verify prefix "full-verify")
       )))
 

@@ -1,7 +1,6 @@
 (ns backend.support.ring
   (:require [ring.util.response :refer :all]
-            [slingshot.slingshot :refer [throw+]]
-            ))
+            [slingshot.slingshot :refer [throw+]]))
 
 (def status-code
   {
@@ -27,10 +26,6 @@
   [response entity]
   (header response "ETag" (:version entity)))
 
-(defn entity-result
-  [entity]
-  (dissoc entity :id :version))
-
-(defn get-url
+(defn get-deploy-url
   [request & uri]
   (apply str (get-in request [:config :app :deploy-url]) uri))

@@ -25,7 +25,7 @@
 (defroutes ^:private project-routes
            (context "/projects" []
              (POST "/" request (project-create request))
-             ;(GET "/" request (project-list request))
+             (GET "/" request (project-list request))
              ;(GET "/:id" request (project-read request))
              ;(PUT "/:id" request (project-update request))
              ;(DELETE "/:id" request (project-delete request))
