@@ -11,11 +11,11 @@
 
 (defn get-config
   []
-  (get-in system [:config :config]))
+  (-> system :config :config))
 
 (defn get-handler
   []
-  (get-in system [:handler :handler]))
+  (-> system :handler :handler))
 
 (defn call-handler-at-std-time
   [request]
@@ -76,10 +76,9 @@
   )
 
 (defn not-found-test
-  [handler request]
-  (let [response (handler request)
-        expected-body (read-json "" "not-found-response")
-        ]
+  [request]
+  (let [response ((get-handler) request)
+        expected-body (read-json "" "not-found-response")]
     (fact "Status code"
           (:status response) => (status-code :not-found))
     (is-response-json response)

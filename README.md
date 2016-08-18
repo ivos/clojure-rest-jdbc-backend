@@ -20,7 +20,7 @@ Sample REST backend on JDBC written in Clojure.
 - Production deployment as a .jar or .war
 - "[Reloaded](http://thinkrelevance.com/blog/2013/06/04/clojure-workflow-reloaded)" workflow in REPL
 - Comprehensive integration tests that exercise the application from the HTTP handler down to the database
-- CRUD on entities: project, user, session
+- CRUDL on entities: project, user, session
 - Authentication and authorization
 
 ## Usage

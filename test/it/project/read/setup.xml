@@ -1,0 +1,5 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
+	<project id="@auto" version="12301" code="code-1" name="@auto" visibility="private" created="@auto"/>
+	<project id="@auto" version="12302" code="code-2" name="@auto" visibility="public" created="@auto"/>
+	<project id="@auto" version="12303" code="code-3" name="@auto" visibility="private" created="@auto"/>
+</dataset>

@@ -26,7 +26,7 @@
   (alter-var-root #'system (constantly (load-system-production)))
   (alter-var-root #'system component/start)
   (migrate (:flyway system))
-  (alter-var-root #'handler (constantly (get-in system [:handler :handler])))
+  (alter-var-root #'handler (constantly (-> system :handler :handler)))
   (log/info "Backend started OK."))
 
 (defn destroy

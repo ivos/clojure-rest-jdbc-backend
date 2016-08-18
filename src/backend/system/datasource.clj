@@ -8,7 +8,7 @@
   (start [this]
     (if datasource
       this
-      (let [db-config (get-in config [:config :db])]
+      (let [db-config (-> config :config :db)]
         (log/info "Starting datasource.")
         (assoc this :datasource (ds/make-datasource db-config)))))
   (stop [this]

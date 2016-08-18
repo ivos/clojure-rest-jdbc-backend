@@ -45,12 +45,25 @@
 (defn project-list
   [request]
   (let [ds (:ds request)
-        data (:body request)]
-    (log/debug "Listing projects" data)
+        params (:params request)]
+    (log/debug "Listing projects" params)
     (db/with-db-transaction
       [tc ds]
       (let [data (list-all-projects tc)
             result (map (partial list-entity-result get-detail-uri request) data)
             response (resp/response result)]
         (log/debug "Listed projects" data)
+        response))))
+
+(defn project-read
+  [request]
+  (let [ds (:ds request)
+        id (-> request :params :id)]
+    (log/debug "Reading project" id)
+    (db/with-db-transaction
+      [tc ds]
+      (let [result (read-project tc {:code id})
+            response (-> (resp/response (entity-result result))
+                         (header-etag result))]
+        (log/debug "Read project" result)
         response))))

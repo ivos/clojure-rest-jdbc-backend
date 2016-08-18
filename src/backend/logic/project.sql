@@ -1,5 +1,5 @@
 -- :name list-all-projects :? :*
 select * from project;
 
--- :name get-project :? :1
-select * from project where id = :id;
+-- :name read-project :? :1
+select * from project where code = :code;
