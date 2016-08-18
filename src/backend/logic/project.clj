@@ -25,56 +25,48 @@
 (def-db-fns "backend/logic/project.sql")
 
 (defn project-create
-  [request]
-  (let [ds (:ds request)
-        values (:body request)]
-    (log/debug "Creating project" values)
-    (validate attributes values)
-    (db/with-db-transaction
-      [tc ds]
-      (let [now (t/now)
-            values (assoc values :created (tc/to-sql-time now))
-            result (repo/create! tc :project values)
-            response (-> (resp/created
-                           (get-detail-uri request result)
-                           (entity-result result))
-                         (etag-header result))]
-        (log/debug "Created project" result)
-        response))))
+  [{ds :ds values :body :as request}]
+  (log/debug "Creating project" values)
+  (validate attributes values)
+  (db/with-db-transaction
+    [tc ds]
+    (let [now (t/now)
+          values (assoc values :created (tc/to-sql-time now))
+          result (repo/create! tc :project values)
+          response (-> (resp/created
+                         (get-detail-uri request result)
+                         (entity-result result))
+                       (etag-header result))]
+      (log/debug "Created project" result)
+      response)))
 
 (defn project-list
-  [request]
-  (let [ds (:ds request)
-        params (:params request)]
-    (log/debug "Listing projects" params)
-    (db/with-db-transaction
-      [tc ds]
-      (let [data (list-all-projects tc)
-            result (map (partial list-entity-result get-detail-uri request) data)
-            response (resp/response result)]
-        (log/debug "Listed projects" data)
-        response))))
+  [{:keys [ds params] :as request}]
+  (log/debug "Listing projects" params)
+  (db/with-db-transaction
+    [tc ds]
+    (let [data (list-all-projects tc)
+          result (map (partial list-entity-result get-detail-uri request) data)
+          response (resp/response result)]
+      (log/debug "Listed projects" data)
+      response)))
 
 (defn project-read
-  [request]
-  (let [ds (:ds request)
-        params (:params request)]
-    (log/debug "Reading project" params)
-    (db/with-db-transaction
-      [tc ds]
-      (let [result (read-project tc params)
-            response (-> (resp/response (entity-result result))
-                         (etag-header result))]
-        (log/debug "Read project" result)
-        response))))
+  [{:keys [ds params]}]
+  (log/debug "Reading project" params)
+  (db/with-db-transaction
+    [tc ds]
+    (let [result (read-project tc params)
+          response (-> (resp/response (entity-result result))
+                       (etag-header result))]
+      (log/debug "Read project" result)
+      response)))
 
 (defn project-update
-  [request]
-  (let [ds (:ds request)
-        version (get-version request)
-        body (:body request)
+  [{:keys [ds body params] :as request}]
+  (let [version (get-version request)
         values (assoc body :version version)
-        where (assoc (:params request) :version version)]
+        where (assoc params :version version)]
     (log/debug "Updating project" values "where" where)
     (validate attributes body)
     (db/with-db-transaction
