@@ -9,7 +9,7 @@
             [reloaded.repl :refer [system init start stop go reset]]
             [backend.main :refer [load-system-production]]
             [lightair :refer :all]
-            [backend.support.flyway :refer :all]
+            [backend.system.flyway :refer :all]
             )
   (:use midje.repl)
   (:import (net.sf.lightair Api)))

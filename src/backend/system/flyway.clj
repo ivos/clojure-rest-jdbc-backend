@@ -1,4 +1,4 @@
-(ns backend.support.flyway
+(ns backend.system.flyway
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component])
   (import [org.flywaydb.core Flyway]))

@@ -1,4 +1,4 @@
-(ns backend.support.config
+(ns backend.system.config
   (:require [clojure.tools.logging :as log]
             [clojure.java.io :as io]
             [clojure.edn :as edn]

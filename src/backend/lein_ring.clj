@@ -1,9 +1,9 @@
 (ns backend.lein-ring
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [backend.support.config :refer :all]
-            [backend.support.datasource :refer :all]
-            [backend.support.flyway :refer :all]
+            [backend.system.config :refer :all]
+            [backend.system.datasource :refer :all]
+            [backend.system.flyway :refer :all]
             [backend.router.handler :refer :all]
             ))
 

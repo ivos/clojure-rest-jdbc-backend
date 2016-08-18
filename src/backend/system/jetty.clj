@@ -1,4 +1,4 @@
-(ns backend.support.jetty
+(ns backend.system.jetty
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
             [ring.adapter.jetty :as jetty])

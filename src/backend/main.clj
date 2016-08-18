@@ -2,12 +2,12 @@
   (:gen-class)
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [backend.support.config :refer :all]
-            [backend.support.datasource :refer :all]
-            [backend.support.runtime :refer [add-shutdown-hook]]
-            [backend.support.flyway :refer :all]
+            [backend.system.config :refer :all]
+            [backend.system.datasource :refer :all]
+            [backend.system.runtime :refer [add-shutdown-hook]]
+            [backend.system.flyway :refer :all]
             [backend.router.handler :refer :all]
-            [backend.support.jetty :refer :all]))
+            [backend.system.jetty :refer :all]))
 
 (defn load-system-production
   []

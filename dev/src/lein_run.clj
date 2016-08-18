@@ -1,9 +1,9 @@
 (ns lein-run
   (:gen-class)
   (:require [com.stuartsierra.component :as component]
-            [backend.support.config :refer :all]
-            [backend.support.datasource :refer :all]
-            [backend.support.flyway :refer :all]
+            [backend.system.config :refer :all]
+            [backend.system.datasource :refer :all]
+            [backend.system.flyway :refer :all]
             [lightair :refer :all])
   (:import net.sf.lightair.Api))
 
