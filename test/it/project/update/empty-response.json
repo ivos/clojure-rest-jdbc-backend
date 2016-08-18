@@ -1,0 +1,17 @@
+{
+	"code": [
+		[
+			"required"
+		]
+	],
+	"name": [
+		[
+			"required"
+		]
+	],
+	"visibility": [
+		[
+			"required"
+		]
+	]
+}

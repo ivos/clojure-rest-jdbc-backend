@@ -22,11 +22,11 @@
           expected-body (read-json prefix "full-response")
           request (create-request request-body)
           response (call-handler-at-std-time request)
-          location (get-in response [:headers "Location"] "")
           ]
-      (is-response-created response expected-body)
-      (fact "Location"
-            location => "http://localhost:3000/projects/code_1")
+      (verify-response response {:status :created
+                                 :etag   1
+                                 :location "http://localhost:3000/projects/code_1"
+                                 :body   expected-body})
       (db-verify prefix "full-verify")
       )))
 
@@ -39,10 +39,7 @@
           request (create-request request-body)
           response (call-handler-at-std-time request)
           ]
-      (fact "Status code"
-            (:status response) => (status-code :unprocessable-entity))
-      (is-response-json response)
-      (fact "Response body"
-            (:body response) => expected-body)
+      (verify-response response {:status :unprocessable-entity
+                                 :body   expected-body})
       (db-verify prefix "empty-verify")
       )))

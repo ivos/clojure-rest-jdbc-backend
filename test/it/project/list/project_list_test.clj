@@ -21,5 +21,6 @@
           request (create-request {})
           response (call-handler-at-std-time request)
           ]
-      (is-response-ok response expected-body)
+      (verify-response response {:status :ok
+                                 :body   expected-body})
       )))

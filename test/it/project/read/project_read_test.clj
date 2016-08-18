@@ -18,14 +18,16 @@
     "project-read"
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "response")
-          request (create-request "code-2")
+          request (create-request "code_2")
           response (call-handler-at-std-time request)
           ]
-      (is-response-ok-version response expected-body 12302)
+      (verify-response response {:status :ok
+                                 :etag   12302
+                                 :body   expected-body})
       )))
 
 (deftest project-read-not-found
   (facts
     "project-read-not-found"
     (db-setup prefix)
-    (not-found-test (create-request "non_existent"))))
+    (not-found-test (create-request "not_found"))))

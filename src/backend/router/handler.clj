@@ -12,7 +12,6 @@
   [config datasource]
   (-> app-handler
       wrap-validation
-      wrap-conflict
       wrap-unique-attribute-violation
       wrap-custom-response
       wrap-log

@@ -11,20 +11,35 @@
    :not-found             404
    :method-not-allowed    405
    :conflict              409
+   :precondition-failed   412
    :unprocessable-entity  422
    :precondition-required 428
    })
 
-(defn get-if-match
+(defn get-version
   [request]
   (let [version (get-in request [:headers "if-match"])]
-    (if (nil? version)
-      (throw+ {:type :custom-response :response {:status (status-code :precondition-required)}})
-      version)))
+    (cond
+      (nil? version) (throw+
+                       {:type     :custom-response
+                        :response {:status (status-code :precondition-required)}})
+      (not (integer? (read-string version))) (throw+
+                                               {:type     :custom-response
+                                                :response {:status (status-code :precondition-failed)}})
+      :else (read-string version))))
 
-(defn header-etag
+(defn etag-header
   [response entity]
   (header response "ETag" (:version entity)))
+
+(defn location-header
+  [response location]
+  (header response "Location" location))
+
+(def response-no-content
+  {:status  (status-code :no-content)
+   :headers {}
+   :body    nil})
 
 (defn get-deploy-url
   [request & uri]

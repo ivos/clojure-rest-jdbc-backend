@@ -32,14 +32,6 @@
               (log/info "Validation failure" response)
               response)))))
 
-(defn wrap-conflict
-  [handler]
-  (fn
-    [request]
-    (try+ (handler request)
-          (catch [:type :optimistic-locking-failure] {:keys [:v]}
-            (header {:status (status-code :conflict)} "ETag" v)))))
-
 (defn wrap-unique-attribute-violation
   [handler]
   (fn

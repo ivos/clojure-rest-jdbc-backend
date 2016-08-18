@@ -54,8 +54,8 @@
     (second attribute)))
 
 (defn- verify-keys
-  [attributes data]
-  (let [keys (set/difference (set (keys data)) (set (keys attributes)))]
+  [attributes values]
+  (let [keys (set/difference (set (keys values)) (set (keys attributes)))]
     (zipmap keys (repeat :invalid.attribute))))
 
 (defn- group-errors
@@ -70,10 +70,10 @@
     (zipmap keys values)))
 
 (defn validate
-  "Validate and convert data."
-  [attributes data]
-  (let [attribute-errors (mapcat #(validate-attribute %1 (get data (first %1))) attributes)
-        invalid-key-errors (verify-keys attributes data)
+  "Validate and convert values."
+  [attributes values]
+  (let [attribute-errors (mapcat #(validate-attribute %1 (get values (first %1))) attributes)
+        invalid-key-errors (verify-keys attributes values)
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
     (when (not-empty errors)

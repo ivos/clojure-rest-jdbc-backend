@@ -19,26 +19,26 @@
    })
 
 (defn- get-detail-uri
-  [request data]
-  (get-deploy-url request "projects/" (:code data)))
+  [request values]
+  (get-deploy-url request "projects/" (:code values)))
 
 (def-db-fns "backend/logic/project.sql")
 
 (defn project-create
   [request]
   (let [ds (:ds request)
-        data (:body request)]
-    (log/debug "Creating project" data)
-    (validate attributes data)
+        values (:body request)]
+    (log/debug "Creating project" values)
+    (validate attributes values)
     (db/with-db-transaction
       [tc ds]
       (let [now (t/now)
-            data (assoc data :created (tc/to-sql-time now))
-            result (repo/create! tc :project data)
+            values (assoc values :created (tc/to-sql-time now))
+            result (repo/create! tc :project values)
             response (-> (resp/created
                            (get-detail-uri request result)
                            (entity-result result))
-                         (header-etag result))]
+                         (etag-header result))]
         (log/debug "Created project" result)
         response))))
 
@@ -58,12 +58,30 @@
 (defn project-read
   [request]
   (let [ds (:ds request)
-        id (-> request :params :id)]
-    (log/debug "Reading project" id)
+        params (:params request)]
+    (log/debug "Reading project" params)
     (db/with-db-transaction
       [tc ds]
-      (let [result (read-project tc {:code id})
+      (let [result (read-project tc params)
             response (-> (resp/response (entity-result result))
-                         (header-etag result))]
+                         (etag-header result))]
         (log/debug "Read project" result)
+        response))))
+
+(defn project-update
+  [request]
+  (let [ds (:ds request)
+        version (get-version request)
+        body (:body request)
+        values (assoc body :version version)
+        where (assoc (:params request) :version version)]
+    (log/debug "Updating project" values "where" where)
+    (validate attributes body)
+    (db/with-db-transaction
+      [tc ds]
+      (let [result (repo/update! tc :project values where)
+            response (-> response-no-content
+                         (location-header (get-detail-uri request result))
+                         (etag-header result))]
+        (log/debug "Updated project" result)
         response))))
