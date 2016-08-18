@@ -13,7 +13,7 @@
 
 (def ^:private attributes
   {
-   :code       {:required true :max-length 100}
+   :code       {:required true :max-length 100 :pattern #"[a-z0-9_]*"}
    :name       {:required true :max-length 100}
    :visibility {:required true :enum [:public :private]}
    })

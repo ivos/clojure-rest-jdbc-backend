@@ -26,7 +26,7 @@
           ]
       (is-response-created response expected-body)
       (fact "Location"
-            location => "http://localhost:3000/projects/code-1")
+            location => "http://localhost:3000/projects/code_1")
       (db-verify prefix "full-verify")
       )))
 

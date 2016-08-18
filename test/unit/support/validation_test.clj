@@ -13,10 +13,11 @@
   (fact
     "required filled"
     (let [attributes {
-                      :str1  {:required true :min-length 10 :max-length 10}
+                      :str1  {:required true :min-length 10 :max-length 10 :pattern #"[0-9]+"}
                       :enum1 {:required true :enum [:val1 :val2 :val3]}
+                      :int1  {:required true}
                       }
-          data {:str1 "1234567890" :enum1 "val2"}]
+          data {:str1 "1234567890" :enum1 "val2" :int1 123}]
       (validate attributes data) => nil))
   (fact
     "enum value types"
@@ -30,31 +31,38 @@
   (fact
     "optional filled"
     (let [attributes {
-                      :str1  {:min-length 10 :max-length 10}
+                      :str1  {:min-length 10 :max-length 10 :pattern #"[0-9]+"}
                       :enum1 {:enum [:val1 :val2 :val3]}
+                      :int1  {}
                       }
-          data {:str1 "1234567890" :enum1 "val2"}]
+          data {:str1 "1234567890" :enum1 "val2" :int1 123}]
       (validate attributes data) => nil))
   (fact
     "optional empty"
     (let [attributes {
-                      :str1  {:min-length 10 :max-length 10}
+                      :str1  {:min-length 10 :max-length 10 :pattern #"[0-9]+"}
                       :enum1 {:enum [:val1 :val2 :val3]}
+                      :int1  {}
                       }
           data {}]
       (validate attributes data) => nil))
   (fact
     "failure required"
     (let [attributes {
-                      :str1  {:required true :min-length 10 :max-length 10}
-                      :enum1 {:required true :enum [:val1 :val2 :val3]}
+                      :str1      {:required true :min-length 10 :max-length 10 :pattern #"[0-9]+"}
+                      :enum1     {:required true :enum [:val1 :val2 :val3]}
+                      :blank-str {:required true}
+                      :int1      {:required true}
                       }
-          data {}]
+          data {:blank-str " \t\n "}]
       (try+ (do
               (validate attributes data)
               (fact "Should throw" true => false))
             (catch [:type :validation-failure] {:keys [errors]}
-              errors => {:enum1 [[:required]], :str1 [[:required]]}))))
+              errors => {:enum1     [[:required]],
+                         :str1      [[:required]],
+                         :blank-str [[:required]],
+                         :int1      [[:required]]}))))
   (fact
     "failure min-length"
     (let [attributes {:str1 {:min-length 10}}
@@ -83,10 +91,19 @@
             (catch [:type :validation-failure] {:keys [errors]}
               errors => {:enum1 [[:enum [:val1 :val2 :val3]]]}))))
   (fact
+    "failure pattern"
+    (let [attributes {:str1 {:pattern #"[a-d]*"}}
+          data {:str1 "abcde"}]
+      (try+ (do
+              (validate attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:str1 [[:pattern "[a-d]*"]]}))))
+  (fact
     "failure multiple"
     (let [attributes {
                       :req1  {:required true}
-                      :str1  {:min-length 11 :max-length 9}
+                      :str1  {:min-length 11 :max-length 9 :pattern #"[1-9]+"}
                       :enum1 {:enum [:val1]}
                       }
           data {:str1 "1234567890" :enum1 "valX" :invalid "some"}]
@@ -97,5 +114,5 @@
               errors => {:enum1   [[:enum [:val1]]],
                          :invalid [[:invalid.attribute]],
                          :req1    [[:required]],
-                         :str1    [[:min.length 11] [:max.length 9]]}))))
+                         :str1    [[:min.length 11] [:max.length 9] [:pattern "[1-9]+"]]}))))
   )

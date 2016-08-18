@@ -1,5 +1,6 @@
 (ns backend.support.validation
   (:require [clojure.set :as set]
+            [clojure.string :as string]
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+ try+]]
             [backend.support.ring :refer [status-code]]
@@ -7,7 +8,10 @@
 
 (defn- validate-required
   [attr-name validation value]
-  (when (and validation (nil? value))
+  (when (and validation
+             (or (nil? value)
+                 (and (string? value)
+                      (string/blank? value))))
     [attr-name :required]))
 
 (defn- validate-min-length
@@ -27,6 +31,11 @@
     (when (and (not (nil? value)) (not (contains? values (to-str value))))
       [attr-name :enum validation])))
 
+(defn- validate-pattern
+  [attr-name validation value]
+  (when (and (not (nil? value)) (not (re-matches validation value)))
+    [attr-name :pattern (str validation)]))
+
 (defn- validate-attribute-property
   [attr-name type validation value]
   (condp = type
@@ -34,6 +43,7 @@
     :min-length (validate-min-length attr-name validation value)
     :max-length (validate-max-length attr-name validation value)
     :enum (validate-enum attr-name validation value)
+    :pattern (validate-pattern attr-name validation value)
     ))
 
 (defn- validate-attribute
@@ -66,6 +76,6 @@
         invalid-key-errors (verify-keys attributes data)
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
-    (when (seq errors)
+    (when (not-empty errors)
       (log/debug "Validation failure" result)
       (throw+ {:type :validation-failure :errors result}))))
