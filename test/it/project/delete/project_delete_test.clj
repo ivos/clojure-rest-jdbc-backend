@@ -25,17 +25,6 @@
       (db-verify prefix "full-verify")
       )))
 
-(deftest project-delete-not-found
-  (facts
-    "project-delete-not-found"
-    (db-setup prefix "full-setup")
-    (let [request (create-request "not_found" 123)
-          response (call-handler-at-std-time request)
-          ]
-      (verify-response response {:status :precondition-failed})
-      (db-verify prefix "full-setup")
-      )))
-
 (deftest project-delete-conflict
   (facts
     "project-delete-conflict"
@@ -44,16 +33,5 @@
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "full-setup")
-      )))
-
-(deftest project-delete-no-version
-  (facts
-    "project-delete-no-version"
-    (db-setup prefix "full-setup")
-    (let [request (create-request "code_2" nil)
-          response (call-handler-at-std-time request)
-          ]
-      (verify-response response {:status :precondition-required})
       (db-verify prefix "full-setup")
       )))

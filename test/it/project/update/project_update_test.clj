@@ -43,18 +43,6 @@
       (db-verify prefix "full-setup")
       )))
 
-(deftest project-update-not-found
-  (facts
-    "project-update-not-found"
-    (db-setup prefix "full-setup")
-    (let [request-body (read-json prefix "full-request")
-          request (create-request "not_found" 123 request-body)
-          response (call-handler-at-std-time request)
-          ]
-      (verify-response response {:status :precondition-failed})
-      (db-verify prefix "full-setup")
-      )))
-
 (deftest project-update-conflict
   (facts
     "project-update-conflict"
@@ -64,17 +52,5 @@
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "full-setup")
-      )))
-
-(deftest project-update-no-version
-  (facts
-    "project-update-no-version"
-    (db-setup prefix "full-setup")
-    (let [request-body (read-json prefix "full-request")
-          request (create-request "code_2" nil request-body)
-          response (call-handler-at-std-time request)
-          ]
-      (verify-response response {:status :precondition-required})
       (db-verify prefix "full-setup")
       )))
