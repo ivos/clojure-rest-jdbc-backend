@@ -4,20 +4,24 @@
 
 (defn- verify-found
   [entity]
-  (if (nil? entity)
+  (when (nil? entity)
     (throw+ {:type     :custom-response
              :response {:status (status-code :not-found)
-                        :body   {:code :entity.not.found}}})
-    entity))
+                        :body   {:code :entity.not.found}}})))
+
+(defn- conform-keys
+  [entity attributes]
+  (let [keys (keys attributes)
+        values (map #(get entity %1) keys)]
+    (apply array-map (interleave keys values))))
 
 (defn entity-result
-  [entity]
-  (-> entity
-      verify-found
-      (dissoc :id :version)))
+  [attributes entity]
+  (verify-found entity)
+  (conform-keys entity attributes))
 
 (defn list-entity-result
-  [get-detail-uri request entity]
+  [get-detail-uri attributes request entity]
   (-> entity
-      (assoc :uri (get-detail-uri request entity))
-      (dissoc :id :version)))
+      (conform-keys attributes)
+      (assoc :uri (get-detail-uri request entity))))

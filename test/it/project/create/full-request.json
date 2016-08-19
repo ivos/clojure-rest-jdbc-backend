@@ -1,5 +1,9 @@
 {
 	"code": "code_1",
 	"name": "Name 1",
-	"visibility": "private"
+	"visibility": "private",
+	"description": "description 1",
+	"start": "2016-12-31",
+	"duration": "56",
+	"budget": "2034.56"
 }

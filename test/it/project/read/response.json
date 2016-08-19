@@ -1,6 +1,10 @@
 {
-	"name": "name 1558336502",
 	"code": "code_2",
+	"name": "name 1558336502",
 	"visibility": "public",
+	"description": "description 1558347302",
+	"start": "2019-05-18T22:00:00Z",
+	"duration": 1558358902,
+	"budget": 1558367.202,
 	"created": "1961-01-23T10:55:02Z"
 }

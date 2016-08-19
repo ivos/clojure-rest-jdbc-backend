@@ -1,5 +1,8 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
-	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" created="@auto"/>
-	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="public" created="@auto"/>
-	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" created="@auto"/>
+	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" created="@auto"
+	         description="@auto" start="@auto" duration="@auto" budget="@auto"/>
+	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="public" created="@auto"
+	         description="@auto" start="@auto" duration="@auto" budget="@auto"/>
+	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" created="@auto"
+	         description="@auto" start="@auto" duration="@auto" budget="@auto"/>
 </dataset>

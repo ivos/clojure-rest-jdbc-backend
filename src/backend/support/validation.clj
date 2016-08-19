@@ -27,8 +27,8 @@
 (defn- validate-enum
   [attr-name validation value]
   (let [to-str #(if (nil? %1) "" (name %1))
-        values (set (map to-str validation))]
-    (when (and (not (nil? value)) (not (contains? values (to-str value))))
+        entity (set (map to-str validation))]
+    (when (and (not (nil? value)) (not (contains? entity (to-str value))))
       [attr-name :enum validation])))
 
 (defn- validate-pattern
@@ -54,8 +54,8 @@
     (second attribute)))
 
 (defn- verify-keys
-  [attributes values]
-  (let [keys (set/difference (set (keys values)) (set (keys attributes)))]
+  [attributes entity]
+  (let [keys (set/difference (set (keys entity)) (set (keys attributes)))]
     (zipmap keys (repeat :invalid.attribute))))
 
 (defn- group-errors
@@ -65,15 +65,15 @@
         filter-by-name #(filter (partial is-name %1) errors)
         errors-grouped-by-name (map filter-by-name keys)
         removed-name (map #(map next %1) errors-grouped-by-name)
-        values (map vec (map #(map vec %1) removed-name))
+        entity (map vec (map #(map vec %1) removed-name))
         ]
-    (zipmap keys values)))
+    (zipmap keys entity)))
 
 (defn validate
-  "Validate and convert values."
-  [attributes values]
-  (let [attribute-errors (mapcat #(validate-attribute %1 (get values (first %1))) attributes)
-        invalid-key-errors (verify-keys attributes values)
+  "Validate entity."
+  [attributes entity]
+  (let [attribute-errors (mapcat #(validate-attribute %1 (get entity (first %1))) attributes)
+        invalid-key-errors (verify-keys attributes entity)
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
     (when (not-empty errors)

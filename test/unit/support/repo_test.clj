@@ -3,10 +3,10 @@
   (:use midje.sweet backend.support.validation))
 
 (facts
-  "where-values"
+  "where-clause"
   (fact
     "empty"
-    (#'backend.support.repo/where-values {}) => [""])
+    (#'backend.support.repo/where-clause {}) => [""])
   (fact
     "multiple"
-    (#'backend.support.repo/where-values {:a 1 :b "2" :c 3}) => ["a = ? and b = ? and c = ?" 1 "2" 3]))
+    (#'backend.support.repo/where-clause {:a 1 :b "2" :c 3}) => ["a = ? and b = ? and c = ?" 1 "2" 3]))

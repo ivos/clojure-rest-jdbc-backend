@@ -24,7 +24,6 @@
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status   :no-content
-                                 :etag     124
                                  :location "http://localhost:3000/projects/code_2_updated"})
       (db-verify prefix "full-verify")
       )))

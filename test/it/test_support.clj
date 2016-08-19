@@ -1,6 +1,5 @@
 (ns it.test-support
-  (:require [clojure.edn :as edn]
-            [cheshire.core :as json]
+  (:require [clojure.string :as string]
             [ring.mock.request :as mock]
             [clj-time.core :as t]
             [midje.sweet :refer [fact]]
@@ -26,7 +25,14 @@
 
 (defn read-json
   [prefix path]
-  (-> (str "test/it/" prefix path ".json") slurp json/decode json/encode))
+  (-> (str "test/it/" prefix path ".json")
+      slurp
+      ; Cheshire does NOT keep the order of the fields in object maps!
+      ; remove whitespace at the start of lines:
+      (string/replace #"\n[\t]*" "")
+      ; remove space after field name colon separator:
+      (string/replace "\": " "\":")
+      ))
 
 (defn verify-response
   [response validations]
