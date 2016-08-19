@@ -3,6 +3,8 @@
             [clojure.string :as string]
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
+            [camel-snake-kebab.core :as csk]
+            [camel-snake-kebab.extras :refer [transform-keys]]
             [backend.support.ring :refer [status-code]]))
 
 (def ^:private generated-key
@@ -29,24 +31,28 @@
 
 (defn create!
   [db table entity]
-  (log/debug "Inserting" table entity)
-  (let [defaulted-entity (assoc entity :version 1)
-        [result] (db/insert! db table defaulted-entity)]
-    (assoc defaulted-entity :id (generated-key result))))
+  (let [entity (assoc entity :version 1)
+        db-entity (transform-keys csk/->snake_case entity)]
+    (log/debug "Inserting" table db-entity)
+    (let [[result] (db/insert! db table db-entity)]
+      (assoc entity :id (generated-key result)))))
 
 (defn update!
   ([db table entity]
    (let [where (select-keys entity [:id :version])]
      (update! db table entity where)))
   ([db table entity where]
-   (let [set-map (entity-to-set entity)]
-     (log/debug "Updating" table set-map "where" where)
-     (let [[result] (db/update! db table set-map (where-clause where))]
+   (let [set-map (entity-to-set entity)
+         db-set-map (transform-keys csk/->snake_case set-map)
+         db-where (transform-keys csk/->snake_case where)]
+     (log/debug "Updating" table db-set-map "where" db-where)
+     (let [[result] (db/update! db table db-set-map (where-clause db-where))]
        (verify-result result table where)
        (merge entity set-map)))))
 
 (defn delete!
   [db table where]
-  (log/debug "Deleting" table "where" where)
-  (let [[result] (db/delete! db table (where-clause where))]
-    (verify-result result table where)))
+  (let [db-where (transform-keys csk/->snake_case where)]
+    (log/debug "Deleting" table "where" db-where)
+    (let [[result] (db/delete! db table (where-clause db-where))]
+      (verify-result result table where))))

@@ -8,6 +8,8 @@ create table project (
   start date,
   duration integer,
   budget decimal(10,3),
+  daily_meeting_at time,
+  kick_off datetime,
   created timestamp not null
 );
 

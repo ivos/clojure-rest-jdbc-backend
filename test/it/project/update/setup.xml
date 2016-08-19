@@ -2,10 +2,9 @@
 	<project id="@auto" version="@auto" code="code_1" name="@auto" visibility="private" description="@auto"
 	         start="@auto" duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"/>
 
-	<!--found-->
-	<project id="@auto" version="12302" code="code_2" name="@auto" visibility="public" description="@auto"
-	         start="2016-10-11" duration="@auto" budget="@auto" daily_meeting_at="11:12:13" kick_off="2016-10-12T13:45:01"
-	         created="2016-09-11T12:34:56.123"/>
+	<!--updated-->
+	<project id="@auto" version="123" code="code_2" name="@auto" visibility="public" description="@auto" start="@auto"
+	         duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"/>
 
 	<project id="@auto" version="@auto" code="code_3" name="@auto" visibility="private" description="@auto"
 	         start="@auto" duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"/>

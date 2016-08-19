@@ -21,6 +21,8 @@
 		<xsd:attribute name="start" use="optional" type="la:DateNullableType"/>
 		<xsd:attribute name="duration" use="optional" type="la:IntegerNullableType"/>
 		<xsd:attribute name="budget" use="optional" type="la:BigdecimalNullableType"/>
+		<xsd:attribute name="daily_meeting_at" use="optional" type="la:TimeNullableType"/>
+		<xsd:attribute name="kick_off" use="optional" type="la:TimestampNullableType"/>
 		<xsd:attribute name="created" use="optional" type="la:TimestampType"/>
 	</xsd:complexType>
 	<xsd:complexType name="schema_version__Type">

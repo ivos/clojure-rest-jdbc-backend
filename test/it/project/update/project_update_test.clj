@@ -15,23 +15,32 @@
       (mock/content-type "application/json")
       (if-match-header version)))
 
+(defn- ok
+  [test-case]
+  (db-setup prefix "setup")
+  (let [request-body (read-json prefix (str test-case "-request"))
+        request (create-request "code_2" 123 request-body)
+        response (call-handler-at-std-time request)
+        ]
+    (verify-response response {:status   :no-content
+                               :location "http://localhost:3000/projects/code_2_updated"})
+    (db-verify prefix (str test-case "-verify"))
+    ))
+
 (deftest project-update-full
   (facts
     "project-update-full"
-    (db-setup prefix "full-setup")
-    (let [request-body (read-json prefix "full-request")
-          request (create-request "code_2" 123 request-body)
-          response (call-handler-at-std-time request)
-          ]
-      (verify-response response {:status   :no-content
-                                 :location "http://localhost:3000/projects/code_2_updated"})
-      (db-verify prefix "full-verify")
-      )))
+    (ok "full")))
+
+(deftest project-update-minimal
+  (facts
+    "project-update-minimal"
+    (ok "minimal")))
 
 (deftest project-update-empty
   (facts
     "project-update-empty"
-    (db-setup prefix "full-setup")
+    (db-setup prefix "setup")
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request "code_2" 123 request-body)
@@ -39,17 +48,17 @@
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "full-setup")
+      (db-verify prefix "setup")
       )))
 
 (deftest project-update-conflict
   (facts
     "project-update-conflict"
-    (db-setup prefix "full-setup")
+    (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" 122 request-body)
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "full-setup")
+      (db-verify prefix "setup")
       )))

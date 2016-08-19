@@ -2,9 +2,9 @@
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
             [ring.util.response :as resp]
+            [hugsql.core :refer [def-db-fns]]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
-            [hugsql.core :refer [def-db-fns]]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
             [backend.support.entity :refer :all]
@@ -12,16 +12,18 @@
             ))
 
 (def ^:private attributes
-  {
-   :code        {:required true :max-length 100 :pattern #"[a-z0-9_]*"}
-   :name        {:required true :max-length 100}
-   :visibility  {:required true :enum [:public :private]}
-   :description {:max-length 500}
-   :start       {}
-   :duration    {}
-   :budget      {}
-   :created     {}
-   })
+  (array-map
+    :code {:required true :max-length 100 :pattern #"[a-z0-9_]*"}
+    :name {:required true :max-length 100}
+    :visibility {:required true :enum [:public :private]}
+    :description {:max-length 500}
+    :start {}
+    :duration {}
+    :budget {}
+    :dailyMeetingAt {}
+    :kickOff {}
+    :created {:direction :out}
+    ))
 
 (defn- get-detail-uri
   [request entity]
@@ -30,17 +32,17 @@
 (def-db-fns "backend/logic/project.sql")
 
 (defn project-create
-  [{ds :ds entity :body :as request}]
-  (log/debug "Creating project" entity)
-  (validate attributes entity)
-  (db/with-db-transaction
-    [tc ds]
-    (let [now (t/now)
-          entity (assoc entity :created (tc/to-sql-time now))
-          result (repo/create! tc :project entity)
-          response (resp/created (get-detail-uri request result))]
-      (log/debug "Created project" result)
-      response)))
+  [{:keys [ds body] :as request}]
+  (log/debug "Creating project" body)
+  (let [entity (valid attributes body)]
+    (db/with-db-transaction
+      [tc ds]
+      (let [now (t/now)
+            entity (assoc entity :created (tc/to-sql-time now))
+            result (repo/create! tc :project entity)
+            response (resp/created (get-detail-uri request result))]
+        (log/debug "Created project" result)
+        response))))
 
 (defn project-list
   [{:keys [ds params] :as request}]
@@ -67,17 +69,17 @@
 (defn project-update
   [{:keys [ds body params] :as request}]
   (let [version (get-version request)
-        entity (assoc body :version version)
         where (assoc params :version version)]
-    (log/debug "Updating project" entity "where" where)
-    (validate attributes body)
-    (db/with-db-transaction
-      [tc ds]
-      (let [result (repo/update! tc :project entity where)
-            response (-> response-no-content
-                         (location-header (get-detail-uri request result)))]
-        (log/debug "Updated project" result)
-        response))))
+    (log/debug "Updating project" body "where" where)
+    (let [entity (valid attributes body)
+          entity (assoc entity :version version)]
+      (db/with-db-transaction
+        [tc ds]
+        (let [result (repo/update! tc :project entity where)
+              response (-> response-no-content
+                           (location-header (get-detail-uri request result)))]
+          (log/debug "Updated project" result)
+          response)))))
 
 (defn project-delete
   [{:keys [ds params] :as request}]

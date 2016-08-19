@@ -44,18 +44,19 @@
     :max-length (validate-max-length attr-name validation value)
     :enum (validate-enum attr-name validation value)
     :pattern (validate-pattern attr-name validation value)
+    :direction nil
     ))
 
 (defn- validate-attribute
   [attribute value]
-  (log/trace "Validating " (str \[ value \]) "as" attribute)
+  (log/trace "Validating" (str \[ value \]) "as" attribute)
   (map
     #(validate-attribute-property (first attribute) (first %1) (second %1) value)
     (second attribute)))
 
 (defn- verify-keys
-  [attributes entity]
-  (let [keys (set/difference (set (keys entity)) (set (keys attributes)))]
+  [inbound-attributes entity]
+  (let [keys (set/difference (set (keys entity)) (set (keys inbound-attributes)))]
     (zipmap keys (repeat :invalid.attribute))))
 
 (defn- group-errors
@@ -69,13 +70,30 @@
         ]
     (zipmap keys entity)))
 
-(defn validate
+(defn- get-inbound
+  [attributes]
+  (let [f #(let [v (second %)]
+            (or (nil? v)
+                (nil? (:direction v))
+                (not= :out (:direction v))))]
+    (apply array-map (into [] cat (filter f attributes)))))
+
+(defn- assoc-missing-keys
+  [inbound-attributes entity]
+  (let [missing-keys (set/difference (set (keys inbound-attributes)) (set (keys entity)))]
+    (if (not-empty missing-keys)
+      (apply assoc entity (interleave missing-keys (repeat nil)))
+      entity)))
+
+(defn valid
   "Validate entity."
   [attributes entity]
-  (let [attribute-errors (mapcat #(validate-attribute %1 (get entity (first %1))) attributes)
-        invalid-key-errors (verify-keys attributes entity)
+  (let [inbound-attributes (get-inbound attributes)
+        attribute-errors (mapcat #(validate-attribute %1 (get entity (first %1))) inbound-attributes)
+        invalid-key-errors (verify-keys inbound-attributes entity)
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
     (when (not-empty errors)
       (log/debug "Validation failure" result)
-      (throw+ {:type :validation-failure :errors result}))))
+      (throw+ {:type :validation-failure :errors result}))
+    (assoc-missing-keys inbound-attributes entity)))

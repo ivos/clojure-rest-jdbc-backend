@@ -1,4 +1,8 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
-	<project id="@any" version="1" code="code_1" name="Name 1" visibility="private" created="2015-10-11T14:34:56.123"
-	         description="description 1" start="2016-12-31" duration="56" budget="2034.56"/>
+
+	<!--created-->
+	<project id="@any" version="1" code="code_1" name="Name 1" visibility="private" description="description 1"
+	         start="2016-10-11" duration="56" budget="2034.56" daily_meeting_at="11:12:13"
+	         kick_off="2016-10-12T13:45:01" created="2015-10-11T14:34:56.123"/>
+
 </dataset>

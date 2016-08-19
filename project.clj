@@ -16,6 +16,8 @@
                  [compojure "1.5.1"]
                  [slingshot "0.12.2"]
                  [clj-time "0.12.0"]
+                 [camel-snake-kebab "0.4.0"]
+                 [org.flatland/ordered "1.5.4"]
                  [org.clojure/tools.logging "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.7"]
                  ]

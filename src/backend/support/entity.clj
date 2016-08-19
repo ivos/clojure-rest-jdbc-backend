@@ -1,5 +1,7 @@
 (ns backend.support.entity
   (:require [slingshot.slingshot :refer :all]
+            [camel-snake-kebab.core :as csk]
+            [flatland.ordered.map :refer [ordered-map]]
             [backend.support.ring :refer :all]))
 
 (defn- verify-found
@@ -12,8 +14,8 @@
 (defn- conform-keys
   [entity attributes]
   (let [keys (keys attributes)
-        values (map #(get entity %1) keys)]
-    (apply array-map (interleave keys values))))
+        values (map #(get entity (csk/->snake_case %1)) keys)]
+    (apply ordered-map (interleave keys values))))
 
 (defn entity-result
   [attributes entity]

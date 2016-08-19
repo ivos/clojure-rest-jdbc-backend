@@ -1,5 +1,11 @@
 {
 	"code": "code_2_updated",
 	"name": "Name 2 updated",
-	"visibility": "private"
+	"visibility": "private",
+	"description": "description 2 updated",
+	"start": "2016-12-31",
+	"duration": "56",
+	"budget": "2034.56",
+	"dailyMeetingAt": "11:12:13",
+	"kickOff": "2016-10-12T13:45:01"
 }
