@@ -13,16 +13,21 @@
 
 (def ^:private attributes
   (array-map
-    :code {:required true :max-length 100 :pattern #"[a-z0-9_]*"}
-    :name {:required true :max-length 100}
-    :visibility {:required true :enum [:public :private]}
+    :code {:required   true
+           :max-length 100
+           :pattern    #"[a-z0-9_]*"}
+    :name {:required   true
+           :max-length 100}
+    :visibility {:required true
+                 :enum     [:public :private]}
     :description {:max-length 500}
     :start {:type :date}
-    :duration {}
-    :budget {}
+    :duration {:type :integer}
+    :budget {:type :number}
     :dailyMeetingAt {:type :time}
-    :kickOff {}
-    :created {:direction :out}
+    :kickOff {:type :timestamp}
+    :created {:direction :out
+              :type      :timestamp}
     ))
 
 (defn- get-detail-uri

@@ -1,7 +1,6 @@
 (ns unit.support.validation-test
   (:use midje.sweet backend.support.validation)
-  (:require [slingshot.slingshot :refer [try+]])
-  )
+  (:require [slingshot.slingshot :refer [try+]]))
 
 (facts
   "validate"
@@ -47,7 +46,7 @@
           data {}]
       (valid attributes data) => {:enum1 nil, :int1 nil, :str1 nil}))
   (fact
-    "outbound"
+    "outbound ok"
     (let [attributes {
                       :out1     {:required true :direction :out}
                       :in1      {:required true :direction :in}
@@ -57,7 +56,7 @@
           data {:in1 1 :inOut1 2 :default1 3}]
       (valid attributes data) => data))
   (fact
-    "failure outbound"
+    "outbound failure"
     (let [attributes {
                       :out1     {:required true :direction :out}
                       :in1      {:required true :direction :in}
@@ -73,7 +72,7 @@
                          :inOut1   [[:required]],
                          :default1 [[:required]]}))))
   (fact
-    "failure required"
+    "required failure"
     (let [attributes {
                       :str1      {:required true :min-length 10 :max-length 10 :pattern #"[0-9]+"}
                       :enum1     {:required true :enum [:val1 :val2 :val3]}
@@ -90,7 +89,7 @@
                          :blank-str [[:required]],
                          :int1      [[:required]]}))))
   (fact
-    "failure min-length"
+    "min-length failure"
     (let [attributes {:str1 {:min-length 10}}
           data {:str1 "123456789"}]
       (try+ (do
@@ -99,7 +98,12 @@
             (catch [:type :validation-failure] {:keys [errors]}
               errors => {:str1 [[:min.length 10]]}))))
   (fact
-    "failure max-length"
+    "min-length conversion"
+    (let [attributes {:str1 {:min-length 10}}
+          data {:str1 12345678901}]
+      (valid attributes data) => data))
+  (fact
+    "max-length failure"
     (let [attributes {:str1 {:max-length 10}}
           data {:str1 "12345678901"}]
       (try+ (do
@@ -108,7 +112,12 @@
             (catch [:type :validation-failure] {:keys [errors]}
               errors => {:str1 [[:max.length 10]]}))))
   (fact
-    "failure enum"
+    "max-length conversion"
+    (let [attributes {:str1 {:max-length 10}}
+          data {:str1 123456789}]
+      (valid attributes data) => data))
+  (fact
+    "enum failure"
     (let [attributes {:enum1 {:enum [:val1 :val2 :val3]}}
           data {:enum1 "valX"}]
       (try+ (do
@@ -117,7 +126,7 @@
             (catch [:type :validation-failure] {:keys [errors]}
               errors => {:enum1 [[:enum [:val1 :val2 :val3]]]}))))
   (fact
-    "failure pattern"
+    "pattern failure"
     (let [attributes {:str1 {:pattern #"[a-d]*"}}
           data {:str1 "abcde"}]
       (try+ (do
@@ -141,4 +150,99 @@
                          :invalid [[:invalid.attribute]],
                          :req1    [[:required]],
                          :str1    [[:min.length 11] [:max.length 9] [:pattern "[1-9]+"]]}))))
+  (fact
+    "date ok"
+    (let [attributes {:date1 {:type :date}}
+          data {:date1 "2016-02-28"}]
+      (valid attributes data) => data))
+  (fact
+    "date failure"
+    (let [attributes {:date1 {:type :date}
+                      :date2 {:type :date}}
+          data {:date1 "2016-02-30"
+                :date2 "invalid"}]
+      (try+ (do
+              (valid attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:date1 [[:type :date]] :date2 [[:type :date]]}))))
+  (fact
+    "time ok"
+    (let [attributes {:time1 {:type :time}}
+          data {:time1 "12:34:56"}]
+      (valid attributes data) => data))
+  (fact
+    "time failure"
+    (let [attributes {:time1 {:type :time}
+                      :time2 {:type :time}}
+          data {:time1 "12:34:60"
+                :time2 "invalid"}]
+      (try+ (do
+              (valid attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:time1 [[:type :time]] :time2 [[:type :time]]}))))
+  (fact
+    "timestamp ok"
+    (let [attributes {:timestamp1 {:type :timestamp}}
+          data {:timestamp1 "2016-02-28T12:34:56.123Z"}]
+      (valid attributes data) => data))
+  (fact
+    "timestamp failure"
+    (let [attributes {:timestamp1 {:type :timestamp}
+                      :timestamp2 {:type :timestamp}
+                      :timestamp3 {:type :timestamp}
+                      :timestamp4 {:type :timestamp}
+                      }
+          data {:timestamp1 "2016-02-30T12:34:56.123Z"
+                :timestamp2 "2016-02-28T12:34:60.123Z"
+                :timestamp3 "2016-02-28T12:34:56.123"
+                :timestamp4 "invalid"}]
+      (try+ (do
+              (valid attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:timestamp1 [[:type :timestamp]]
+                         :timestamp2 [[:type :timestamp]]
+                         :timestamp3 [[:type :timestamp]]
+                         :timestamp4 [[:type :timestamp]]
+                         }))))
+  (fact
+    "integer ok"
+    (let [attributes {:integer1 {:type :integer}}
+          data {:integer1 1234567890123}]
+      (valid attributes data) => data))
+  (fact
+    "integer failure"
+    (let [attributes {:integer1 {:type :integer}
+                      :integer2 {:type :integer}}
+          data {:integer1 123.4
+                :integer2 "invalid"}]
+      (try+ (do
+              (valid attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:integer1 [[:type :integer]]
+                         :integer2 [[:type :integer]]}))))
+  (fact
+    "number ok"
+    (let [attributes {:number1 {:type :number}
+                      :number2 {:type :number}
+                      :number3 {:type :number}}
+          data {:number1 123.4
+                :number2 123
+                :number3 12345678.90123}]
+      (valid attributes data) => data))
+  (fact
+    "number failure"
+    (let [attributes {:number1 {:type :number}
+                      :number2 {:type :number}}
+          data {:number1 "123.4"
+                :number2 "invalid"}]
+      (try+ (do
+              (valid attributes data)
+              (fact "Should throw" true => false))
+            (catch [:type :validation-failure] {:keys [errors]}
+              errors => {:number1 [[:type :number]]
+                         :number2 [[:type :number]]}))))
   )

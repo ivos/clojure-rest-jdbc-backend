@@ -1,0 +1,11 @@
+{
+	"code": "code_2-updated",
+	"name": " ",
+	"visibility": "invalid",
+	"description": 123,
+	"start": "2016-02-30",
+	"duration": "invalid int",
+	"budget": "invalid decimal",
+	"dailyMeetingAt": "25:12:13",
+	"kickOff": "2016-02-30T13:65:01.000Z"
+}

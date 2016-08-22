@@ -2,7 +2,6 @@
   (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
-            [ring.mock.request :as mock]
             [lightair :refer :all]
             [it.test-support :refer :all]
             ))

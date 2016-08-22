@@ -1,0 +1,52 @@
+{
+	"code": [
+		[
+			"pattern",
+			"[a-z0-9_]*"
+		]
+	],
+	"name": [
+		[
+			"required"
+		]
+	],
+	"visibility": [
+		[
+			"enum",
+			[
+				"public",
+				"private"
+			]
+		]
+	],
+	"start": [
+		[
+			"type",
+			"date"
+		]
+	],
+	"duration": [
+		[
+			"type",
+			"integer"
+		]
+	],
+	"budget": [
+		[
+			"type",
+			"number"
+		]
+	],
+	"dailyMeetingAt": [
+		[
+			"type",
+			"time"
+		]
+	],
+	"kickOff": [
+		[
+			"type",
+			"timestamp"
+		]
+	]
+}

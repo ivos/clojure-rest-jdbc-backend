@@ -1,6 +1,7 @@
 (ns backend.support.entity
   (:require [slingshot.slingshot :refer :all]
             [camel-snake-kebab.core :as csk]
+            [clj-time.coerce :as tc]
             [flatland.ordered.map :refer [ordered-map]]
             [backend.support.ring :refer :all]))
 
@@ -23,7 +24,9 @@
         format-attribute #(let [value (get entity %1)]
                            (if-let [data-type (get-in attributes [%1 :type])]
                              (case data-type
-                               (:date :time) (.toString value))
+                               (:date :time) (str value)
+                               :timestamp (-> value tc/to-date-time str)
+                               (:integer :number) value)
                              value))
         values (map format-attribute keys)]
     (apply ordered-map (interleave keys values))))
