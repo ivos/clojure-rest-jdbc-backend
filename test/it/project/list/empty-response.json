@@ -4,10 +4,10 @@
 		"name": "name 1558336501",
 		"visibility": "private",
 		"description": "description 1558347301",
-		"start": "2019-05-17T22:00:00Z",
+		"start": "2019-05-18",
 		"duration": 1558358901,
 		"budget": 1558367.201,
-		"dailyMeetingAt": "1970-01-01T09:41:41Z",
+		"dailyMeetingAt": "10:41:41",
 		"kickOff": "2034-06-08T17:21:41Z",
 		"created": "1961-01-22T10:55:01Z",
 		"uri": "http://localhost:3000/projects/code 1558360901"
@@ -17,10 +17,10 @@
 		"name": "name 1558336502",
 		"visibility": "public",
 		"description": "description 1558347302",
-		"start": "2019-05-18T22:00:00Z",
+		"start": "2019-05-19",
 		"duration": 1558358902,
 		"budget": 1558367.202,
-		"dailyMeetingAt": "1970-01-01T09:41:42Z",
+		"dailyMeetingAt": "10:41:42",
 		"kickOff": "2034-06-09T17:21:42Z",
 		"created": "1961-01-23T10:55:02Z",
 		"uri": "http://localhost:3000/projects/code 1558360902"
@@ -30,12 +30,25 @@
 		"name": "name 1558336503",
 		"visibility": "private",
 		"description": "description 1558347303",
-		"start": "2019-05-19T22:00:00Z",
+		"start": "2019-05-20",
 		"duration": 1558358903,
 		"budget": 1558367.203,
-		"dailyMeetingAt": "1970-01-01T09:41:43Z",
+		"dailyMeetingAt": "10:41:43",
 		"kickOff": "2034-06-10T17:21:43Z",
 		"created": "1961-01-24T10:55:03Z",
 		"uri": "http://localhost:3000/projects/code 1558360903"
+	},
+	{
+		"code": "code 1558360904",
+		"name": "name 1558336504",
+		"visibility": "public",
+		"description": "description 1558347304",
+		"start": "2016-10-11",
+		"duration": 1558358904,
+		"budget": 1558367.204,
+		"dailyMeetingAt": "11:12:13",
+		"kickOff": "2016-10-12T13:45:01Z",
+		"created": "2016-09-11T12:34:56Z",
+		"uri": "http://localhost:3000/projects/code 1558360904"
 	}
 ]

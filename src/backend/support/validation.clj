@@ -45,6 +45,7 @@
     :enum (validate-enum attr-name validation value)
     :pattern (validate-pattern attr-name validation value)
     :direction nil
+    :type nil
     ))
 
 (defn- validate-attribute

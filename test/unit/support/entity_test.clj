@@ -1,6 +1,10 @@
 (ns unit.support.entity-test
-  (:require [backend.support.entity])
-  (:use midje.sweet backend.support.validation))
+  (:require [clj-time.core :as t]
+            [clj-time.coerce :as tc]
+            [flatland.ordered.map :refer [ordered-map]]
+            [backend.support.entity])
+  (:use midje.sweet backend.support.validation)
+  (:import (java.sql Time)))
 
 (facts
   "conform-keys"
@@ -39,7 +43,7 @@
              :d 7
              :c 8
              :b 9
-             :a 10
+             :a "10"
              )
            (array-map
              :a nil
@@ -54,8 +58,8 @@
              :j nil
              )
            )) =>
-    (str (array-map
-           :a 10
+    (str (ordered-map
+           :a "10"
            :b 9
            :c 8
            :d 7
@@ -66,5 +70,35 @@
            :i 2
            :j 1
            ))
+    )
+  )
+
+(facts
+  "format-data-types"
+  (fact
+    "empty"
+    (#'backend.support.entity/format-data-types {} {}) => {})
+  (fact
+    "data types"
+    (str (#'backend.support.entity/format-data-types
+           {:date1      (tc/to-sql-date (t/local-date 2015 12 31))
+            :time1      (-> (t/local-time 12 34 56)
+                            .toDateTimeToday
+                            (.withDate 1970 1 1)
+                            (.withMillisOfSecond 0)
+                            .getMillis
+                            Time.)
+            :timestamp1 (tc/to-sql-time (t/date-time 2015 12 31 12 34 56 123))
+            :string1    "v1"}
+           {:date1      {:type :date}
+            :time1      {:type :time}
+            :timestamp1 {}
+            :string1    {}}
+           )) =>
+    (str (ordered-map
+           :date1      "2015-12-31"
+           :time1      "12:34:56"
+           :timestamp1 (tc/to-sql-time (t/date-time 2015 12 31 12 34 56 123))
+           :string1    "v1"))
     )
   )

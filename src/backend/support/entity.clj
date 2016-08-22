@@ -17,13 +17,27 @@
         values (map #(get entity (csk/->snake_case %1)) keys)]
     (apply ordered-map (interleave keys values))))
 
+(defn- format-data-types
+  [entity attributes]
+  (let [keys (keys entity)
+        format-attribute #(let [value (get entity %1)]
+                           (if-let [data-type (get-in attributes [%1 :type])]
+                             (case data-type
+                               (:date :time) (.toString value))
+                             value))
+        values (map format-attribute keys)]
+    (apply ordered-map (interleave keys values))))
+
 (defn entity-result
   [attributes entity]
   (verify-found entity)
-  (conform-keys entity attributes))
+  (-> entity
+      (conform-keys attributes)
+      (format-data-types attributes)))
 
 (defn list-entity-result
   [get-detail-uri attributes request entity]
   (-> entity
       (conform-keys attributes)
+      (format-data-types attributes)
       (assoc :uri (get-detail-uri request entity))))

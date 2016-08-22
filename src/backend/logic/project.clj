@@ -17,10 +17,10 @@
     :name {:required true :max-length 100}
     :visibility {:required true :enum [:public :private]}
     :description {:max-length 500}
-    :start {}
+    :start {:type :date}
     :duration {}
     :budget {}
-    :dailyMeetingAt {}
+    :dailyMeetingAt {:type :time}
     :kickOff {}
     :created {:direction :out}
     ))
