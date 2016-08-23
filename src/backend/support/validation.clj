@@ -86,7 +86,9 @@
 
 (defn- validate-attribute
   [attribute value]
-  (log/trace "Validating" (str \[ value \]) "as" attribute)
+  (when (log/enabled? :trace)
+    (let [masked (if (= :password (first attribute)) "*****" value)]
+      (log/trace "Validating" (str \[ masked \]) "as" attribute)))
   (map
     #(validate-attribute-property (first attribute) (first %1) (second %1) value)
     (second attribute)))

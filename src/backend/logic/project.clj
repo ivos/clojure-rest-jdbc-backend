@@ -5,6 +5,7 @@
             [hugsql.core :refer [def-db-fns]]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
+            [flatland.ordered.map :refer [ordered-map]]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
             [backend.support.entity :refer :all]
@@ -12,7 +13,7 @@
             ))
 
 (def ^:private attributes
-  (array-map
+  (ordered-map
     :code {:required   true
            :max-length 100
            :pattern    #"[a-z0-9_]*"}
@@ -39,12 +40,12 @@
 (defn project-create
   [{:keys [ds body] :as request}]
   (log/debug "Creating project" body)
-  (let [entity (valid attributes body)]
+  (let [now (t/now)
+        entity (-> (valid attributes body)
+                   (assoc :created (tc/to-sql-time now)))]
     (db/with-db-transaction
       [tc ds]
-      (let [now (t/now)
-            entity (assoc entity :created (tc/to-sql-time now))
-            result (repo/create! tc :project entity)
+      (let [result (repo/create! tc :project entity)
             response (resp/created (get-detail-uri request result))]
         (log/debug "Created project" result)
         response))))

@@ -2,19 +2,19 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response :as resp]
-    ;[backend.logic.user :refer :all]
+            [backend.logic.user :refer :all]
     ;[backend.logic.session :refer :all]
             [backend.logic.project :refer :all]
             ))
 
-;(defroutes ^:private user-routes
-;           (context "/users" []
-;             (POST "/" request (user-create request))
-;             (GET "/" request (user-list request))
-;             (GET "/:id" request (user-read request))
-;             (PUT "/:id" request (user-update request))
-;             (DELETE "/:id" request (user-delete request))
-;             ))
+(defroutes ^:private user-routes
+           (context "/users" []
+             (POST "/" request (user-create request))
+             (GET "/" request (user-list request))
+             (GET "/:username" request (user-read request))
+             (PUT "/:username" request (user-update request))
+             (DELETE "/:username" request (user-delete request))
+             ))
 
 ;(defroutes ^:private session-routes
 ;           (context "/sessions" []
@@ -33,7 +33,7 @@
 
 (defroutes app-handler
            (GET "/" [] "<h1>Backend</h1>")
-           ;user-routes
+           user-routes
            ;session-routes
            project-routes
            (route/not-found (fn [_] (resp/not-found {:code :route.not.found}))))
