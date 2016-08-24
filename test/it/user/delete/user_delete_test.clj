@@ -1,4 +1,4 @@
-(ns it.project.delete.project-delete-test
+(ns it.user.delete.user-delete-test
   (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
@@ -7,29 +7,29 @@
             [it.test-support :refer :all]
             ))
 
-(def ^:private prefix "project/delete/")
+(def ^:private prefix "user/delete/")
 
 (defn- create-request
-  [code version]
-  (-> (mock/request :delete (str "/projects/" code))
+  [username version]
+  (-> (mock/request :delete (str "/users/" username))
       (if-match-header version)))
 
-(deftest project-delete-ok
+(deftest user-delete-ok
   (facts
-    "project-delete-ok"
+    "user-delete-ok"
     (db-setup prefix "setup")
-    (let [request (create-request "code_2" 123)
+    (let [request (create-request "username_2" 123)
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :no-content})
       (db-verify prefix "ok-verify")
       )))
 
-(deftest project-delete-conflict
+(deftest user-delete-conflict
   (facts
-    "project-delete-conflict"
+    "user-delete-conflict"
     (db-setup prefix "setup")
-    (let [request (create-request "code_2" 122)
+    (let [request (create-request "username_2" 122)
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :precondition-failed})
