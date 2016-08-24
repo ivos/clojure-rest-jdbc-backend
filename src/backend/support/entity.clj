@@ -15,8 +15,13 @@
 (defn- conform-keys
   [entity attributes]
   (let [keys (keys attributes)
-        values (map #(get entity (csk/->snake_case %1)) keys)]
-    (apply ordered-map (interleave keys values))))
+        out-keys-filter #(let [v (get attributes %1)]
+                          (or (nil? v)
+                              (nil? (:direction v))
+                              (not= :in (:direction v))))
+        out-keys (filter out-keys-filter keys)
+        values (map #(get entity (csk/->snake_case %1)) out-keys)]
+    (apply ordered-map (interleave out-keys values))))
 
 (defn- format-data-types
   [entity attributes]

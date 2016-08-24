@@ -1,0 +1,23 @@
+[
+	{
+		"username": "username 1534928001",
+		"email": "email 1534942101",
+		"name": "name 1534936501",
+		"status": "active",
+		"uri": "http://localhost:3000/users/username 1534928001"
+	},
+	{
+		"username": "username 1534928002",
+		"email": "email 1534942102",
+		"name": "name 1534936502",
+		"status": "disabled",
+		"uri": "http://localhost:3000/users/username 1534928002"
+	},
+	{
+		"username": "username 1534928003",
+		"email": "email 1534942103",
+		"name": "name 1534936503",
+		"status": "active",
+		"uri": "http://localhost:3000/users/username 1534928003"
+	}
+]

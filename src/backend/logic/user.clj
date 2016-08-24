@@ -27,9 +27,8 @@
             :pattern    email-pattern}
     :name {:required   true
            :max-length 100}
-    :password {
-               ;:required   true
-               :max-length 100}
+    :password {:max-length 100
+               :direction  :in}
     :status {:direction :out}
     ))
 
