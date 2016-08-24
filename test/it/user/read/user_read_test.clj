@@ -1,4 +1,4 @@
-(ns it.project.read.project-read-test
+(ns it.user.read.user-read-test
   (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
@@ -7,18 +7,18 @@
             [it.test-support :refer :all]
             ))
 
-(def ^:private prefix "project/read/")
+(def ^:private prefix "user/read/")
 
 (defn- create-request
-  [code]
-  (mock/request :get (str "/projects/" code)))
+  [username]
+  (mock/request :get (str "/users/" username)))
 
-(deftest project-read
+(deftest user-read
   (facts
-    "project-read"
+    "user-read"
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "response")
-          request (create-request "code_2")
+          request (create-request "username_2")
           response (call-handler-at-std-time request)
           ]
       (verify-response response {:status :ok
@@ -26,8 +26,8 @@
                                  :body   expected-body})
       )))
 
-(deftest project-read-not-found
+(deftest user-read-not-found
   (facts
-    "project-read-not-found"
+    "user-read-not-found"
     (db-setup prefix)
     (not-found-test (create-request "not_found"))))
