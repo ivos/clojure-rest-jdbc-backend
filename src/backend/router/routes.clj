@@ -13,6 +13,7 @@
              (GET "/" request (user-list request))
              (GET "/:username" request (user-read request))
              (PUT "/:username" request (user-update request))
+             (PUT "/:username/actions/disable" request (user-disable request))
              (DELETE "/:username" request (user-delete request))
              ))
 

@@ -133,6 +133,28 @@
           (log/debug "Updated user" (filter-password result))
           response)))))
 
+(defn- validate-status
+  [tc where expected]
+  (when-let [found (read-user tc {:username (:username where)})]
+    (let [actual (:status found)]
+      (when (not (contains? expected actual))
+        (validation-failure {:status [[:invalid actual expected]]})))))
+
+(defn user-disable
+  [{:keys [ds params] :as request}]
+  (let [version (get-version request)
+        where (assoc params :version version)]
+    (log/debug "Disabling user where" where)
+    (db/with-db-transaction
+      [tc ds]
+      (validate-status tc where #{"active"})
+      (let [entity {:status "disabled" :version version}
+            _ (repo/update! tc :user entity where)
+            response (-> response-no-content
+                         (location-header (get-detail-uri request where)))]
+        (log/debug "Disabled user where" where)
+        response))))
+
 (defn user-delete
   [{:keys [ds params] :as request}]
   (let [version (get-version request)
