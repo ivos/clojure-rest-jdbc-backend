@@ -10,8 +10,8 @@
 (def ^:private prefix "project/delete/")
 
 (defn- create-request
-  [id version]
-  (-> (mock/request :delete (str "/projects/" id))
+  [code version]
+  (-> (mock/request :delete (str "/projects/" code))
       (if-match-header version)))
 
 (deftest project-delete-full

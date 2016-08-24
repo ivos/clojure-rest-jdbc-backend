@@ -4,7 +4,6 @@
             [ring.util.response :as resp]
             [hugsql.core :refer [def-db-fns]]
             [flatland.ordered.map :refer [ordered-map]]
-            [slingshot.slingshot :refer [throw+]]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
             [backend.support.entity :refer :all]
@@ -54,6 +53,16 @@
                  entity)]
     (dissoc hashed :password)))
 
+(defn- validate-unique-username-on-create
+  [tc entity]
+  (when (read-user tc (select-keys entity [:username]))
+    (validation-failure {:username [[:duplicate]]})))
+
+(defn- validate-unique-email-on-create
+  [tc entity]
+  (when (read-user tc {:username (:email entity)})
+    (validation-failure {:email [[:duplicate]]})))
+
 (defn user-create
   [{:keys [ds body] :as request}]
   (log/debug "Creating user" (filter-password body))
@@ -63,10 +72,8 @@
                    (assoc :status "active"))]
     (db/with-db-transaction
       [tc ds]
-      (when (read-user tc (select-keys entity [:username]))
-        (throw+ {:type :validation-failure :errors {:username [[:duplicate]]}}))
-      (when (read-user tc {:username (:email entity)})
-        (throw+ {:type :validation-failure :errors {:email [[:duplicate]]}}))
+      (validate-unique-username-on-create tc entity)
+      (validate-unique-email-on-create tc entity)
       (let [result (repo/create! tc :user entity)
             response (resp/created (get-detail-uri request result))]
         (log/debug "Created user" (filter-password result))
@@ -96,6 +103,18 @@
       (log/debug "Read user" result)
       response)))
 
+(defn- validate-unique-username-on-update
+  [tc entity where]
+  (when (and (not= (:username entity) (:username where))
+             (read-user tc (select-keys entity [:username])))
+    (validation-failure {:username [[:duplicate]]})))
+
+(defn- validate-unique-email-on-update
+  [tc entity where]
+  (when-let [found (read-user tc {:username (:email entity)})]
+    (when (not= (:username found) (:username where))
+      (validation-failure {:email [[:duplicate]]}))))
+
 (defn user-update
   [{:keys [ds body params] :as request}]
   (let [version (get-version request)
@@ -106,6 +125,8 @@
                      (assoc :version version))]
       (db/with-db-transaction
         [tc ds]
+        (validate-unique-username-on-update tc entity where)
+        (validate-unique-email-on-update tc entity where)
         (let [result (repo/update! tc :user entity where)
               response (-> response-no-content
                            (location-header (get-detail-uri request result)))]

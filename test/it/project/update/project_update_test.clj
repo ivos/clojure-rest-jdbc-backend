@@ -10,8 +10,8 @@
 (def ^:private prefix "project/update/")
 
 (defn- create-request
-  [id version body]
-  (-> (mock/request :put (str "/projects/" id) body)
+  [code version body]
+  (-> (mock/request :put (str "/projects/" code) body)
       (mock/content-type "application/json")
       (if-match-header version)))
 

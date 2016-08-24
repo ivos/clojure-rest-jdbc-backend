@@ -1,0 +1,17 @@
+{
+	"username": [
+		[
+			"required"
+		]
+	],
+	"email": [
+		[
+			"required"
+		]
+	],
+	"name": [
+		[
+			"required"
+		]
+	]
+}

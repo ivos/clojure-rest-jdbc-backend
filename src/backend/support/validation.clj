@@ -87,7 +87,7 @@
 (defn- validate-attribute
   [attribute value]
   (when (log/enabled? :trace)
-    (let [masked (if (= :password (first attribute)) "*****" value)]
+    (let [masked (if (and (= :password (first attribute)) value) "*****" value)]
       (log/trace "Validating" (str \[ masked \]) "as" attribute)))
   (map
     #(validate-attribute-property (first attribute) (first %1) (second %1) value)
@@ -124,6 +124,11 @@
       (apply assoc entity (interleave missing-keys (repeat nil)))
       entity)))
 
+(defn validation-failure
+  [errors]
+  (log/debug "Validation failure" errors)
+  (throw+ {:type :validation-failure :errors errors}))
+
 (defn valid
   "Validate entity."
   [attributes entity]
@@ -133,6 +138,5 @@
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
     (when (not-empty errors)
-      (log/debug "Validation failure" result)
-      (throw+ {:type :validation-failure :errors result}))
+      (validation-failure result))
     (assoc-missing-keys inbound-attributes entity)))
