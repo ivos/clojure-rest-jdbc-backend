@@ -135,25 +135,33 @@
 
 (defn- validate-status
   [tc where expected]
-  (when-let [found (read-user tc {:username (:username where)})]
+  (when-let [found (read-user tc (select-keys where [:username]))]
     (let [actual (:status found)]
       (when (not (contains? expected actual))
         (validation-failure {:status [[:invalid actual expected]]})))))
 
-(defn user-disable
-  [{:keys [ds params] :as request}]
+(defn- perform-action
+  [{:keys [ds params] :as request} action from to]
   (let [version (get-version request)
         where (assoc params :version version)]
-    (log/debug "Disabling user where" where)
+    (log/debug "Performing action" action "on user where" where)
     (db/with-db-transaction
       [tc ds]
-      (validate-status tc where #{"active"})
-      (let [entity {:status "disabled" :version version}
+      (validate-status tc where from)
+      (let [entity {:status to :version version}
             _ (repo/update! tc :user entity where)
             response (-> response-no-content
                          (location-header (get-detail-uri request where)))]
-        (log/debug "Disabled user where" where)
+        (log/debug "Performed action" action "on user where" where)
         response))))
+
+(defn user-disable
+  [request]
+  (perform-action request "disable" #{"active"} "disabled"))
+
+(defn user-activate
+  [request]
+  (perform-action request "activate" #{"disabled"} "active"))
 
 (defn user-delete
   [{:keys [ds params] :as request}]

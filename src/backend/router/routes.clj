@@ -14,6 +14,7 @@
              (GET "/:username" request (user-read request))
              (PUT "/:username" request (user-update request))
              (PUT "/:username/actions/disable" request (user-disable request))
+             (PUT "/:username/actions/activate" request (user-activate request))
              (DELETE "/:username" request (user-delete request))
              ))
 
