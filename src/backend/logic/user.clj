@@ -4,6 +4,7 @@
             [ring.util.response :as resp]
             [hugsql.core :refer [def-db-fns]]
             [flatland.ordered.map :refer [ordered-map]]
+            [slingshot.slingshot :refer [throw+]]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
             [backend.support.entity :refer :all]
@@ -63,6 +64,10 @@
                    (assoc :status "active"))]
     (db/with-db-transaction
       [tc ds]
+      (when (read-user tc (select-keys entity [:username]))
+        (throw+ {:type :validation-failure :errors {:username [[:duplicate]]}}))
+      (when (read-user tc {:username (:email entity)})
+        (throw+ {:type :validation-failure :errors {:email [[:duplicate]]}}))
       (let [result (repo/create! tc :user entity)
             response (resp/created (get-detail-uri request result))]
         (log/debug "Created user" (filter-password result))

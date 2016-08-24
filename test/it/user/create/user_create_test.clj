@@ -16,7 +16,7 @@
 
 (defn- ok
   [test-case]
-  (db-setup prefix)
+  (db-setup prefix "setup")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request request-body)
         response (call-handler-at-std-time request)
@@ -34,7 +34,7 @@
 (deftest user-create-empty
   (facts
     "user-create-empty"
-    (db-setup prefix)
+    (db-setup prefix "setup")
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request request-body)
@@ -42,5 +42,33 @@
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "empty-verify")
+      (db-verify prefix "setup")
+      )))
+
+(deftest user-create-username-duplicate
+  (facts
+    "user-create-username-duplicate"
+    (db-setup prefix "setup")
+    (let [request-body (read-json prefix "username-duplicate-request")
+          expected-body (read-json prefix "username-duplicate-response")
+          request (create-request request-body)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :unprocessable-entity
+                                 :body   expected-body})
+      (db-verify prefix "setup")
+      )))
+
+(deftest user-create-email-duplicate
+  (facts
+    "user-create-email-duplicate"
+    (db-setup prefix "setup")
+    (let [request-body (read-json prefix "email-duplicate-request")
+          expected-body (read-json prefix "email-duplicate-response")
+          request (create-request request-body)
+          response (call-handler-at-std-time request)
+          ]
+      (verify-response response {:status :unprocessable-entity
+                                 :body   expected-body})
+      (db-verify prefix "setup")
       )))
