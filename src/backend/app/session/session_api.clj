@@ -5,19 +5,17 @@
             [backend.support.util :refer :all]
             [backend.app.session.session-logic :refer :all]
             [backend.app.user.user-logic :refer :all]
+            [backend.app.user.user-api :refer :all]
             ))
 
 (defn session-api-create
   [{:keys [ds body]}]
-  (let [result (session-logic-create ds body)
-        result (update result :user
-                       (comp (partial entity-result user-attributes)
-                             filter-password))]
+  (let [result (update-user-entity-result (session-logic-create ds body))]
     {:status (status-code :created)
      :body   result}))
 
 (defn session-api-list
   [{:keys [ds params]}]
   (let [data (session-logic-list-active ds params)
-        result data]
+        result (map update-user-entity-result data)]
     (resp/response result)))

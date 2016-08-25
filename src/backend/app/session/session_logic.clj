@@ -64,6 +64,7 @@
     [tc ds]
     (let [now (t/now)
           result (->> (list-active-sessions tc {:now (tc/to-sql-time now)})
-                      (map entity-listed))]
+                      (map entity-listed)
+                      (expand tc expand-users :user :id))]
       (log/debug "Listed active sessions" result)
       result)))

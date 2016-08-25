@@ -6,6 +6,12 @@
             [backend.app.user.user-logic :refer :all]
             ))
 
+(defn update-user-entity-result
+  [entity]
+  (update entity :user
+          (comp (partial entity-result user-attributes)
+                filter-password)))
+
 (defn- get-detail-uri
   [request entity]
   (get-deploy-url request "users/" (:username entity)))
@@ -17,7 +23,8 @@
 
 (defn user-api-list
   [{:keys [config ds params]}]
-  (let [data (user-logic-list ds params)
+  (let [data (->> (user-logic-list ds params)
+                  (map filter-password))
         result (map (partial list-entity-result get-detail-uri user-attributes config) data)]
     (resp/response result)))
 

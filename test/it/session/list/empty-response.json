@@ -4,41 +4,71 @@
 		"created": "2016-09-10T12:34:56Z",
 		"duration": 1192458908,
 		"expires": "2016-09-11T12:35:56Z",
-		"user": 1534984901
+		"user": {
+			"username": "username 1534928001",
+			"email": "email 1534942101",
+			"name": "name 1534936501",
+			"status": "active"
+		}
 	},
 	{
 		"token": "token 1192457904",
 		"created": "2095-03-23T12:01:44Z",
 		"duration": 1192458904,
 		"expires": "2016-01-11T13:34:56Z",
-		"user": 1534984903
+		"user": {
+			"username": "username 1534928003",
+			"email": "email 1534942103",
+			"name": "name 1534936503",
+			"status": "active"
+		}
 	},
 	{
 		"token": "token 1192457903",
 		"created": "2095-03-22T12:01:43Z",
 		"duration": 1192458903,
 		"expires": "2015-10-11T12:37:56Z",
-		"user": 1534984903
+		"user": {
+			"username": "username 1534928003",
+			"email": "email 1534942103",
+			"name": "name 1534936503",
+			"status": "active"
+		}
 	},
 	{
 		"token": "token 1192457902",
 		"created": "2095-03-21T12:01:42Z",
 		"duration": 1192458902,
 		"expires": "2015-10-11T12:36:56Z",
-		"user": 1534984902
+		"user": {
+			"username": "username 1534928002",
+			"email": "email 1534942102",
+			"name": "name 1534936502",
+			"status": "disabled"
+		}
 	},
 	{
 		"token": "token 1192457907",
 		"created": "2095-03-26T12:01:47Z",
 		"duration": 1192458907,
 		"expires": "2015-10-11T12:35:56Z",
-		"user": 1534984901
+		"user": {
+			"username": "username 1534928001",
+			"email": "email 1534942101",
+			"name": "name 1534936501",
+			"status": "active"
+		}
 	},
 	{
 		"token": "token 1192457901",
 		"created": "2095-03-20T12:01:41Z",
 		"duration": 1192458901,
 		"expires": "2015-10-11T12:35:56Z",
-		"user": 1534984901
+		"user": {
+			"username": "username 1534928001",
+			"email": "email 1534942101",
+			"name": "name 1534936501",
+			"status": "active"
+		}
 	}
 ]

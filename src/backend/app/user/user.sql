@@ -7,3 +7,8 @@ select *
 from user
 where (username = :username)
       or (email = :username);
+
+-- :name expand-users :? :*
+select *
+from user
+where id in (:v*:ids);

@@ -60,8 +60,7 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (list-all-users tc)
-                      (map entity-listed)
-                      (map filter-password))]
+                      (map entity-listed))]
       (log/debug "Listed users" result)
       result)))
 

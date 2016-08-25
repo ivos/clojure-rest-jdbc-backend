@@ -19,3 +19,15 @@
   [entity]
   (verify-found entity)
   (entity-listed entity))
+
+(defn expand
+  [tc expand-db-fn rel-attribute id-attribute data]
+  (let [get-id #(get %1 rel-attribute)
+        ids (distinct (map get-id data))
+        entities (expand-db-fn tc {:ids ids})
+        find-entity (fn [id]
+                      (some
+                        #(when (= id (get %1 id-attribute)) %1)
+                        entities))
+        expand-one #(update %1 rel-attribute (comp entity-listed find-entity))]
+    (map expand-one data)))
