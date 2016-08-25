@@ -11,11 +11,11 @@
              :response {:status (status-code :not-found)
                         :body   {:code :entity.not.found}}})))
 
-(defn entity-read
-  [entity]
-  (verify-found entity)
-  (transform-keys csk/->camelCase entity))
-
 (defn entity-listed
   [entity]
   (transform-keys csk/->camelCase entity))
+
+(defn entity-read
+  [entity]
+  (verify-found entity)
+  (entity-listed entity))

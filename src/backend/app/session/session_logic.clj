@@ -56,3 +56,14 @@
               ]
           (log/debug "Created session" result)
           result)))))
+
+(defn session-logic-list-active
+  [ds params]
+  (log/debug "Listing active sessions" params)
+  (db/with-db-transaction
+    [tc ds]
+    (let [now (t/now)
+          result (->> (list-active-sessions tc {:now (tc/to-sql-time now)})
+                      (map entity-listed))]
+      (log/debug "Listed active sessions" result)
+      result)))

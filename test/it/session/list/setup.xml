@@ -1,0 +1,28 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
+
+	<user id="1534984901" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active"/>
+	<user id="1534984902" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="disabled"/>
+	<user id="1534984903" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active"/>
+
+	<!--included-->
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT1M" user="1534984901"/>
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT2M" user="1534984902"/>
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT3M" user="1534984903"/>
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+P3M" user="1534984903"/>
+
+	<!--expired-->
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp-PT1M" user="1534984903"/>
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp-P3M" user="1534984903"/>
+
+	<!--included-->
+	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT1M" user="1534984901"/>
+
+	<!--explicit temporal values-->
+	<session token="@auto" created="2016-09-10T12:34:56.987Z" duration="@auto" expires="2016-09-11T12:35:56.987Z"
+	         user="1534984901"/>
+
+	<!--included in order: 8 4 3 2 7 1-->
+</dataset>

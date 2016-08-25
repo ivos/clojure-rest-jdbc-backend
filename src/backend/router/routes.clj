@@ -21,7 +21,7 @@
 (defroutes ^:private session-routes
            (context "/sessions" []
              (POST "/" request (session-api-create request))
-             ;(GET "/active" request (session-list-active request))
+             (GET "/" request (session-api-list request))
              ))
 
 (defroutes ^:private project-routes
