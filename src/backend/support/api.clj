@@ -35,7 +35,5 @@
 (defn list-entity-result
   [get-detail-uri attributes config entity]
   (assoc
-    (->> entity
-         (remove-inbound-keys attributes)
-         (format-data-types attributes))
+    (entity-result attributes entity)
     :uri (get-detail-uri config entity)))

@@ -19,7 +19,7 @@
   (db-setup prefix "setup")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request request-body)
-        response (call-handler-at-std-time request)
+        response (call-handler request)
         ]
     (verify-response response {:status   :created
                                :location "http://localhost:3000/users/username_1"})
@@ -38,7 +38,7 @@
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
@@ -52,7 +52,7 @@
     (let [request-body (read-json prefix "username-duplicate-request")
           expected-body (read-json prefix "username-duplicate-response")
           request (create-request request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
@@ -66,7 +66,7 @@
     (let [request-body (read-json prefix "email-duplicate-request")
           expected-body (read-json prefix "email-duplicate-response")
           request (create-request request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})

@@ -20,7 +20,7 @@
     (let [request-body (read-json prefix "invalid-request")
           expected-body (read-json prefix "invalid-response")
           request (create-request "code_2" 123 request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})

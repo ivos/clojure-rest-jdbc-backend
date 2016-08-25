@@ -19,7 +19,7 @@
     "project-delete-ok"
     (db-setup prefix "setup")
     (let [request (create-request "code_2" 123)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :no-content})
       (db-verify prefix "ok-verify")
@@ -30,7 +30,7 @@
     "project-delete-conflict"
     (db-setup prefix "setup")
     (let [request (create-request "code_2" 122)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")

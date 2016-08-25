@@ -19,7 +19,7 @@
     "user-delete-ok"
     (db-setup prefix "setup")
     (let [request (create-request "username_2" 123)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :no-content})
       (db-verify prefix "ok-verify")
@@ -30,7 +30,7 @@
     "user-delete-conflict"
     (db-setup prefix "setup")
     (let [request (create-request "username_2" 122)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")

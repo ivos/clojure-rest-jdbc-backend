@@ -18,7 +18,7 @@
     (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" 122 request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")
@@ -30,7 +30,7 @@
     (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "not_found" 123 request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")
@@ -42,7 +42,7 @@
     (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" nil request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-required})
       (db-verify prefix "setup")
@@ -54,7 +54,7 @@
     (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" "invalid_version" request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")

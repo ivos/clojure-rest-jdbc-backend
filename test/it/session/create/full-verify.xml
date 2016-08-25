@@ -1,0 +1,9 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
+
+	<user id="$userId" username="username_1"/>
+	<user id="@auto" username="username_disabled"/>
+
+	<!--created-->
+	<session token="@any" created="@timestamp" duration="90" expires="@timestamp+PT90M" user="$userId"/>
+
+</dataset>

@@ -1,0 +1,11 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
+
+	<!--found-->
+	<user id="@auto" version="@auto" username="username_1" email="@auto" name="@auto"
+	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="active"/>
+
+	<!--disabled-->
+	<user id="@auto" version="@auto" username="username_disabled" email="@auto" name="@auto"
+	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="disabled"/>
+
+</dataset>

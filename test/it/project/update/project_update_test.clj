@@ -20,7 +20,7 @@
   (db-setup prefix "setup")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request "code_2" 123 request-body)
-        response (call-handler-at-std-time request)
+        response (call-handler request)
         ]
     (verify-response response {:status   :no-content
                                :location "http://localhost:3000/projects/code_2_updated"})
@@ -44,7 +44,7 @@
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request "code_2" 123 request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
@@ -57,7 +57,7 @@
     (db-setup prefix "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" 122 request-body)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")

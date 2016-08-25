@@ -18,7 +18,7 @@
   [test-case]
   (db-setup prefix "setup")
   (let [request (create-request "username_2" 123)
-        response (call-handler-at-std-time request)
+        response (call-handler request)
         ]
     (verify-response response {:status   :no-content
                                :location (str "http://localhost:3000/users/username_2")})
@@ -35,7 +35,7 @@
     "user-activate-conflict"
     (db-setup prefix "setup")
     (let [request (create-request "username_2" 122)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
       (db-verify prefix "setup")
@@ -47,7 +47,7 @@
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "active-response")
           request (create-request "username_active" 123)
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})

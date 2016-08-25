@@ -2,6 +2,6 @@
 
 	<!--created-->
 	<project id="@any" version="1" code="code_1" name="Name 1" visibility="private" description="@null" start="@null"
-	         duration="@null" budget="@null" created="2015-10-11T14:34:56.123"/>
+	         duration="@null" budget="@null" created="@timestamp"/>
 
 </dataset>

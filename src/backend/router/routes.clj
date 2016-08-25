@@ -3,7 +3,7 @@
             [compojure.route :as route]
             [ring.util.response :as resp]
             [backend.app.user.user-api :refer :all]
-            ;[backend.app.session.session-api :refer :all]
+            [backend.app.session.session-api :refer :all]
             [backend.app.project.project-api :refer :all]
             ))
 
@@ -18,11 +18,11 @@
              (DELETE "/:username" request (user-api-delete request))
              ))
 
-;(defroutes ^:private session-routes
-;           (context "/sessions" []
-;             (POST "/" request (session-api-create request))
-;             (GET "/active" request (session-list-active request))
-;             ))
+(defroutes ^:private session-routes
+           (context "/sessions" []
+             (POST "/" request (session-api-create request))
+             ;(GET "/active" request (session-list-active request))
+             ))
 
 (defroutes ^:private project-routes
            (context "/projects" []
@@ -36,6 +36,6 @@
 (defroutes app-handler
            (GET "/" [] "<h1>Backend</h1>")
            user-routes
-           ;session-routes
+           session-routes
            project-routes
            (route/not-found (fn [_] (resp/not-found {:code :route.not.found}))))

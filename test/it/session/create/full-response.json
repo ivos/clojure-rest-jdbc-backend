@@ -1,0 +1,12 @@
+{
+	"token": "REPLACED",
+	"created": "2015-10-11T12:34:56Z",
+	"duration": 90,
+	"expires": "2015-10-11T14:04:56Z",
+	"user": {
+		"username": "username_1",
+		"email": "email 1534942101",
+		"name": "name 1534936501",
+		"status": "active"
+	}
+}

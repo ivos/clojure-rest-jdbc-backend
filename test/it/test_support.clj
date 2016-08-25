@@ -13,9 +13,9 @@
   []
   (-> system :handler :handler))
 
-(defn call-handler-at-std-time
+(defn call-handler
   [request]
-  (t/do-at std-time ((get-handler) request)))
+  ((get-handler) request))
 
 (defn if-match-header
   [request version]

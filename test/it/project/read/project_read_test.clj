@@ -19,7 +19,7 @@
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "response")
           request (create-request "code_2")
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :ok
                                  :etag   12302

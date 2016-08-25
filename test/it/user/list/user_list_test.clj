@@ -19,7 +19,7 @@
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "empty-response")
           request (create-request {})
-          response (call-handler-at-std-time request)
+          response (call-handler request)
           ]
       (verify-response response {:status :ok
                                  :body   expected-body})

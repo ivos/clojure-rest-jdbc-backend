@@ -6,6 +6,7 @@
 		<xsd:complexType>
 			<xsd:choice minOccurs="0" maxOccurs="unbounded">
 				<xsd:element name="project" type="project__Type"/>
+				<xsd:element name="session" type="session__Type"/>
 				<xsd:element name="user" type="user__Type"/>
 				<xsd:element name="schema_version" type="schema_version__Type"/>
 			</xsd:choice>
@@ -25,6 +26,13 @@
 		<xsd:attribute name="daily_meeting_at" use="optional" type="la:TimeNullableType"/>
 		<xsd:attribute name="kick_off" use="optional" type="la:TimestampNullableType"/>
 		<xsd:attribute name="created" use="optional" type="la:TimestampType"/>
+	</xsd:complexType>
+	<xsd:complexType name="session__Type">
+		<xsd:attribute name="token" use="optional" type="la:StringType"/>
+		<xsd:attribute name="created" use="optional" type="la:TimestampType"/>
+		<xsd:attribute name="duration" use="optional" type="la:IntegerType"/>
+		<xsd:attribute name="expires" use="optional" type="la:TimestampType"/>
+		<xsd:attribute name="user" use="optional" type="la:LongType"/>
 	</xsd:complexType>
 	<xsd:complexType name="user__Type">
 		<xsd:attribute name="id" use="optional" type="la:LongType"/>

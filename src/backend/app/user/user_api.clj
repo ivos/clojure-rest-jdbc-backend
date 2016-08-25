@@ -2,8 +2,8 @@
   (:require [ring.util.response :as resp]
             [backend.support.ring :refer :all]
             [backend.support.api :refer :all]
-            [backend.app.user.user-logic :refer :all]
             [backend.support.util :refer :all]
+            [backend.app.user.user-logic :refer :all]
             ))
 
 (defn- get-detail-uri
