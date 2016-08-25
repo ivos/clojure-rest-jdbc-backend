@@ -42,5 +42,5 @@
    :body    nil})
 
 (defn get-deploy-url
-  [request & uri]
-  (apply str (-> request :config :app :deploy-url) uri))
+  [config & uri]
+  (apply str (-> config :app :deploy-url) uri))

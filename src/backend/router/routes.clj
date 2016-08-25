@@ -2,35 +2,35 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response :as resp]
-            [backend.logic.user :refer :all]
-    ;[backend.logic.session :refer :all]
-            [backend.logic.project :refer :all]
+            [backend.app.user.user-api :refer :all]
+            ;[backend.app.session.session-api :refer :all]
+            [backend.app.project.project-api :refer :all]
             ))
 
 (defroutes ^:private user-routes
            (context "/users" []
-             (POST "/" request (user-create request))
-             (GET "/" request (user-list request))
-             (GET "/:username" request (user-read request))
-             (PUT "/:username" request (user-update request))
-             (PUT "/:username/actions/disable" request (user-disable request))
-             (PUT "/:username/actions/activate" request (user-activate request))
-             (DELETE "/:username" request (user-delete request))
+             (POST "/" request (user-api-create request))
+             (GET "/" request (user-api-list request))
+             (GET "/:username" request (user-api-read request))
+             (PUT "/:username" request (user-api-update request))
+             (PUT "/:username/actions/disable" request (user-api-disable request))
+             (PUT "/:username/actions/activate" request (user-api-activate request))
+             (DELETE "/:username" request (user-api-delete request))
              ))
 
 ;(defroutes ^:private session-routes
 ;           (context "/sessions" []
-;             (POST "/" request (session-create request))
+;             (POST "/" request (session-api-create request))
 ;             (GET "/active" request (session-list-active request))
 ;             ))
 
 (defroutes ^:private project-routes
            (context "/projects" []
-             (POST "/" request (project-create request))
-             (GET "/" request (project-list request))
-             (GET "/:code" request (project-read request))
-             (PUT "/:code" request (project-update request))
-             (DELETE "/:code" request (project-delete request))
+             (POST "/" request (project-api-create request))
+             (GET "/" request (project-api-list request))
+             (GET "/:code" request (project-api-read request))
+             (PUT "/:code" request (project-api-update request))
+             (DELETE "/:code" request (project-api-delete request))
              ))
 
 (defroutes app-handler

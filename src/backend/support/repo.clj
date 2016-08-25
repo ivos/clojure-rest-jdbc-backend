@@ -11,9 +11,8 @@
   (keyword "scope_identity()"))
 
 (defn- entity-to-set
-  [entity]
-  (let [version (:version entity)
-        no-id (dissoc entity :id)]
+  [entity version]
+  (let [no-id (dissoc entity :id)]
     (assoc no-id :version (inc version))))
 
 (defn- where-clause
@@ -42,7 +41,7 @@
    (let [where (select-keys entity [:id :version])]
      (update! db table entity where)))
   ([db table entity where]
-   (let [set-map (entity-to-set entity)
+   (let [set-map (entity-to-set entity (:version where))
          db-set-map (transform-keys csk/->snake_case set-map)
          db-where (transform-keys csk/->snake_case where)]
      (log/debug "Updating" table db-set-map "where" db-where)
