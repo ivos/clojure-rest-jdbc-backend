@@ -65,6 +65,21 @@
     (let [now (t/now)
           result (->> (list-active-sessions tc {:now (tc/to-sql-time now)})
                       (map entity-listed)
-                      (expand tc expand-users :user :id))]
+                      (expand-list tc expand-users :user :id))]
       (log/debug "Listed active sessions" result)
       result)))
+
+(defn session-logic-read-active
+  [ds token]
+  (log/debug "Reading active session for token" token)
+  (db/with-db-transaction
+    [tc ds]
+    (let [now (t/now)
+          found (read-active-session tc {:token token
+                                         :now   (tc/to-sql-time now)})]
+      (when found
+        (let [result (->> found
+                          entity-listed
+                          (expand-entity tc expand-users :user))]
+          (log/debug "Read active session" result)
+          result)))))

@@ -20,7 +20,13 @@
   (verify-found entity)
   (entity-listed entity))
 
-(defn expand
+(defn expand-entity
+  [tc expand-db-fn rel-attribute entity]
+  (let [id (get entity rel-attribute)
+        related (first (expand-db-fn tc {:ids [id]}))]
+    (assoc entity rel-attribute related)))
+
+(defn expand-list
   [tc expand-db-fn rel-attribute id-attribute data]
   (let [get-id #(get %1 rel-attribute)
         ids (distinct (map get-id data))

@@ -3,6 +3,7 @@
             [ring.util.response :refer [header]]
             [slingshot.slingshot :refer [try+]]
             [backend.support.ring :refer :all]
+            [backend.router.security :as security]
             [backend.support.util :refer [filter-password]]
             ))
 
@@ -32,16 +33,6 @@
               (log/info "Validation failure" response)
               response)))))
 
-(defn wrap-unique-attribute-violation
-  [handler]
-  (fn
-    [request]
-    (try+ (handler request)
-          (catch [:type :unique-attribute-constraint-violation] {:keys [:a :message]}
-            (log/info message)
-            {:status (status-code :unprocessable-entity)
-             :body   {(name a) ["already.exists"]}}))))
-
 (defn wrap-custom-response
   [handler]
   (fn
@@ -70,3 +61,11 @@
       (let [response (handler request)]
         (log/info "<<< Response" request-info response)
         response))))
+
+(defn wrap-authentication
+  [handler]
+  (fn
+    [request]
+    (let [session (security/get-session request)
+          request-wrapped (assoc request :session session)]
+      (handler request-wrapped))))

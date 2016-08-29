@@ -5,6 +5,7 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/java.jdbc "0.6.1"]
+                 [org.clojure/data.codec "0.1.0"]
                  [com.stuartsierra/component "0.3.1"]
                  [com.h2database/h2 "1.3.176"]
                  [com.layerware/hugsql "0.4.7"]

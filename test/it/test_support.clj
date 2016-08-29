@@ -1,5 +1,6 @@
 (ns it.test-support
   (:require [clojure.string :as string]
+            [clojure.data.codec.base64 :as b64]
             [ring.mock.request :as mock]
             [clj-time.core :as t]
             [midje.sweet :refer [fact]]
@@ -22,6 +23,13 @@
   (if (nil? version)
     request
     (mock/header request "If-Match" version)))
+
+(defn auth-header
+  [request token]
+  (if (nil? token)
+    request
+    (let [basic-b64 (String. (b64/encode (.getBytes (str token ":"))))]
+      (mock/header request "Authorization" (str "Basic " basic-b64)))))
 
 (defn read-json
   [prefix path]

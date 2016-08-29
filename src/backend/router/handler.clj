@@ -11,8 +11,8 @@
 (defn- create-instance
   [config datasource]
   (-> app-handler
+      wrap-authentication
       wrap-validation
-      wrap-unique-attribute-violation
       wrap-custom-response
       wrap-log
       (wrap-json-body (:json config))

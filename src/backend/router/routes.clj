@@ -2,6 +2,7 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response :as resp]
+            [backend.router.security :refer [authenticated]]
             [backend.app.user.user-api :refer :all]
             [backend.app.session.session-api :refer :all]
             [backend.app.project.project-api :refer :all]
@@ -22,11 +23,12 @@
            (context "/sessions" []
              (POST "/" request (session-api-create request))
              (GET "/" request (session-api-list request))
+;(DELETE "/" request (session-api-delete request))
              ))
 
 (defroutes ^:private project-routes
            (context "/projects" []
-             (POST "/" request (project-api-create request))
+             (POST "/" [] (authenticated project-api-create))
              (GET "/" request (project-api-list request))
              (GET "/:code" request (project-api-read request))
              (PUT "/:code" request (project-api-update request))
