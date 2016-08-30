@@ -25,6 +25,7 @@
     :password {:max-length 100
                :direction  :in}
     :status {:direction :out}
+    :roles {:direction :out}
     ))
 
 (def-db-fns "backend/app/user/user.sql")

@@ -7,6 +7,7 @@
 		"username": "username_1",
 		"email": "email 1534942101",
 		"name": "name 1534936501",
-		"status": "active"
+		"status": "active",
+		"roles": "user"
 	}
 }
