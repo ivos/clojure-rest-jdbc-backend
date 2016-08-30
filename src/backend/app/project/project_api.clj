@@ -10,8 +10,8 @@
   (get-deploy-url config "projects/" (:code entity)))
 
 (defn project-api-create
-  [{:keys [config ds body]}]
-  (let [result (project-logic-create ds body)]
+  [{:keys [config ds session body]}]
+  (let [result (project-logic-create ds session body)]
     (resp/created (get-detail-uri config result))))
 
 (defn project-api-list

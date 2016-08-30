@@ -16,7 +16,7 @@
 (deftest project-list-empty
   (facts
     "project-list-empty"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [expected-body (read-json prefix "empty-response")
           request (create-request {})
           response (call-handler request)

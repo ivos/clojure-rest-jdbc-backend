@@ -32,11 +32,12 @@
 (def-db-fns "backend/app/project/project.sql")
 
 (defn project-logic-create
-  [ds body]
+  [ds session body]
   (log/debug "Creating project" body)
   (let [now (t/now)
         entity (-> (valid project-attributes body)
-                   (assoc :created (tc/to-sql-time now)))]
+                   (assoc :created (tc/to-sql-time now)
+                          :owner (get-in session [:user :id])))]
     (db/with-db-transaction
       [tc ds]
       (let [result (repo/create! tc :project entity)]

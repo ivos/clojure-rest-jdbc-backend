@@ -13,11 +13,11 @@
   [body]
   (-> (mock/request :post "/projects" body)
       (mock/content-type "application/json")
-      (auth-header "7b0e6756-d9e4-4001-9d53-000000000000")))
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (defn- ok
   [test-case]
-  (db-setup prefix "setup")
+  (db-setup prefix "../../users")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request request-body)
         response (call-handler request)
@@ -40,7 +40,7 @@
 (deftest project-create-empty
   (facts
     "project-create-empty"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users")
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request request-body)

@@ -16,7 +16,7 @@
 (deftest project-read
   (facts
     "project-read"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [expected-body (read-json prefix "response")
           request (create-request "code_2")
           response (call-handler request)

@@ -17,7 +17,7 @@
 (deftest project-delete-ok
   (facts
     "project-delete-ok"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [request (create-request "code_2" 123)
           response (call-handler request)
           ]
@@ -28,7 +28,7 @@
 (deftest project-delete-conflict
   (facts
     "project-delete-conflict"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [request (create-request "code_2" 122)
           response (call-handler request)
           ]

@@ -16,7 +16,7 @@
 (deftest data-types-invalid
   (facts
     "data-types-invalid"
-    (db-setup project-prefix "setup")
+    (db-setup project-prefix "../../users" "setup")
     (let [request-body (read-json prefix "invalid-request")
           expected-body (read-json prefix "invalid-response")
           request (create-request "code_2" 123 request-body)

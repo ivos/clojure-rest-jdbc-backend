@@ -17,7 +17,7 @@
 
 (defn- ok
   [test-case]
-  (db-setup prefix "setup")
+  (db-setup prefix "../../users" "setup")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request "code_2" 123 request-body)
         response (call-handler request)
@@ -40,7 +40,7 @@
 (deftest project-update-empty
   (facts
     "project-update-empty"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [request-body (read-json prefix "empty-request")
           expected-body (read-json prefix "empty-response")
           request (create-request "code_2" 123 request-body)
@@ -54,7 +54,7 @@
 (deftest project-update-conflict
   (facts
     "project-update-conflict"
-    (db-setup prefix "setup")
+    (db-setup prefix "../../users" "setup")
     (let [request-body (read-json prefix "full-request")
           request (create-request "code_2" 122 request-body)
           response (call-handler request)

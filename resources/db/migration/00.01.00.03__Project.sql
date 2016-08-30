@@ -10,8 +10,12 @@ create table project (
   budget           decimal(10, 3),
   daily_meeting_at time,
   kick_off         datetime,
-  created          timestamp     not null
+  created          timestamp     not null,
+  owner            bigint        not null
 );
 
 alter table project
   add constraint ck_project_visibility check visibility in ('public', 'private');
+
+alter table project
+  add constraint fk_project_user foreign key (owner) references user on delete cascade;

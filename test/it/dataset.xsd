@@ -26,6 +26,7 @@
 		<xsd:attribute name="daily_meeting_at" use="optional" type="la:TimeNullableType"/>
 		<xsd:attribute name="kick_off" use="optional" type="la:TimestampNullableType"/>
 		<xsd:attribute name="created" use="optional" type="la:TimestampType"/>
+		<xsd:attribute name="owner" use="optional" type="la:LongType"/>
 	</xsd:complexType>
 	<xsd:complexType name="session__Type">
 		<xsd:attribute name="token" use="optional" type="la:StringType"/>
