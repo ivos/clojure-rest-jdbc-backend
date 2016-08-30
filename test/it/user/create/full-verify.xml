@@ -5,6 +5,7 @@
 
 	<!--created-->
 	<user id="@any" version="1" username="username_1" email="email.1@server.com" name="Name 1"
-	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="active"/>
+	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="active"
+	      roles="user"/>
 
 </dataset>

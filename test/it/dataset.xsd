@@ -42,6 +42,7 @@
 		<xsd:attribute name="name" use="optional" type="la:StringType"/>
 		<xsd:attribute name="password_hash" use="optional" type="la:StringType"/>
 		<xsd:attribute name="status" use="optional" type="la:StringType"/>
+		<xsd:attribute name="roles" use="optional" type="la:StringType"/>
 	</xsd:complexType>
 	<xsd:complexType name="schema_version__Type">
 		<xsd:attribute name="installed_rank" use="optional" type="la:IntegerType"/>

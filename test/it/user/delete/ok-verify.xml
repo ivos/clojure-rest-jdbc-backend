@@ -1,5 +1,5 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 	<user id="1534984901" version="1534925501" username="@auto" email="@auto" name="@auto" password_hash="@auto"
-	      status="active"/>
+	      status="active" roles="user"/>
 	<user id="1534984903" version="1534925503"/>
 </dataset>

@@ -2,6 +2,6 @@
 
 	<!--existing-->
 	<user id="@auto" version="@auto" username="existing_username" email="existing.email@server.com" name="@auto"
-	      password_hash="@auto" status="active"/>
+	      password_hash="@auto" status="active" roles="user"/>
 
 </dataset>

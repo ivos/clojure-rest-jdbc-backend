@@ -4,7 +4,7 @@
 
 	<!--updated-->
 	<user id="@auto" version="124" username="username_2" email="@auto" name="@auto" password_hash="@auto"
-	      status="active"/>
+	      status="active" roles="user"/>
 
 	<!--active-->
 	<user id="@auto" version="123" status="active"/>

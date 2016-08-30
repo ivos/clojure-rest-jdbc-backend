@@ -45,7 +45,7 @@
   (let [attributes (assoc-in user-attributes [:password :required] true)
         entity (-> (valid attributes body)
                    hash-entity
-                   (assoc :status "active"))]
+                   (assoc :status "active" :roles "user"))]
     (db/with-db-transaction
       [tc ds]
       (validate-unique-username-on-create tc entity)
