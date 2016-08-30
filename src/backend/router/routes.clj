@@ -12,12 +12,14 @@
            (context "/users" []
              (POST "/" [] user-api-create)
              (GET "/" [] user-api-list)
-             (GET "/:username" [] user-api-read)
-             (PUT "/:username" [] user-api-update)
-             (PUT "/:username/actions/disable" [] user-api-disable)
-             (PUT "/:username/actions/activate" [] user-api-activate)
-             (DELETE "/:username" [] user-api-delete)
-             ))
+             (context "/:username" []
+               (GET "/" [] user-api-read)
+               (PUT "/" [] user-api-update)
+               (DELETE "/" [] user-api-delete)
+               (context "/actions" []
+                 (PUT "/disable" [] user-api-disable)
+                 (PUT "/activate" [] user-api-activate)
+                 ))))
 
 (defroutes ^:private session-routes
            (context "/sessions" []
@@ -30,10 +32,11 @@
            (context "/projects" []
              (POST "/" [] (authenticated project-api-create))
              (GET "/" [] project-api-list)
-             (GET "/:code" [] project-api-read)
-             (PUT "/:code" [] project-api-update)
-             (DELETE "/:code" [] project-api-delete)
-             ))
+             (context "/:code" []
+               (GET "/" [] project-api-read)
+               (PUT "/" [] project-api-update)
+               (DELETE "/" [] project-api-delete)
+               )))
 
 (defroutes app-handler
            (GET "/" [] "<h1>Backend</h1>")
