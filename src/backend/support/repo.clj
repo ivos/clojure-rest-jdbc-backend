@@ -10,15 +10,19 @@
 (def ^:private generated-key
   (keyword "scope_identity()"))
 
+(defn keys->db
+  [entity]
+  (transform-keys csk/->snake_case entity))
+
+(defn where-clause
+  [where]
+  (let [clause (string/join " and " (map #(str (name %1) " = ?") (keys where)))]
+    (vec (conj (vals where) clause))))
+
 (defn- entity-to-set
   [entity version]
   (let [no-id (dissoc entity :id)]
     (assoc no-id :version (inc version))))
-
-(defn- where-clause
-  [where]
-  (let [clause (string/join " and " (map #(str (name %1) " = ?") (keys where)))]
-    (vec (conj (vals where) clause))))
 
 (defn- verify-result
   [result table where]
@@ -31,7 +35,7 @@
 (defn create!
   [db table entity]
   (let [entity (assoc entity :version 1)
-        db-entity (transform-keys csk/->snake_case entity)]
+        db-entity (keys->db entity)]
     (log/debug "Inserting" table db-entity)
     (let [[result] (db/insert! db table db-entity)]
       (assoc entity :id (generated-key result)))))
@@ -42,8 +46,8 @@
      (update! db table entity where)))
   ([db table entity where]
    (let [set-map (entity-to-set entity (:version where))
-         db-set-map (transform-keys csk/->snake_case set-map)
-         db-where (transform-keys csk/->snake_case where)]
+         db-set-map (keys->db set-map)
+         db-where (keys->db where)]
      (log/debug "Updating" table db-set-map "where" db-where)
      (let [[result] (db/update! db table db-set-map (where-clause db-where))]
        (verify-result result table where)
@@ -51,7 +55,7 @@
 
 (defn delete!
   [db table where]
-  (let [db-where (transform-keys csk/->snake_case where)]
+  (let [db-where (keys->db where)]
     (log/debug "Deleting" table "where" db-where)
     (let [[result] (db/delete! db table (where-clause db-where))]
       (verify-result result table where))))

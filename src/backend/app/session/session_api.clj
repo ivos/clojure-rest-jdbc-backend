@@ -19,3 +19,8 @@
   (let [data (session-logic-list-active ds params)
         result (map update-user-entity-result data)]
     (resp/response result)))
+
+(defn session-api-delete
+  [{:keys [ds session]}]
+  (session-logic-expire ds session)
+  response-no-content)

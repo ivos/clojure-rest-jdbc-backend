@@ -8,9 +8,7 @@
 
 (def ^:private prefix "project/update/")
 
-(defn- create-request
-  [id version body]
-  (#'it.project.update.project-update-test/create-request id version body))
+(def ^:private create-request #'it.project.update.project-update-test/create-request)
 
 (deftest optimistic-locking-conflict
   (facts

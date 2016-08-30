@@ -83,3 +83,14 @@
                           (expand-entity tc expand-users :user))]
           (log/debug "Read active session" result)
           result)))))
+
+(defn session-logic-expire
+  [ds session]
+  (let [now (t/now)
+        entity {:expires (tc/to-sql-time now)}
+        where (select-keys session [:token])]
+    (log/debug "Expiring session" entity "where" where)
+    (db/with-db-transaction
+      [tc ds]
+      (db/update! tc :session entity (repo/where-clause where))
+      (log/debug "Expired session where" where))))

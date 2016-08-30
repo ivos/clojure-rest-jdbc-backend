@@ -23,7 +23,7 @@
            (context "/sessions" []
              (POST "/" request (session-api-create request))
              (GET "/" request (session-api-list request))
-;(DELETE "/" request (session-api-delete request))
+             (DELETE "/" [] (authenticated session-api-delete))
              ))
 
 (defroutes ^:private project-routes
