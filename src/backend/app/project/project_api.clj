@@ -3,6 +3,7 @@
             [backend.support.ring :refer :all]
             [backend.support.api :refer :all]
             [backend.app.project.project-logic :refer :all]
+            [backend.app.user.user-api :refer :all]
             ))
 
 (defn- get-detail-uri
@@ -17,12 +18,16 @@
 (defn project-api-list
   [{:keys [config ds params]}]
   (let [data (project-logic-list ds params)
-        result (map (partial list-entity-result get-detail-uri project-attributes config) data)]
+        result (map (comp
+                      (partial update-user-entity-result :owner)
+                      (partial list-entity-result get-detail-uri project-attributes config)
+                      ) data)]
     (resp/response result)))
 
 (defn project-api-read
   [{:keys [ds params]}]
-  (let [result (project-logic-read ds params)]
+  (let [result (->> (project-logic-read ds params)
+                    (update-user-entity-result :owner))]
     (-> (resp/response (entity-result project-attributes result))
         (etag-header result))))
 

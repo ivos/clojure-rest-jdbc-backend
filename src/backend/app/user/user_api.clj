@@ -7,8 +7,8 @@
             ))
 
 (defn update-user-entity-result
-  [entity]
-  (update entity :user
+  [rel-attribute entity]
+  (update entity rel-attribute
           (comp (partial entity-result user-attributes)
                 filter-password)))
 

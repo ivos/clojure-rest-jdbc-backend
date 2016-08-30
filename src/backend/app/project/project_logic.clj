@@ -8,6 +8,7 @@
             [backend.support.repo :as repo]
             [backend.support.entity :refer :all]
             [backend.support.validation :refer :all]
+            [backend.app.user.user-logic :refer :all]
             ))
 
 (def project-attributes
@@ -27,6 +28,7 @@
     :kickOff {:type :timestamp}
     :created {:direction :out
               :type      :timestamp}
+    :owner {:direction :out}
     ))
 
 (def-db-fns "backend/app/project/project.sql")
@@ -50,7 +52,8 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (list-all-projects tc)
-                      (map entity-listed))]
+                      (map entity-listed)
+                      (expand-list tc expand-users :owner :id))]
       (log/debug "Listed projects" result)
       result)))
 
@@ -60,7 +63,8 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (read-project tc params)
-                      entity-read)]
+                      entity-read
+                      (expand-entity tc expand-users :owner))]
       (log/debug "Read project" result)
       result)))
 

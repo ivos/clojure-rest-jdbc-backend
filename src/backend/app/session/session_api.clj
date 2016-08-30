@@ -10,14 +10,14 @@
 
 (defn session-api-create
   [{:keys [ds body]}]
-  (let [result (update-user-entity-result (session-logic-create ds body))]
+  (let [result (update-user-entity-result :user (session-logic-create ds body))]
     {:status (status-code :created)
      :body   result}))
 
 (defn session-api-list
   [{:keys [ds params]}]
   (let [data (session-logic-list-active ds params)
-        result (map update-user-entity-result data)]
+        result (map (partial update-user-entity-result :user) data)]
     (resp/response result)))
 
 (defn session-api-delete

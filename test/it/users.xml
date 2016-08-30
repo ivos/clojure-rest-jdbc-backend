@@ -5,4 +5,9 @@
 	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="@auto" expires="@timestamp+PT1M"
 	         user="1534984901"/>
 
+	<user id="1534984902" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+	<session token="7b0e6756-d9e4-4001-9d53-000000000002" created="@auto" duration="@auto" expires="@timestamp+PT1M"
+	         user="1534984902"/>
+
 </dataset>

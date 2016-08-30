@@ -8,5 +8,12 @@
 	"budget": 1558367.202,
 	"dailyMeetingAt": "11:12:13",
 	"kickOff": "2016-10-12T13:45:01.000Z",
-	"created": "2016-09-11T12:34:56.987Z"
+	"created": "2016-09-11T12:34:56.987Z",
+	"owner": {
+		"username": "username 1534928001",
+		"email": "email 1534942101",
+		"name": "name 1534936501",
+		"status": "active",
+		"roles": "user"
+	}
 }

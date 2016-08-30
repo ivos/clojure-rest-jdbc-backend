@@ -10,6 +10,13 @@
 		"dailyMeetingAt": "10:41:41",
 		"kickOff": "2034-06-08T17:21:41.101Z",
 		"created": "1961-01-22T10:55:01.301Z",
+		"owner": {
+			"username": "username 1534928001",
+			"email": "email 1534942101",
+			"name": "name 1534936501",
+			"status": "active",
+			"roles": "user"
+		},
 		"uri": "http://localhost:3000/projects/code 1558360901"
 	},
 	{
@@ -23,6 +30,13 @@
 		"dailyMeetingAt": "10:41:42",
 		"kickOff": "2034-06-09T17:21:42.102Z",
 		"created": "1961-01-23T10:55:02.302Z",
+		"owner": {
+			"username": "username 1534928002",
+			"email": "email 1534942102",
+			"name": "name 1534936502",
+			"status": "active",
+			"roles": "user"
+		},
 		"uri": "http://localhost:3000/projects/code 1558360902"
 	},
 	{
@@ -36,6 +50,13 @@
 		"dailyMeetingAt": "10:41:43",
 		"kickOff": "2034-06-10T17:21:43.103Z",
 		"created": "1961-01-24T10:55:03.303Z",
+		"owner": {
+			"username": "username 1534928001",
+			"email": "email 1534942101",
+			"name": "name 1534936501",
+			"status": "active",
+			"roles": "user"
+		},
 		"uri": "http://localhost:3000/projects/code 1558360903"
 	},
 	{
@@ -49,6 +70,13 @@
 		"dailyMeetingAt": "11:12:13",
 		"kickOff": "2016-10-12T13:45:01.000Z",
 		"created": "2016-09-11T12:34:56.987Z",
+		"owner": {
+			"username": "username 1534928002",
+			"email": "email 1534942102",
+			"name": "name 1534936502",
+			"status": "active",
+			"roles": "user"
+		},
 		"uri": "http://localhost:3000/projects/code 1558360904"
 	}
 ]
