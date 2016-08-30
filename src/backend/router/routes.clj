@@ -10,29 +10,29 @@
 
 (defroutes ^:private user-routes
            (context "/users" []
-             (POST "/" request (user-api-create request))
-             (GET "/" request (user-api-list request))
-             (GET "/:username" request (user-api-read request))
-             (PUT "/:username" request (user-api-update request))
-             (PUT "/:username/actions/disable" request (user-api-disable request))
-             (PUT "/:username/actions/activate" request (user-api-activate request))
-             (DELETE "/:username" request (user-api-delete request))
+             (POST "/" [] user-api-create)
+             (GET "/" [] user-api-list)
+             (GET "/:username" [] user-api-read)
+             (PUT "/:username" [] user-api-update)
+             (PUT "/:username/actions/disable" [] user-api-disable)
+             (PUT "/:username/actions/activate" [] user-api-activate)
+             (DELETE "/:username" [] user-api-delete)
              ))
 
 (defroutes ^:private session-routes
            (context "/sessions" []
-             (POST "/" request (session-api-create request))
-             (GET "/" request (session-api-list request))
+             (POST "/" [] session-api-create)
+             (GET "/" [] session-api-list)
              (DELETE "/" [] (authenticated session-api-delete))
              ))
 
 (defroutes ^:private project-routes
            (context "/projects" []
              (POST "/" [] (authenticated project-api-create))
-             (GET "/" request (project-api-list request))
-             (GET "/:code" request (project-api-read request))
-             (PUT "/:code" request (project-api-update request))
-             (DELETE "/:code" request (project-api-delete request))
+             (GET "/" [] project-api-list)
+             (GET "/:code" [] project-api-read)
+             (PUT "/:code" [] project-api-update)
+             (DELETE "/:code" [] project-api-delete)
              ))
 
 (defroutes app-handler
