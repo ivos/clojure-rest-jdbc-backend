@@ -1,7 +1,7 @@
 (ns it.project.list.project-list-test
-  (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
+            [midje.sweet :refer :all]
             [ring.mock.request :as mock]
             [lightair :refer :all]
             [it.test-support :refer :all]

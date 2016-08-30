@@ -1,7 +1,7 @@
 (ns it.session.list.session-list-test
-  (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
+            [midje.sweet :refer :all]
             [ring.mock.request :as mock]
             [clj-time.core :as t]
             [lightair :refer :all]

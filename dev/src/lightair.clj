@@ -1,7 +1,6 @@
 (ns lightair
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component])
-  ;(:use midje.sweet)
   (:import net.sf.lightair.Api))
 
 (defrecord LightAirComponent [properties-file-name lightair]

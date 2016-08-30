@@ -1,7 +1,7 @@
 (ns it.generic.session-touched
-  (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
+            [midje.sweet :refer :all]
             [lightair :refer :all]
             [it.test-support :refer :all]
             [it.project.create.project-create-test :refer [create-request]]

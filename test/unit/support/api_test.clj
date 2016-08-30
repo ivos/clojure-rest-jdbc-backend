@@ -2,8 +2,9 @@
   (:require [clj-time.core :as t]
             [clj-time.coerce :as tc]
             [flatland.ordered.map :refer [ordered-map]]
-            [backend.support.api])
-  (:use midje.sweet backend.support.validation)
+            [backend.support.api]
+            [midje.sweet :refer :all]
+            [backend.support.validation :refer :all])
   (:import (java.sql Time)))
 
 (facts

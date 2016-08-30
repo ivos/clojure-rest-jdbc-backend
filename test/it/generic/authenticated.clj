@@ -1,7 +1,7 @@
 (ns it.generic.authenticated
-  (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
+            [midje.sweet :refer :all]
             [lightair :refer :all]
             [it.test-support :refer :all]
             [it.session.delete.session-delete-test :refer [create-request]]

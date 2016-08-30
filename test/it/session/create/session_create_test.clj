@@ -1,8 +1,8 @@
 (ns it.session.create.session-create-test
-  (:use midje.sweet)
   (:require [clojure.string :as string]
             [clojure.test :refer [deftest]]
             [backend.support.ring :refer :all]
+            [midje.sweet :refer :all]
             [ring.mock.request :as mock]
             [clj-time.core :as t]
             [lightair :refer :all]

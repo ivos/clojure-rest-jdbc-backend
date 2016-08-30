@@ -1,6 +1,8 @@
 (ns unit.support.repo-test
-  (:require [backend.support.repo :refer :all])
-  (:use midje.sweet backend.support.validation))
+  (:require [backend.support.repo :refer :all]
+            [midje.sweet :refer :all]
+            [backend.support.validation :refer :all]
+            ))
 
 (facts
   "where-clause"

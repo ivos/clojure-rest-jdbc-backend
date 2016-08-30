@@ -1,6 +1,8 @@
 (ns unit.support.validation-test
-  (:use midje.sweet backend.support.validation)
-  (:require [slingshot.slingshot :refer [try+]]))
+  (:require [slingshot.slingshot :refer [try+]]
+            [midje.sweet :refer :all]
+            [backend.support.validation :refer :all]
+            ))
 
 (facts
   "validate"
