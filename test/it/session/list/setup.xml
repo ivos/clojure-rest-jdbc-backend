@@ -6,8 +6,11 @@
 	      status="disabled" roles="user"/>
 	<user id="1534984903" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
 	      status="active" roles="user"/>
+	<!--current-->
+	<user id="1534984904" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user,admin"/>
 
-	<!--included-->
+	<!--included:-->
 	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT1M" user="1534984901"/>
 	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT2M" user="1534984902"/>
 	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT3M" user="1534984903"/>
@@ -21,8 +24,12 @@
 	<session token="@auto" created="@auto" duration="@auto" expires="@timestamp+PT1M" user="1534984901"/>
 
 	<!--explicit temporal values-->
-	<session token="@auto" created="2016-09-10T12:34:56.987Z" duration="@auto" expires="2016-09-11T12:35:56.987Z"
+	<session token="@auto" created="2016-09-10T12:34:56.987Z" duration="@auto" expires="2301-09-11T12:35:56.987Z"
 	         user="1534984901"/>
 
-	<!--included in order: 8 4 3 2 7 1-->
+	<!--current-->
+	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="90" expires="@timestamp+PT1M"
+	         user="1534984904"/>
+
+	<!--included in order: 8 4 9 3 2 7 1-->
 </dataset>

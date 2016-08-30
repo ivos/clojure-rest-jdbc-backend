@@ -3,6 +3,10 @@
 	<user id="1534984901" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
 	      status="active" roles="user"/>
 
+	<!--disabled-->
+	<user id="1534984902" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="disabled" roles="user"/>
+
 
 	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="@auto" expires="@timestamp+PT10M"
 	         user="1534984901"/>
@@ -13,5 +17,8 @@
 
 	<!--expired-->
 	<session token="expired" created="@auto" duration="@auto" expires="@timestamp-PT10M" user="1534984901"/>
+
+	<!--disabled-->
+	<session token="disabled" created="@auto" duration="@auto" expires="@timestamp+PT10M" user="1534984902"/>
 
 </dataset>

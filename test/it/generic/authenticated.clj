@@ -13,12 +13,9 @@
 (defn- perform
   [token]
   (db-setup session-prefix "setup")
-  (let [expected-body (read-json prefix "no-valid-session-response")
-        request (create-request token)
-        response (call-handler request)
-        ]
-    (verify-response response {:status :unauthorized
-                               :body   expected-body})
+  (let [request (create-request token)
+        response (call-handler request)]
+    (verify-response response {:status :unauthorized})
     (db-verify session-prefix "setup")
     ))
 
@@ -36,3 +33,8 @@
   (facts
     "session-expired"
     (perform "expired")))
+
+(deftest user-disabled
+  (facts
+    "user-disabled"
+    (perform "disabled")))

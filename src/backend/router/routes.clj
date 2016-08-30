@@ -2,7 +2,7 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.util.response :as resp]
-            [backend.router.security :refer [authenticated]]
+            [backend.router.security :refer [authenticated roles]]
             [backend.app.user.user-api :refer :all]
             [backend.app.session.session-api :refer :all]
             [backend.app.project.project-api :refer :all]
@@ -24,7 +24,7 @@
 (defroutes ^:private session-routes
            (context "/sessions" []
              (POST "/" [] session-api-create)
-             (GET "/" [] session-api-list)
+             (GET "/" [] (roles [:admin] session-api-list))
              (DELETE "/" [] (authenticated session-api-delete))
              ))
 

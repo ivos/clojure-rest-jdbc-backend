@@ -8,6 +8,7 @@
    :created               201
    :no-content            204
    :unauthorized          401
+   :forbidden             403
    :not-found             404
    :method-not-allowed    405
    :conflict              409

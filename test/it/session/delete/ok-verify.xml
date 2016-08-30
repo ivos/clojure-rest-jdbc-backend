@@ -1,6 +1,7 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 
 	<user id="1534984901" version="@auto"/>
+	<user id="1534984902" version="@auto"/>
 
 
 	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="@auto" expires="@timestamp+PT10M"
@@ -12,5 +13,8 @@
 
 	<!--expired-->
 	<session token="expired" created="@auto" duration="@auto" expires="@timestamp-PT10M" user="1534984901"/>
+
+	<!--disabled-->
+	<session token="disabled" created="@auto" duration="@auto" expires="@timestamp+PT10M" user="1534984902"/>
 
 </dataset>

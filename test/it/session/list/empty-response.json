@@ -3,7 +3,7 @@
 		"token": "token 1192457908",
 		"created": "2016-09-10T12:34:56Z",
 		"duration": 1192458908,
-		"expires": "2016-09-11T12:35:56Z",
+		"expires": "2301-09-11T12:35:56Z",
 		"user": {
 			"username": "username 1534928001",
 			"email": "email 1534942101",
@@ -23,6 +23,19 @@
 			"name": "name 1534936503",
 			"status": "active",
 			"roles": "user"
+		}
+	},
+	{
+		"token": "7b0e6756-d9e4-4001-9d53-000000000001",
+		"created": "2095-03-28T11:01:49Z",
+		"duration": 90,
+		"expires": "2015-10-11T14:04:56Z",
+		"user": {
+			"username": "username 1534928004",
+			"email": "email 1534942104",
+			"name": "name 1534936504",
+			"status": "active",
+			"roles": "user,admin"
 		}
 	},
 	{

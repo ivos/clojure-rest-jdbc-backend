@@ -1,6 +1,7 @@
 (ns backend.router.security
   (:require [clojure.tools.logging :as log]
             [clojure.string :as string]
+            [clojure.set :as set]
             [clojure.data.codec.base64 :as b64]
             [slingshot.slingshot :refer [throw+]]
             [backend.app.session.session-logic :refer :all]
@@ -36,8 +37,30 @@
   [handler]
   (fn
     [request]
+    (log/debug "Verifying user authenticated.")
     (when-not (:session request)
+      (log/warn "User not authenticated.")
       (throw+ {:type     :custom-response
-               :response {:status (status-code :unauthorized)
-                          :body   {:code :no.valid.session}}}))
+               :response {:status (status-code :unauthorized)}}))
+    (handler request)))
+
+(defn- get-current-user-roles
+  [request]
+  (if-let [roles-string (get-in request [:session :user :roles])]
+    (->> (string/split roles-string #",")
+         (map keyword)
+         (set))
+    #{}))
+
+(defn roles
+  [roles handler]
+  (fn
+    [request]
+    (log/debug "Verifying user authorized.")
+    (let [current-user-roles (get-current-user-roles request)]
+      (when (empty? (set/intersection (set roles) current-user-roles))
+        (log/warn "User not authorized, expected roles" roles "but has roles" current-user-roles)
+        (throw+ {:type     :custom-response
+                 :response {:status (status-code :forbidden)
+                            :body   ["missing.role" roles current-user-roles]}})))
     (handler request)))
