@@ -11,7 +11,8 @@
 
 (defn- create-request
   [code]
-  (mock/request :get (str "/projects/" code)))
+  (-> (mock/request :get (str "/projects/" code))
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest project-read
   (facts
@@ -29,5 +30,5 @@
 (deftest project-read-not-found
   (facts
     "project-read-not-found"
-    (db-setup prefix)
+    (db-setup prefix "../../users")
     (not-found-test (create-request "not_found"))))

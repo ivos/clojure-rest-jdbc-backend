@@ -1,14 +1,20 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 
-	<user id="@auto" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	<user id="1534984901" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
 	      status="disabled" roles="user"/>
 
 	<!--updated-->
-	<user id="@auto" version="123" username="username_2" email="@auto" name="@auto" password_hash="@auto"
+	<user id="1534984902" version="123" username="username_2" email="@auto" name="@auto" password_hash="@auto"
 	      status="disabled" roles="user"/>
 
 	<!--active-->
-	<user id="@auto" version="123" username="username_active" email="@auto" name="@auto" password_hash="@auto"
+	<user id="1534984903" version="123" username="username_active" email="@auto" name="@auto" password_hash="@auto"
 	      status="active" roles="user"/>
+
+	<!--current-->
+	<user id="1534984904" version="123" username="username_current" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="admin"/>
+	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="90" expires="@timestamp+PT1M"
+	         user="1534984904"/>
 
 </dataset>

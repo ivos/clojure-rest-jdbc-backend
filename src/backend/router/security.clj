@@ -33,6 +33,13 @@
           (log/debug "Token not authenticated."))))
     (log/debug "Anonymous request.")))
 
+(defn anonymous
+  [handler]
+  (fn
+    [request]
+    (log/debug "Anonymous request allowed.")
+    (handler request)))
+
 (defn authenticated
   [handler]
   (fn
@@ -63,4 +70,18 @@
         (throw+ {:type     :custom-response
                  :response {:status (status-code :forbidden)
                             :body   ["missing.role" roles current-user-roles]}})))
+    (handler request)))
+
+(defn own-user
+  [handler]
+  (fn
+    [request]
+    (log/debug "Verifying own user.")
+    (let [current-username (get-in request [:session :user :username])
+          request-username (get-in request [:params :username])]
+      (when (not= current-username request-username)
+        (log/warn "User not authorized, user" current-username "trying to operate on" request-username)
+        (throw+ {:type     :custom-response
+                 :response {:status (status-code :forbidden)
+                            :body   ["not.own.user" request-username current-username]}})))
     (handler request)))

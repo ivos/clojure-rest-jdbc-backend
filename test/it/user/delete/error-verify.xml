@@ -3,6 +3,10 @@
 	<user id="1534984901" version="1534925501" username="@auto" email="@auto" name="@auto" password_hash="@auto"
 	      status="active" roles="user"/>
 
+	<!--found-->
+	<user id="1534984902" version="123" username="username_2" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+
 	<user id="1534984903" version="1534925503"/>
 
 </dataset>

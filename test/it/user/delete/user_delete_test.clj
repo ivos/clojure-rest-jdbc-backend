@@ -12,7 +12,8 @@
 (defn- create-request
   [username version]
   (-> (mock/request :delete (str "/users/" username))
-      (if-match-header version)))
+      (if-match-header version)
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest user-delete-ok
   (facts
@@ -33,5 +34,5 @@
           response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))

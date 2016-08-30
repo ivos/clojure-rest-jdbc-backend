@@ -9,9 +9,10 @@
 
 (def ^:private prefix "user/read/")
 
-(defn- create-request
+(defn create-request
   [username]
-  (mock/request :get (str "/users/" username)))
+  (-> (mock/request :get (str "/users/" username))
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest user-read
   (facts
@@ -25,9 +26,3 @@
                                  :etag   12302
                                  :body   expected-body})
       )))
-
-(deftest user-read-not-found
-  (facts
-    "user-read-not-found"
-    (db-setup prefix)
-    (not-found-test (create-request "not_found"))))

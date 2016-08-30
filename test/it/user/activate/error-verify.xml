@@ -1,13 +1,13 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 
-	<user id="1534984901" version="@auto" status="active"/>
+	<user id="1534984901" version="@auto" status="disabled"/>
 
 	<!--updated-->
-	<user id="1534984902" version="124" username="username_2" email="@auto" name="@auto" password_hash="@auto"
+	<user id="1534984902" version="123" username="username_2" email="@auto" name="@auto" password_hash="@auto"
 	      status="disabled" roles="user"/>
 
-	<!--disabled-->
-	<user id="1534984903" version="123" status="disabled"/>
+	<!--active-->
+	<user id="1534984903" version="123" status="active"/>
 
 	<!--current-->
 	<user id="1534984904" version="123"/>

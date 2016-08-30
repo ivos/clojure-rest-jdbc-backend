@@ -3,8 +3,8 @@
 	<user id="1534984901" version="@auto" status="active"/>
 
 	<!--updated-->
-	<user id="1534984902" version="124" username="username_2" email="@auto" name="@auto" password_hash="@auto"
-	      status="disabled" roles="user"/>
+	<user id="1534984902" version="123" username="username_2" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
 
 	<!--disabled-->
 	<user id="1534984903" version="123" status="disabled"/>

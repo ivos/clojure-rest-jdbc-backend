@@ -13,7 +13,8 @@
   [username version body]
   (-> (mock/request :put (str "/users/" username) body)
       (mock/content-type "application/json")
-      (if-match-header version)))
+      (if-match-header version)
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (defn- ok
   [test-case new-username]
@@ -48,7 +49,7 @@
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
 
 (deftest user-update-conflict
@@ -60,7 +61,7 @@
           response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
 
 (deftest user-update-username-duplicate
@@ -74,7 +75,7 @@
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
 
 (deftest user-update-email-duplicate
@@ -88,7 +89,7 @@
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
 
 (deftest user-update-keep-uniques

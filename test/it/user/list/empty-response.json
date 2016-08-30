@@ -4,7 +4,7 @@
 		"email": "email 1534942101",
 		"name": "name 1534936501",
 		"status": "active",
-		"roles": "user",
+		"roles": "admin",
 		"uri": "http://localhost:3000/users/username 1534928001"
 	},
 	{

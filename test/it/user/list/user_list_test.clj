@@ -11,7 +11,8 @@
 
 (defn- create-request
   [params]
-  (mock/request :get "/users" params))
+  (-> (mock/request :get "/users" params)
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest user-list-empty
   (facts

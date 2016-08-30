@@ -10,14 +10,15 @@
 (def ^:private prefix "user/activate/")
 
 (defn- create-request
-  [username version]
+  [username version token]
   (-> (mock/request :put (str "/users/" username "/actions/activate"))
-      (if-match-header version)))
+      (if-match-header version)
+      (auth-header token)))
 
 (defn- ok
   [test-case]
   (db-setup prefix "setup")
-  (let [request (create-request "username_2" 123)
+  (let [request (create-request "username_2" 123 "7b0e6756-d9e4-4001-9d53-000000000001")
         response (call-handler request)
         ]
     (verify-response response {:status   :no-content
@@ -34,11 +35,11 @@
   (facts
     "user-activate-conflict"
     (db-setup prefix "setup")
-    (let [request (create-request "username_2" 122)
+    (let [request (create-request "username_2" 122 "7b0e6756-d9e4-4001-9d53-000000000001")
           response (call-handler request)
           ]
       (verify-response response {:status :precondition-failed})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
 
 (deftest user-activate-active
@@ -46,10 +47,10 @@
     "user-activate-active"
     (db-setup prefix "setup")
     (let [expected-body (read-json prefix "active-response")
-          request (create-request "username_active" 123)
+          request (create-request "username_active" 123 "7b0e6756-d9e4-4001-9d53-000000000001")
           response (call-handler request)
           ]
       (verify-response response {:status :unprocessable-entity
                                  :body   expected-body})
-      (db-verify prefix "setup")
+      (db-verify prefix "error-verify")
       )))
