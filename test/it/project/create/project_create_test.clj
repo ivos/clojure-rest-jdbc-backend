@@ -9,7 +9,7 @@
 
 (def ^:private prefix "project/create/")
 
-(defn- create-request
+(defn create-request
   [body]
   (-> (mock/request :post "/projects" body)
       (mock/content-type "application/json")

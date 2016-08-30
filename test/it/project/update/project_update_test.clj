@@ -9,7 +9,7 @@
 
 (def ^:private prefix "project/update/")
 
-(defn- create-request
+(defn create-request
   [code version body]
   (-> (mock/request :put (str "/projects/" code) body)
       (mock/content-type "application/json")

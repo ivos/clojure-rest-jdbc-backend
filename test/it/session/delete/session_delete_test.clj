@@ -9,7 +9,7 @@
 
 (def ^:private prefix "session/delete/")
 
-(defn- create-request
+(defn create-request
   [token]
   (-> (mock/request :delete (str "/sessions"))
       (auth-header token)))

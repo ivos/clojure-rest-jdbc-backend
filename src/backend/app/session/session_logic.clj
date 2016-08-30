@@ -30,6 +30,10 @@
 
 (def-db-fns "backend/app/session/session.sql")
 
+(defn- calculate-expires
+  [duration now]
+  (tc/to-sql-time (t/plus now (t/minutes duration))))
+
 (defn session-logic-create
   [ds body]
   (log/debug "Creating session" (filter-password body))
@@ -48,7 +52,7 @@
                       :token    (str (UUID/randomUUID))
                       :created  (tc/to-sql-time now)
                       :duration duration
-                      :expires  (tc/to-sql-time (t/plus now (t/minutes duration)))
+                      :expires  (calculate-expires duration now)
                       :user     (:id user)
                       }
               _ (db/insert! tc :session entity)
@@ -78,11 +82,18 @@
           found (read-active-session tc {:token token
                                          :now   (tc/to-sql-time now)})]
       (when found
-        (let [result (->> found
-                          entity-listed
-                          (expand-entity tc expand-users :user))]
-          (log/debug "Read active session" result)
-          result)))))
+        (let [duration (:duration found)
+              expires (calculate-expires duration now)
+              found (assoc found :expires expires)
+              entity {:expires expires}
+              where (select-keys found [:token])]
+          (log/debug "Touching session" entity "where" where)
+          (db/update! tc :session entity (repo/where-clause where))
+          (let [result (->> found
+                            entity-listed
+                            (expand-entity tc expand-users :user))]
+            (log/debug "Read and touched active session" result)
+            result))))))
 
 (defn session-logic-expire
   [ds session]

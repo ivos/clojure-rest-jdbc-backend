@@ -2,15 +2,13 @@
   (:use midje.sweet)
   (:require [backend.support.ring :refer :all]
             [clojure.test :refer [deftest]]
-            [ring.mock.request :as mock]
             [lightair :refer :all]
             [it.test-support :refer :all]
+            [it.session.delete.session-delete-test :refer [create-request]]
             ))
 
 (def ^:private prefix "generic/")
 (def ^:private session-prefix "session/delete/")
-
-(def ^:private create-request #'it.session.delete.session-delete-test/create-request)
 
 (defn- perform
   [token]

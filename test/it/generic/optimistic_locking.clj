@@ -4,11 +4,10 @@
             [clojure.test :refer [deftest]]
             [lightair :refer :all]
             [it.test-support :refer :all]
+            [it.project.update.project-update-test :refer [create-request]]
             ))
 
 (def ^:private prefix "project/update/")
-
-(def ^:private create-request #'it.project.update.project-update-test/create-request)
 
 (defn- perform
   [code version response-code]

@@ -4,14 +4,11 @@
             [clojure.test :refer [deftest]]
             [lightair :refer :all]
             [it.test-support :refer :all]
+            [it.project.update.project-update-test :refer [create-request]]
             ))
 
 (def ^:private prefix "generic/")
 (def ^:private project-prefix "project/update/")
-
-(defn- create-request
-  [id version body]
-  (#'it.project.update.project-update-test/create-request id version body))
 
 (deftest data-types-invalid
   (facts
