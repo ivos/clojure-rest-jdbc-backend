@@ -1,10 +1,10 @@
 (ns backend.lein-ring
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [backend.system.config :refer :all]
-            [backend.system.datasource :refer :all]
-            [backend.system.flyway :refer :all]
-            [backend.router.handler :refer :all]
+            [backend.system.config :refer [new-config]]
+            [backend.system.datasource :refer [new-datasource]]
+            [backend.system.flyway :refer [new-flyway migrate]]
+            [backend.router.handler :refer [new-handler]]
             ))
 
 (def ^:private system nil)

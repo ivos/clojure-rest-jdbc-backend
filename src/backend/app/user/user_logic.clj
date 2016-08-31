@@ -1,12 +1,12 @@
 (ns backend.app.user.user-logic
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
-            [hugsql.core :refer [def-db-fns]]
+            [hugsql.core :as sql]
             [flatland.ordered.map :refer [ordered-map]]
             [backend.support.repo :as repo]
-            [backend.support.entity :refer :all]
-            [backend.support.validation :refer :all]
-            [backend.support.util :refer :all]
+            [backend.support.entity :as entity]
+            [backend.support.validation :as validation]
+            [backend.support.util :as util]
             ))
 
 (def email-pattern
@@ -28,31 +28,31 @@
     :roles {:direction :out}
     ))
 
-(def-db-fns "backend/app/user/user.sql")
+(sql/def-db-fns "backend/app/user/user.sql")
 
 (defn- validate-unique-username-on-create
   [tc entity]
   (when (read-user tc (select-keys entity [:username]))
-    (validation-failure {:username [[:duplicate]]})))
+    (validation/validation-failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-create
   [tc entity]
   (when (read-user tc {:username (:email entity)})
-    (validation-failure {:email [[:duplicate]]})))
+    (validation/validation-failure {:email [[:duplicate]]})))
 
 (defn user-logic-create
   [ds body]
-  (log/debug "Creating user" (filter-password body))
+  (log/debug "Creating user" (util/filter-password body))
   (let [attributes (assoc-in user-attributes [:password :required] true)
-        entity (-> (valid attributes body)
-                   hash-entity
+        entity (-> (validation/valid attributes body)
+                   (util/hash-entity)
                    (assoc :status "active" :roles "user"))]
     (db/with-db-transaction
       [tc ds]
       (validate-unique-username-on-create tc entity)
       (validate-unique-email-on-create tc entity)
       (let [result (repo/create! tc :user entity)]
-        (log/debug "Created user" (filter-password result))
+        (log/debug "Created user" (util/filter-password result))
         result))))
 
 (defn user-logic-list
@@ -61,7 +61,7 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (list-all-users tc)
-                      (map entity-listed))]
+                      (map entity/entity-listed))]
       (log/debug "Listed users" result)
       result)))
 
@@ -71,7 +71,7 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (read-user tc params)
-                      entity-read)]
+                      entity/entity-read)]
       (log/debug "Read user" result)
       result)))
 
@@ -79,26 +79,26 @@
   [tc entity where]
   (when (and (not= (:username entity) (:username where))
              (read-user tc (select-keys entity [:username])))
-    (validation-failure {:username [[:duplicate]]})))
+    (validation/validation-failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-update
   [tc entity where]
   (when-let [found (read-user tc {:username (:email entity)})]
     (when (not= (:username found) (:username where))
-      (validation-failure {:email [[:duplicate]]}))))
+      (validation/validation-failure {:email [[:duplicate]]}))))
 
 (defn user-logic-update
   [ds body params version]
   (let [where (assoc params :version version)]
-    (log/debug "Updating user" (filter-password body) "where" where)
-    (let [entity (-> (valid user-attributes body)
-                     hash-entity)]
+    (log/debug "Updating user" (util/filter-password body) "where" where)
+    (let [entity (-> (validation/valid user-attributes body)
+                     (util/hash-entity))]
       (db/with-db-transaction
         [tc ds]
         (validate-unique-username-on-update tc entity where)
         (validate-unique-email-on-update tc entity where)
         (let [result (repo/update! tc :user entity where)]
-          (log/debug "Updated user" (filter-password result))
+          (log/debug "Updated user" (util/filter-password result))
           result)))))
 
 (defn- validate-status
@@ -106,7 +106,7 @@
   (when-let [found (read-user tc (select-keys where [:username]))]
     (let [actual (:status found)]
       (when (not (contains? expected actual))
-        (validation-failure {:status [[:invalid actual expected]]})))))
+        (validation/validation-failure {:status [[:invalid actual expected]]})))))
 
 (defn- perform-action
   [ds params version action from to]

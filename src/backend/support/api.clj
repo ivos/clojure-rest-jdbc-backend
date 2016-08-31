@@ -1,7 +1,6 @@
 (ns backend.support.api
   (:require [clj-time.coerce :as tc]
-            [flatland.ordered.map :refer [ordered-map]]
-            [backend.support.entity :refer :all]))
+            [flatland.ordered.map :refer [ordered-map]]))
 
 (defn- remove-inbound-keys
   [attributes entity]

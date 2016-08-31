@@ -1,18 +1,16 @@
 (ns backend.app.session.session-logic
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
-            [ring.util.response :as resp]
-            [hugsql.core :refer [def-db-fns]]
+            [hugsql.core :as sql]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
             [flatland.ordered.map :refer [ordered-map]]
             [buddy.hashers :as hashers]
             [backend.support.repo :as repo]
-            [backend.support.ring :refer :all]
-            [backend.support.entity :refer :all]
-            [backend.support.validation :refer :all]
-            [backend.support.util :refer :all]
-            [backend.app.user.user-logic :refer :all]
+            [backend.support.entity :as entity]
+            [backend.support.validation :as validation]
+            [backend.support.util :as util]
+            [backend.app.user.user-logic :as user]
             )
   (:import (java.util UUID)))
 
@@ -29,7 +27,7 @@
     :user {:direction :out}
     ))
 
-(def-db-fns "backend/app/session/session.sql")
+(sql/def-db-fns "backend/app/session/session.sql")
 
 (defn- calculate-expires
   [duration now]
@@ -39,12 +37,12 @@
   [ds entity switch-to]
   (db/with-db-transaction
     [tc ds]
-    (let [user (user-logic-read ds (select-keys entity [:username]))]
+    (let [user (user/user-logic-read ds (select-keys entity [:username]))]
       (when-not switch-to
         (when (not= "active" (:status user))
-          (validation-failure {:user [[:invalid]]}))
+          (validation/validation-failure {:user [[:invalid]]}))
         (when (not (hashers/check (:password entity) (:passwordHash user)))
-          (validation-failure {:password [[:invalid]]})))
+          (validation/validation-failure {:password [[:invalid]]})))
       (let [now (t/now)
             duration 90
             entity {:token    (str (UUID/randomUUID))
@@ -57,15 +55,15 @@
 
 (defn session-logic-create
   [ds body]
-  (log/debug "Creating session" (filter-password body))
-  (let [entity (valid session-attributes body)
+  (log/debug "Creating session" (util/filter-password body))
+  (let [entity (validation/valid session-attributes body)
         result (create-internal ds entity false)]
     (log/debug "Created session" result)
     result))
 
 (defn session-logic-switch-to-user
   [ds params]
-  (log/debug "Creating switch-to session" (filter-password params))
+  (log/debug "Creating switch-to session" (util/filter-password params))
   (let [result (create-internal ds params true)]
     (log/debug "Created switch-to session" result)
     result))
@@ -77,8 +75,8 @@
     [tc ds]
     (let [now (t/now)
           result (->> (list-active-sessions tc {:now (tc/to-sql-time now)})
-                      (map entity-listed)
-                      (expand-list tc expand-users :user :id))]
+                      (map entity/entity-listed)
+                      (entity/expand-list tc user/expand-users :user :id))]
       (log/debug "Listed active sessions" result)
       result)))
 
@@ -99,8 +97,8 @@
           (log/debug "Touching session" entity "where" where)
           (db/update! tc :session entity (repo/where-clause where))
           (let [result (->> found
-                            entity-listed
-                            (expand-entity tc expand-users :user))]
+                            entity/entity-listed
+                            (entity/expand-entity tc user/expand-users :user))]
             (log/debug "Read and touched active session" result)
             result))))))
 

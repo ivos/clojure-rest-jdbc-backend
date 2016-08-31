@@ -2,7 +2,7 @@
   (:gen-class)
   (:require [dev]
             [reloaded.repl :refer [system go stop]]
-            [backend.system.flyway :refer :all]
+            [backend.system.flyway :refer [clean migrate]]
             [midje.repl :refer [load-facts]]
             ))
 

@@ -4,8 +4,8 @@
             [clojure.set :as set]
             [clojure.data.codec.base64 :as b64]
             [slingshot.slingshot :refer [throw+]]
-            [backend.app.session.session-logic :refer :all]
-            [backend.support.ring :refer :all]
+            [backend.app.session.session-logic :as session]
+            [backend.support.ring :refer [status-code]]
             ))
 
 (def ^:private auth-header-prefix
@@ -25,7 +25,7 @@
   (if-let [token (parse-auth-token request)]
     (do
       (log/debug "Authenticating token" token)
-      (let [session (session-logic-read-active ds token)]
+      (let [session (session/session-logic-read-active ds token)]
         (if session
           (do
             (log/debug "Authenticated" session)

@@ -1,10 +1,10 @@
 (ns lein-run
   (:gen-class)
   (:require [com.stuartsierra.component :as component]
-            [backend.system.config :refer :all]
-            [backend.system.datasource :refer :all]
-            [backend.system.flyway :refer :all]
-            [lightair :refer :all])
+            [backend.system.config :refer [new-config]]
+            [backend.system.datasource :refer [new-datasource]]
+            [backend.system.flyway :refer [new-flyway migrate clean]]
+            [lightair :refer [new-lightair]])
   (:import net.sf.lightair.Api))
 
 (defn- load-system-flyway

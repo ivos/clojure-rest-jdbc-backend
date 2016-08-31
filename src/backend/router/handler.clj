@@ -1,26 +1,26 @@
 (ns backend.router.handler
   (:require [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
-            [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
-            [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.keyword-params :refer [wrap-keyword-params]]
-            [backend.router.middleware :refer :all]
-            [backend.router.routes :refer :all]
+            [ring.middleware.json :as json]
+            [ring.middleware.params :as params]
+            [ring.middleware.keyword-params :as keyword-params]
+            [backend.router.middleware :as mware]
+            [backend.router.routes :as routes]
             ))
 
 (defn- create-instance
   [config datasource]
-  (-> app-handler
-      wrap-authentication
-      wrap-validation
-      wrap-custom-response
-      wrap-log
-      (wrap-json-body (:json config))
-      wrap-json-response
-      wrap-keyword-params
-      wrap-params
-      (wrap-datasource datasource)
-      (wrap-config config)
+  (-> routes/app-handler
+      (mware/wrap-authentication)
+      (mware/wrap-validation)
+      (mware/wrap-custom-response)
+      (mware/wrap-log)
+      (json/wrap-json-body (:json config))
+      (json/wrap-json-response)
+      (keyword-params/wrap-keyword-params)
+      (params/wrap-params)
+      (mware/wrap-datasource datasource)
+      (mware/wrap-config config)
       ))
 
 (defrecord HandlerComponent [config datasource handler]

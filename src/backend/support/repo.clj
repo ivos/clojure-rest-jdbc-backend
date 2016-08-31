@@ -4,7 +4,7 @@
             [clojure.tools.logging :as log]
             [slingshot.slingshot :refer [throw+]]
             [camel-snake-kebab.core :as csk]
-            [camel-snake-kebab.extras :refer [transform-keys]]
+            [camel-snake-kebab.extras :as csk.extras]
             [backend.support.ring :refer [status-code]]))
 
 (def ^:private generated-key
@@ -12,7 +12,7 @@
 
 (defn keys->db
   [entity]
-  (transform-keys csk/->snake_case entity))
+  (csk.extras/transform-keys csk/->snake_case entity))
 
 (defn where-clause
   [where]

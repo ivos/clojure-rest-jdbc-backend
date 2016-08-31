@@ -8,8 +8,8 @@
             [com.stuartsierra.component :as component]
             [reloaded.repl :refer [system init start stop go reset]]
             [backend.main :refer [load-system-production]]
-            [lightair :refer :all]
-            [backend.system.flyway :refer :all]
+            [lightair :refer [new-lightair db-setup db-verify]]
+            [backend.system.flyway :refer [clean migrate]]
             )
   (:use midje.repl)
   (:import (net.sf.lightair Api)))

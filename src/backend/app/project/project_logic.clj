@@ -1,14 +1,14 @@
 (ns backend.app.project.project-logic
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
-            [hugsql.core :refer [def-db-fns]]
+            [hugsql.core :as sql]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
             [flatland.ordered.map :refer [ordered-map]]
             [backend.support.repo :as repo]
-            [backend.support.entity :refer :all]
-            [backend.support.validation :refer :all]
-            [backend.app.user.user-logic :refer :all]
+            [backend.support.entity :as entity]
+            [backend.support.validation :as validation]
+            [backend.app.user.user-logic :as user]
             ))
 
 (def project-attributes
@@ -31,18 +31,18 @@
     :owner {:direction :out}
     ))
 
-(def-db-fns "backend/app/project/project.sql")
+(sql/def-db-fns "backend/app/project/project.sql")
 
 (defn- validate-unique-code-on-create
   [tc entity]
   (when (read-project tc (select-keys entity [:owner :code]))
-    (validation-failure {:code [[:duplicate]]})))
+    (validation/validation-failure {:code [[:duplicate]]})))
 
 (defn project-logic-create
   [ds session body]
   (log/debug "Creating project" body)
   (let [now (t/now)
-        entity (-> (valid project-attributes body)
+        entity (-> (validation/valid project-attributes body)
                    (assoc :created (tc/to-sql-time now)
                           :owner (get-in session [:user :id])))]
     (db/with-db-transaction
@@ -58,8 +58,8 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (list-all-projects tc)
-                      (map entity-listed)
-                      (expand-list tc expand-users :owner :id))]
+                      (map entity/entity-listed)
+                      (entity/expand-list tc user/expand-users :owner :id))]
       (log/debug "Listed projects" result)
       result)))
 
@@ -71,8 +71,8 @@
     (db/with-db-transaction
       [tc ds]
       (let [result (->> (read-project tc where)
-                        (entity-read)
-                        (expand-entity tc expand-users :owner))]
+                        (entity/entity-read)
+                        (entity/expand-entity tc user/expand-users :owner))]
         (log/debug "Read project" result)
         result))))
 
@@ -81,7 +81,7 @@
   (when (and (not= (:code entity) (:code where))
              (read-project tc {:owner (:owner where)
                                :code  (:code entity)}))
-    (validation-failure {:code [[:duplicate]]})))
+    (validation/validation-failure {:code [[:duplicate]]})))
 
 (defn project-logic-update
   [ds session body params version]
@@ -89,7 +89,7 @@
         where (assoc params :owner current-user-id
                             :version version)]
     (log/debug "Updating project" body "where" where)
-    (let [entity (valid project-attributes body)]
+    (let [entity (validation/valid project-attributes body)]
       (db/with-db-transaction
         [tc ds]
         (validate-unique-code-on-update tc entity where)

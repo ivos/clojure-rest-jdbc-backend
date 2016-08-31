@@ -1,5 +1,5 @@
 (ns backend.support.ring
-  (:require [ring.util.response :refer :all]
+  (:require [ring.util.response :as resp]
             [slingshot.slingshot :refer [throw+]]))
 
 (def status-code
@@ -31,11 +31,11 @@
 
 (defn etag-header
   [response entity]
-  (header response "ETag" (:version entity)))
+  (resp/header response "ETag" (:version entity)))
 
 (defn location-header
   [response location]
-  (header response "Location" location))
+  (resp/header response "Location" location))
 
 (def response-no-content
   {:status  (status-code :no-content)

@@ -2,12 +2,12 @@
   (:gen-class)
   (:require [clojure.tools.logging :as log]
             [com.stuartsierra.component :as component]
-            [backend.system.config :refer :all]
-            [backend.system.datasource :refer :all]
-            [backend.system.runtime :refer [add-shutdown-hook]]
-            [backend.system.flyway :refer :all]
-            [backend.router.handler :refer :all]
-            [backend.system.jetty :refer :all]))
+            [backend.system.config :refer [new-config]]
+            [backend.system.datasource :refer [new-datasource]]
+            [backend.system.runtime :as runtime]
+            [backend.system.flyway :refer [new-flyway migrate]]
+            [backend.router.handler :refer [new-handler]]
+            [backend.system.jetty :refer [new-jetty]]))
 
 (defn load-system-production
   []
@@ -30,6 +30,6 @@
     (log/info "Backend is starting...")
     (let [system (component/start system)
           flyway (:flyway system)]
-      (add-shutdown-hook ::stop-system #(stop-system system))
+      (runtime/add-shutdown-hook ::stop-system #(stop-system system))
       (migrate flyway))
     (log/info "Backend started OK.")))

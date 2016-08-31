@@ -1,10 +1,9 @@
 (ns backend.router.middleware
   (:require [clojure.tools.logging :as log]
-            [ring.util.response :refer [header]]
             [slingshot.slingshot :refer [try+]]
-            [backend.support.ring :refer :all]
+            [backend.support.ring :refer [status-code]]
             [backend.router.security :as security]
-            [backend.support.util :refer [filter-password]]
+            [backend.support.util :as util]
             ))
 
 (defn wrap-config
@@ -52,7 +51,7 @@
              (-> request :request-method name clojure.string/upper-case)
              (:uri request)])
           body (when-not (#{:get :head :delete} (:request-method request))
-                 (filter-password (:body request)))]
+                 (util/filter-password (:body request)))]
       (log/info ">>> Request"
                 request-info
                 "Params:" (:params request)

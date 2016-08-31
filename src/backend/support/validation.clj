@@ -5,8 +5,7 @@
             [clj-time.coerce :as tc]
             [clj-time.format :as tf]
             [slingshot.slingshot :refer [throw+ try+]]
-            [backend.support.ring :refer [status-code]]
-            ))
+            [backend.support.ring :refer [status-code]]))
 
 (defn- validate-required
   [attr-name validation value]

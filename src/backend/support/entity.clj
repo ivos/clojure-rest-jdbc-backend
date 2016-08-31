@@ -1,8 +1,9 @@
 (ns backend.support.entity
   (:require [slingshot.slingshot :refer [throw+]]
             [camel-snake-kebab.core :as csk]
-            [camel-snake-kebab.extras :refer [transform-keys]]
-            [backend.support.ring :refer :all]))
+            [camel-snake-kebab.extras :as csk.extras]
+            [backend.support.ring :refer [status-code]]
+            ))
 
 (defn verify-found
   [entity]
@@ -13,7 +14,7 @@
 
 (defn entity-listed
   [entity]
-  (transform-keys csk/->camelCase entity))
+  (csk.extras/transform-keys csk/->camelCase entity))
 
 (defn entity-read
   [entity]
