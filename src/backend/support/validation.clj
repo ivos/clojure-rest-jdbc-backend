@@ -123,13 +123,13 @@
       (apply assoc entity (interleave missing-keys (repeat nil)))
       entity)))
 
-(defn validation-failure
+(defn failure
   [errors]
   (log/debug "Validation failure" errors)
   (throw+ {:type :validation-failure :errors errors}))
 
 (defn valid
-  "Validate entity."
+  "Validate and normalize entity."
   [attributes entity]
   (let [inbound-attributes (get-inbound attributes)
         attribute-errors (mapcat #(validate-attribute %1 (get entity (first %1))) inbound-attributes)
@@ -137,5 +137,5 @@
         errors (filter identity (concat attribute-errors invalid-key-errors))
         result (group-errors errors)]
     (when (not-empty errors)
-      (validation-failure result))
+      (failure result))
     (assoc-missing-keys inbound-attributes entity)))

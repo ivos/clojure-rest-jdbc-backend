@@ -40,9 +40,9 @@
     (let [user (user/read ds (select-keys entity [:username]))]
       (when-not switch-to
         (when (not= "active" (:status user))
-          (validation/validation-failure {:user [[:invalid]]}))
+          (validation/failure {:user [[:invalid]]}))
         (when (not (hashers/check (:password entity) (:passwordHash user)))
-          (validation/validation-failure {:password [[:invalid]]})))
+          (validation/failure {:password [[:invalid]]})))
       (let [now (t/now)
             duration 90
             entity {:token    (str (UUID/randomUUID))

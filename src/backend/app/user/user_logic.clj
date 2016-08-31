@@ -34,12 +34,12 @@
 (defn- validate-unique-username-on-create
   [tc entity]
   (when (sql-read tc (select-keys entity [:username]))
-    (validation/validation-failure {:username [[:duplicate]]})))
+    (validation/failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-create
   [tc entity]
   (when (sql-read tc {:username (:email entity)})
-    (validation/validation-failure {:email [[:duplicate]]})))
+    (validation/failure {:email [[:duplicate]]})))
 
 (defn create
   [ds body]
@@ -80,13 +80,13 @@
   [tc entity where]
   (when (and (not= (:username entity) (:username where))
              (sql-read tc (select-keys entity [:username])))
-    (validation/validation-failure {:username [[:duplicate]]})))
+    (validation/failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-update
   [tc entity where]
   (when-let [found (sql-read tc {:username (:email entity)})]
     (when (not= (:username found) (:username where))
-      (validation/validation-failure {:email [[:duplicate]]}))))
+      (validation/failure {:email [[:duplicate]]}))))
 
 (defn update
   [ds body params version]
@@ -107,7 +107,7 @@
   (when-let [found (sql-read tc (select-keys where [:username]))]
     (let [actual (:status found)]
       (when (not (contains? expected actual))
-        (validation/validation-failure {:status [[:invalid actual expected]]})))))
+        (validation/failure {:status [[:invalid actual expected]]})))))
 
 (defn- perform-action
   [ds params version action from to]

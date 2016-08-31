@@ -37,7 +37,7 @@
 (defn- validate-unique-code-on-create
   [tc entity]
   (when (sql-read tc (select-keys entity [:owner :code]))
-    (validation/validation-failure {:code [[:duplicate]]})))
+    (validation/failure {:code [[:duplicate]]})))
 
 (defn create
   [ds session body]
@@ -82,7 +82,7 @@
   (when (and (not= (:code entity) (:code where))
              (sql-read tc {:owner (:owner where)
                            :code  (:code entity)}))
-    (validation/validation-failure {:code [[:duplicate]]})))
+    (validation/failure {:code [[:duplicate]]})))
 
 (defn update
   [ds session body params version]
