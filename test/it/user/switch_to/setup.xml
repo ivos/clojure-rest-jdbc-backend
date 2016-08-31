@@ -1,0 +1,17 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
+
+	<!--switch from-->
+	<user id="1534984901" version="@auto" username="username_from" email="@auto" name="@auto"
+	      password_hash="bcrypt+sha512$134fa01351b077832dfd60d300cf72a6$12$a4adf524b18409f87891ee597b88ea92b789742d70e8181e"
+	      status="active" roles="admin"/>
+	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="90" expires="@timestamp+PT1M"
+	         user="1534984901"/>
+
+	<!--switch to: disabled and password not matching-->
+	<user id="1534984902" version="@auto" username="username_to" email="@auto" name="@auto" password_hash="@auto"
+	      status="disabled" roles="user"/>
+
+	<user id="1534984903" version="@auto" username="username_other" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+
+</dataset>

@@ -19,6 +19,7 @@
                (context "/actions" []
                  (PUT "/disable" [] (roles [:admin] user-api-disable))
                  (PUT "/activate" [] (roles [:admin] user-api-activate))
+                 (POST "/switch-to" [] (roles [:admin] session-api-switch-to))
                  ))))
 
 (defroutes ^:private session-routes

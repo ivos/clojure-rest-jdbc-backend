@@ -35,31 +35,40 @@
   [duration now]
   (tc/to-sql-time (t/plus now (t/minutes duration))))
 
-(defn session-logic-create
-  [ds body]
-  (log/debug "Creating session" (filter-password body))
-  (let [entity (valid session-attributes body)]
-    (db/with-db-transaction
-      [tc ds]
-      (let [user (user-logic-read ds (select-keys entity [:username]))]
+(defn- create-internal
+  [ds entity switch-to]
+  (db/with-db-transaction
+    [tc ds]
+    (let [user (user-logic-read ds (select-keys entity [:username]))]
+      (when-not switch-to
         (when (not= "active" (:status user))
           (validation-failure {:user [[:invalid]]}))
         (when (not (hashers/check (:password entity) (:passwordHash user)))
-          (validation-failure {:password [[:invalid]]}))
-        (let [now (t/now)
-              duration 90
-              entity {
-                      :token    (str (UUID/randomUUID))
-                      :created  (tc/to-sql-time now)
-                      :duration duration
-                      :expires  (calculate-expires duration now)
-                      :user     (:id user)
-                      }
-              _ (db/insert! tc :session entity)
-              result (assoc entity :user user)
-              ]
-          (log/debug "Created session" result)
-          result)))))
+          (validation-failure {:password [[:invalid]]})))
+      (let [now (t/now)
+            duration 90
+            entity {:token    (str (UUID/randomUUID))
+                    :created  (tc/to-sql-time now)
+                    :duration duration
+                    :expires  (calculate-expires duration now)
+                    :user     (:id user)}]
+        (db/insert! tc :session entity)
+        (assoc entity :user user)))))
+
+(defn session-logic-create
+  [ds body]
+  (log/debug "Creating session" (filter-password body))
+  (let [entity (valid session-attributes body)
+        result (create-internal ds entity false)]
+    (log/debug "Created session" result)
+    result))
+
+(defn session-logic-switch-to-user
+  [ds params]
+  (log/debug "Creating switch-to session" (filter-password params))
+  (let [result (create-internal ds params true)]
+    (log/debug "Created switch-to session" result)
+    result))
 
 (defn session-logic-list-active
   [ds params]

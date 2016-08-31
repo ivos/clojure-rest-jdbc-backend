@@ -24,3 +24,9 @@
   [{:keys [ds session]}]
   (session-logic-expire ds session)
   response-no-content)
+
+(defn session-api-switch-to
+  [{:keys [ds params]}]
+  (let [result (update-user-entity-result :user (session-logic-switch-to-user ds params))]
+    {:status (status-code :created)
+     :body   result}))
