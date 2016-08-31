@@ -33,9 +33,9 @@
              (POST "/" [] (roles [:user] project-api-create))
              (GET "/" [] (roles [:user] project-api-list))
              (context "/:code" []
-               (GET "/" [] project-api-read)
-               (PUT "/" [] project-api-update)
-               (DELETE "/" [] project-api-delete)
+               (GET "/" [] (roles [:user] project-api-read))
+               (PUT "/" [] (roles [:user] project-api-update))
+               (DELETE "/" [] (roles [:user] project-api-delete))
                )))
 
 (defroutes app-handler

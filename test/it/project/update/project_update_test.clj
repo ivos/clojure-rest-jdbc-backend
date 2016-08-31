@@ -13,7 +13,8 @@
   [code version body]
   (-> (mock/request :put (str "/projects/" code) body)
       (mock/content-type "application/json")
-      (if-match-header version)))
+      (if-match-header version)
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (defn- ok
   [test-case]

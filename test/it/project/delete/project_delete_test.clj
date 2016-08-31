@@ -12,7 +12,8 @@
 (defn- create-request
   [code version]
   (-> (mock/request :delete (str "/projects/" code))
-      (if-match-header version)))
+      (if-match-header version)
+      (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest project-delete-ok
   (facts
