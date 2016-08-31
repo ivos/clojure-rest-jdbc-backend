@@ -17,40 +17,59 @@
       (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (defn- ok
-  [test-case]
+  [test-case location]
   (db-setup prefix "../../users" "setup")
   (let [request-body (read-json prefix (str test-case "-request"))
         request (create-request "code_2" 123 request-body)
         response (call-handler request)
         ]
     (verify-response response {:status   :no-content
-                               :location "http://localhost:3000/projects/code_2_updated"})
+                               :location (str "http://localhost:3000/projects/" location)})
     (db-verify prefix (str test-case "-verify"))
     ))
 
 (deftest project-update-full
   (facts
     "project-update-full"
-    (ok "full")))
+    (ok "full" "code_2_updated")))
 
 (deftest project-update-minimal
   (facts
     "project-update-minimal"
-    (ok "minimal")))
+    (ok "minimal" "code_2_updated")))
+
+(defn- validation
+  [test-case]
+  (db-setup prefix "../../users" "setup")
+  (let [request-body (read-json prefix (str test-case "-request"))
+        expected-body (read-json prefix (str test-case "-response"))
+        request (create-request "code_2" 123 request-body)
+        response (call-handler request)
+        ]
+    (verify-response response {:status :unprocessable-entity
+                               :body   expected-body})
+    (db-verify prefix "setup")
+    ))
 
 (deftest project-update-empty
   (facts
     "project-update-empty"
-    (db-setup prefix "../../users" "setup")
-    (let [request-body (read-json prefix "empty-request")
-          expected-body (read-json prefix "empty-response")
-          request (create-request "code_2" 123 request-body)
-          response (call-handler request)
-          ]
-      (verify-response response {:status :unprocessable-entity
-                                 :body   expected-body})
-      (db-verify prefix "setup")
-      )))
+    (validation "empty")))
+
+(deftest project-update-duplicate
+  (facts
+    "project-update-duplicate"
+    (validation "duplicate")))
+
+(deftest project-update-other
+  (facts
+    "project-update-other"
+    (ok "other" "code_existing_other")))
+
+(deftest project-update-keep-uniques
+  (facts
+    "project-update-keep-uniques"
+    (ok "keep-uniques" "code_2")))
 
 (deftest project-update-conflict
   (facts

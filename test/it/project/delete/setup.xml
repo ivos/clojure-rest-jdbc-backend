@@ -10,4 +10,8 @@
 	<project id="1558384903" version="1558325503" code="@auto" name="@auto" visibility="private" created="@auto"
 	         owner="1534984901"/>
 
+	<!--same code, other user-->
+	<project id="1558384904" version="123" code="code_2" name="@auto" visibility="public" created="@auto"
+	         owner="1534984902"/>
+
 </dataset>

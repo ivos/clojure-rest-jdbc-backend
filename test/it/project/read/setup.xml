@@ -1,8 +1,14 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 
+	<!--other code-->
 	<project id="@auto" version="@auto" code="code_1" name="@auto" visibility="private" description="@auto"
 	         start="@auto" duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"
 	         owner="1534984901"/>
+
+	<!--same code, other owner-->
+	<project id="@auto" version="@auto" code="code_2" name="@auto" visibility="private" description="@auto"
+	         start="@auto" duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"
+	         owner="1534984902"/>
 
 	<!--found-->
 	<project id="@auto" version="12302" code="code_2" name="@auto" visibility="public" description="@auto"

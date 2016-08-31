@@ -6,9 +6,10 @@
 	<!--existing, other user-->
 	<project id="@auto" version="@auto" code="code_existing_other" owner="1534984902"/>
 
+
 	<!--created-->
-	<project id="@any" version="1" code="code_1" name="Name 1" visibility="private" description="description 1"
-	         start="2016-10-11" duration="56" budget="2034.56" daily_meeting_at="11:12:13"
-	         kick_off="2016-10-12T13:45:01Z" created="@timestamp" owner="1534984901"/>
+	<project id="@any" version="1" code="code_existing_other" name="Name 1" visibility="private" description="@null"
+	         start="@null" duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null"
+	         created="@timestamp" owner="1534984901"/>
 
 </dataset>

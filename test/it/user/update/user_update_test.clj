@@ -38,19 +38,23 @@
     "user-update-minimal"
     (ok "minimal" "username_2_updated")))
 
+(defn- validation
+  [test-case]
+  (db-setup prefix "setup")
+  (let [request-body (read-json prefix (str test-case "-request"))
+        expected-body (read-json prefix (str test-case "-response"))
+        request (create-request "username_2" 123 request-body)
+        response (call-handler request)
+        ]
+    (verify-response response {:status :unprocessable-entity
+                               :body   expected-body})
+    (db-verify prefix "error-verify")
+    ))
+
 (deftest user-update-empty
   (facts
     "user-update-empty"
-    (db-setup prefix "setup")
-    (let [request-body (read-json prefix "empty-request")
-          expected-body (read-json prefix "empty-response")
-          request (create-request "username_2" 123 request-body)
-          response (call-handler request)
-          ]
-      (verify-response response {:status :unprocessable-entity
-                                 :body   expected-body})
-      (db-verify prefix "error-verify")
-      )))
+    (validation "empty")))
 
 (deftest user-update-conflict
   (facts
@@ -67,30 +71,12 @@
 (deftest user-update-username-duplicate
   (facts
     "user-update-username-duplicate"
-    (db-setup prefix "setup")
-    (let [request-body (read-json prefix "username-duplicate-request")
-          expected-body (read-json prefix "username-duplicate-response")
-          request (create-request "username_2" 123 request-body)
-          response (call-handler request)
-          ]
-      (verify-response response {:status :unprocessable-entity
-                                 :body   expected-body})
-      (db-verify prefix "error-verify")
-      )))
+    (validation "username-duplicate")))
 
 (deftest user-update-email-duplicate
   (facts
     "user-update-email-duplicate"
-    (db-setup prefix "setup")
-    (let [request-body (read-json prefix "email-duplicate-request")
-          expected-body (read-json prefix "email-duplicate-response")
-          request (create-request "username_2" 123 request-body)
-          response (call-handler request)
-          ]
-      (verify-response response {:status :unprocessable-entity
-                                 :body   expected-body})
-      (db-verify prefix "error-verify")
-      )))
+    (validation "email-duplicate")))
 
 (deftest user-update-keep-uniques
   (facts

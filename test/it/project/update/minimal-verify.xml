@@ -7,6 +7,10 @@
 	         description="@null" start="@null" duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null"
 	         created="@auto" owner="1534984901"/>
 
-	<project id="@auto" version="@auto" code="code_3"/>
+	<!--existing, same user-->
+	<project id="@auto" version="@auto" code="code_existing_same"/>
+
+	<!--existing, other user-->
+	<project id="@auto" version="@auto" code="code_existing_other" owner="1534984902"/>
 
 </dataset>

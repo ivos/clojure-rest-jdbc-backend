@@ -1,5 +1,12 @@
 <dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../dataset.xsd">
 
+	<!--existing, same user-->
+	<project id="@auto" version="@auto" code="code_existing_same" owner="1534984901"/>
+
+	<!--existing, other user-->
+	<project id="@auto" version="@auto" code="code_existing_other" owner="1534984902"/>
+
+
 	<!--created-->
 	<project id="@any" version="1" code="code_1" name="Name 1" visibility="private" description="@null" start="@null"
 	         duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null" created="@timestamp"

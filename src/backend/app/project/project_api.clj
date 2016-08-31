@@ -25,21 +25,21 @@
     (resp/response result)))
 
 (defn project-api-read
-  [{:keys [ds params]}]
-  (let [result (->> (project-logic-read ds params)
+  [{:keys [ds session params]}]
+  (let [result (->> (project-logic-read ds session params)
                     (update-user-entity-result :owner))]
     (-> (resp/response (entity-result project-attributes result))
         (etag-header result))))
 
 (defn project-api-update
-  [{:keys [config ds body params] :as request}]
+  [{:keys [config ds session body params] :as request}]
   (let [version (get-version request)
-        result (project-logic-update ds body params version)]
+        result (project-logic-update ds session body params version)]
     (-> response-no-content
         (location-header (get-detail-uri config result)))))
 
 (defn project-api-delete
-  [{:keys [ds params] :as request}]
+  [{:keys [ds session params] :as request}]
   (let [version (get-version request)]
-    (project-logic-delete ds params version)
+    (project-logic-delete ds session params version)
     response-no-content))

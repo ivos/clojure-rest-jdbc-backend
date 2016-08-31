@@ -5,4 +5,4 @@ from project;
 -- :name read-project :? :1
 select *
 from project
-where code = :code;
+where (code = :code) and (owner = :owner);

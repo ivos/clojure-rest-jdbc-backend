@@ -33,6 +33,11 @@
 
 (def-db-fns "backend/app/project/project.sql")
 
+(defn- validate-unique-code-on-create
+  [tc entity]
+  (when (read-project tc (select-keys entity [:owner :code]))
+    (validation-failure {:code [[:duplicate]]})))
+
 (defn project-logic-create
   [ds session body]
   (log/debug "Creating project" body)
@@ -42,6 +47,7 @@
                           :owner (get-in session [:user :id])))]
     (db/with-db-transaction
       [tc ds]
+      (validate-unique-code-on-create tc entity)
       (let [result (repo/create! tc :project entity)]
         (log/debug "Created project" result)
         result))))
@@ -58,30 +64,44 @@
       result)))
 
 (defn project-logic-read
-  [ds params]
-  (log/debug "Reading project" params)
-  (db/with-db-transaction
-    [tc ds]
-    (let [result (->> (read-project tc params)
-                      entity-read
-                      (expand-entity tc expand-users :owner))]
-      (log/debug "Read project" result)
-      result)))
+  [ds session params]
+  (let [current-user-id (get-in session [:user :id])
+        where (assoc params :owner current-user-id)]
+    (log/debug "Reading project" where)
+    (db/with-db-transaction
+      [tc ds]
+      (let [result (->> (read-project tc where)
+                        (entity-read)
+                        (expand-entity tc expand-users :owner))]
+        (log/debug "Read project" result)
+        result))))
+
+(defn- validate-unique-code-on-update
+  [tc entity where]
+  (when (and (not= (:code entity) (:code where))
+             (read-project tc {:owner (:owner where)
+                               :code  (:code entity)}))
+    (validation-failure {:code [[:duplicate]]})))
 
 (defn project-logic-update
-  [ds body params version]
-  (let [where (assoc params :version version)]
+  [ds session body params version]
+  (let [current-user-id (get-in session [:user :id])
+        where (assoc params :owner current-user-id
+                            :version version)]
     (log/debug "Updating project" body "where" where)
     (let [entity (valid project-attributes body)]
       (db/with-db-transaction
         [tc ds]
+        (validate-unique-code-on-update tc entity where)
         (let [result (repo/update! tc :project entity where)]
           (log/debug "Updated project" result)
           result)))))
 
 (defn project-logic-delete
-  [ds params version]
-  (let [where (assoc params :version version)]
+  [ds session params version]
+  (let [current-user-id (get-in session [:user :id])
+        where (assoc params :owner current-user-id
+                            :version version)]
     (log/debug "Deleting project where" where)
     (db/with-db-transaction
       [tc ds]

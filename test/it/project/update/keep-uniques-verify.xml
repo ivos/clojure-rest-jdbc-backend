@@ -3,9 +3,9 @@
 	<project id="@auto" version="@auto" code="code_1"/>
 
 	<!--updated-->
-	<project id="@auto" version="124" code="code_2_updated" name="Name 2 updated" visibility="private"
-	         description="description 2 updated" start="2016-12-31" duration="56" budget="2034.56"
-	         daily_meeting_at="11:12:13" kick_off="2016-10-12T13:45:01Z" created="@auto" owner="1534984901"/>
+	<project id="@auto" version="124" code="code_2" name="Name 2 updated" visibility="private" description="@null"
+	         start="@null" duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null" created="@auto"
+	         owner="1534984901"/>
 
 	<!--existing, same user-->
 	<project id="@auto" version="@auto" code="code_existing_same"/>
