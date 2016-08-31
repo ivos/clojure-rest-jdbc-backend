@@ -1,8 +1,8 @@
--- :name list-all-projects :? :*
+-- :name sql-list-all :? :*
 select *
 from project;
 
--- :name read-project :? :1
+-- :name sql-read :? :1
 select *
 from project
 where (code = :code) and (owner = :owner);

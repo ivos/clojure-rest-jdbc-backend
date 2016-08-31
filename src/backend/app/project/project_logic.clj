@@ -1,4 +1,5 @@
 (ns backend.app.project.project-logic
+  (:refer-clojure :exclude [list read update])
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
             [hugsql.core :as sql]
@@ -11,7 +12,7 @@
             [backend.app.user.user-logic :as user]
             ))
 
-(def project-attributes
+(def attributes
   (ordered-map
     :code {:required   true
            :max-length 100
@@ -35,14 +36,14 @@
 
 (defn- validate-unique-code-on-create
   [tc entity]
-  (when (read-project tc (select-keys entity [:owner :code]))
+  (when (sql-read tc (select-keys entity [:owner :code]))
     (validation/validation-failure {:code [[:duplicate]]})))
 
-(defn project-logic-create
+(defn create
   [ds session body]
   (log/debug "Creating project" body)
   (let [now (t/now)
-        entity (-> (validation/valid project-attributes body)
+        entity (-> (validation/valid attributes body)
                    (assoc :created (tc/to-sql-time now)
                           :owner (get-in session [:user :id])))]
     (db/with-db-transaction
@@ -52,44 +53,44 @@
         (log/debug "Created project" result)
         result))))
 
-(defn project-logic-list
+(defn list
   [ds params]
   (log/debug "Listing projects" params)
   (db/with-db-transaction
     [tc ds]
-    (let [result (->> (list-all-projects tc)
+    (let [result (->> (sql-list-all tc)
                       (map entity/entity-listed)
-                      (entity/expand-list tc user/expand-users :owner :id))]
+                      (entity/expand-list tc user/sql-expand :owner :id))]
       (log/debug "Listed projects" result)
       result)))
 
-(defn project-logic-read
+(defn read
   [ds session params]
   (let [current-user-id (get-in session [:user :id])
         where (assoc params :owner current-user-id)]
     (log/debug "Reading project" where)
     (db/with-db-transaction
       [tc ds]
-      (let [result (->> (read-project tc where)
+      (let [result (->> (sql-read tc where)
                         (entity/entity-read)
-                        (entity/expand-entity tc user/expand-users :owner))]
+                        (entity/expand-entity tc user/sql-expand :owner))]
         (log/debug "Read project" result)
         result))))
 
 (defn- validate-unique-code-on-update
   [tc entity where]
   (when (and (not= (:code entity) (:code where))
-             (read-project tc {:owner (:owner where)
-                               :code  (:code entity)}))
+             (sql-read tc {:owner (:owner where)
+                           :code  (:code entity)}))
     (validation/validation-failure {:code [[:duplicate]]})))
 
-(defn project-logic-update
+(defn update
   [ds session body params version]
   (let [current-user-id (get-in session [:user :id])
         where (assoc params :owner current-user-id
                             :version version)]
     (log/debug "Updating project" body "where" where)
-    (let [entity (validation/valid project-attributes body)]
+    (let [entity (validation/valid attributes body)]
       (db/with-db-transaction
         [tc ds]
         (validate-unique-code-on-update tc entity where)
@@ -97,7 +98,7 @@
           (log/debug "Updated project" result)
           result)))))
 
-(defn project-logic-delete
+(defn delete
   [ds session params version]
   (let [current-user-id (get-in session [:user :id])
         where (assoc params :owner current-user-id

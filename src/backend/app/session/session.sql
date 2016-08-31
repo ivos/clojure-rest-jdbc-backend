@@ -1,10 +1,10 @@
--- :name list-active-sessions :? :*
+-- :name sql-list-active :? :*
 select *
 from session
 where expires > :now
 order by expires desc, created desc, token;
 
--- :name read-active-session :? :1
+-- :name sql-read-active :? :1
 select s.*
 from session as s
   join user as u on s.user = u.id

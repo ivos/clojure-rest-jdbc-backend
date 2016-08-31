@@ -25,7 +25,7 @@
   (if-let [token (parse-auth-token request)]
     (do
       (log/debug "Authenticating token" token)
-      (let [session (session/session-logic-read-active ds token)]
+      (let [session (session/read-active ds token)]
         (if session
           (do
             (log/debug "Authenticated" session)

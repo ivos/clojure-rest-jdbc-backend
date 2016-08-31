@@ -1,4 +1,5 @@
 (ns backend.app.user.user-logic
+  (:refer-clojure :exclude [list read update])
   (:require [clojure.tools.logging :as log]
             [clojure.java.jdbc :as db]
             [hugsql.core :as sql]
@@ -12,7 +13,7 @@
 (def email-pattern
   #"^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$")
 
-(def user-attributes
+(def attributes
   (ordered-map
     :username {:required   true
                :max-length 100
@@ -32,18 +33,18 @@
 
 (defn- validate-unique-username-on-create
   [tc entity]
-  (when (read-user tc (select-keys entity [:username]))
+  (when (sql-read tc (select-keys entity [:username]))
     (validation/validation-failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-create
   [tc entity]
-  (when (read-user tc {:username (:email entity)})
+  (when (sql-read tc {:username (:email entity)})
     (validation/validation-failure {:email [[:duplicate]]})))
 
-(defn user-logic-create
+(defn create
   [ds body]
   (log/debug "Creating user" (util/filter-password body))
-  (let [attributes (assoc-in user-attributes [:password :required] true)
+  (let [attributes (assoc-in attributes [:password :required] true)
         entity (-> (validation/valid attributes body)
                    (util/hash-entity)
                    (assoc :status "active" :roles "user"))]
@@ -55,22 +56,22 @@
         (log/debug "Created user" (util/filter-password result))
         result))))
 
-(defn user-logic-list
+(defn list
   [ds params]
   (log/debug "Listing users" params)
   (db/with-db-transaction
     [tc ds]
-    (let [result (->> (list-all-users tc)
+    (let [result (->> (sql-list-all tc)
                       (map entity/entity-listed))]
       (log/debug "Listed users" result)
       result)))
 
-(defn user-logic-read
+(defn read
   [ds params]
   (log/debug "Reading user" params)
   (db/with-db-transaction
     [tc ds]
-    (let [result (->> (read-user tc params)
+    (let [result (->> (sql-read tc params)
                       entity/entity-read)]
       (log/debug "Read user" result)
       result)))
@@ -78,20 +79,20 @@
 (defn- validate-unique-username-on-update
   [tc entity where]
   (when (and (not= (:username entity) (:username where))
-             (read-user tc (select-keys entity [:username])))
+             (sql-read tc (select-keys entity [:username])))
     (validation/validation-failure {:username [[:duplicate]]})))
 
 (defn- validate-unique-email-on-update
   [tc entity where]
-  (when-let [found (read-user tc {:username (:email entity)})]
+  (when-let [found (sql-read tc {:username (:email entity)})]
     (when (not= (:username found) (:username where))
       (validation/validation-failure {:email [[:duplicate]]}))))
 
-(defn user-logic-update
+(defn update
   [ds body params version]
   (let [where (assoc params :version version)]
     (log/debug "Updating user" (util/filter-password body) "where" where)
-    (let [entity (-> (validation/valid user-attributes body)
+    (let [entity (-> (validation/valid attributes body)
                      (util/hash-entity))]
       (db/with-db-transaction
         [tc ds]
@@ -103,7 +104,7 @@
 
 (defn- validate-status
   [tc where expected]
-  (when-let [found (read-user tc (select-keys where [:username]))]
+  (when-let [found (sql-read tc (select-keys where [:username]))]
     (let [actual (:status found)]
       (when (not (contains? expected actual))
         (validation/validation-failure {:status [[:invalid actual expected]]})))))
@@ -119,15 +120,15 @@
         (repo/update! tc :user entity where)
         (log/debug "Performed action" action "on user where" where)))))
 
-(defn user-logic-disable
+(defn disable
   [ds params version]
   (perform-action ds params version "disable" #{"active"} "disabled"))
 
-(defn user-logic-activate
+(defn activate
   [ds params version]
   (perform-action ds params version "activate" #{"disabled"} "active"))
 
-(defn user-logic-delete
+(defn delete
   [ds params version]
   (let [where (assoc params :version version)]
     (log/debug "Deleting user where" where)

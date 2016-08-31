@@ -1,44 +1,46 @@
 (ns backend.app.user.user-api
-  (:require [ring.util.response :as resp]
+  (:refer-clojure :exclude [list read update])
+  (:require [clojure.core :as core]
+            [ring.util.response :as resp]
             [backend.support.ring :refer [get-deploy-url etag-header location-header get-version response-no-content]]
             [backend.support.api :as api]
             [backend.support.util :as util]
             [backend.app.user.user-logic :as logic]
             ))
 
-(defn update-user-entity-result
+(defn update-entity-result
   [rel-attribute entity]
-  (update entity rel-attribute
-          (comp (partial api/entity-result logic/user-attributes)
-                util/filter-password)))
+  (core/update entity rel-attribute
+               (comp (partial api/entity-result logic/attributes)
+                     util/filter-password)))
 
 (defn- get-detail-uri
   [request entity]
   (get-deploy-url request "users/" (:username entity)))
 
-(defn user-api-create
+(defn create
   [{:keys [config ds body]}]
-  (let [result (logic/user-logic-create ds body)]
+  (let [result (logic/create ds body)]
     (resp/created (get-detail-uri config result))))
 
-(defn user-api-list
+(defn list
   [{:keys [config ds params]}]
-  (let [data (->> (logic/user-logic-list ds params)
+  (let [data (->> (logic/list ds params)
                   (map util/filter-password))
-        result (map (partial api/list-entity-result get-detail-uri logic/user-attributes config) data)]
+        result (map (partial api/list-entity-result get-detail-uri logic/attributes config) data)]
     (resp/response result)))
 
-(defn user-api-read
+(defn read
   [{:keys [ds params]}]
-  (let [result (->> (logic/user-logic-read ds params)
+  (let [result (->> (logic/read ds params)
                     util/filter-password)]
-    (-> (resp/response (api/entity-result logic/user-attributes result))
+    (-> (resp/response (api/entity-result logic/attributes result))
         (etag-header result))))
 
-(defn user-api-update
+(defn update
   [{:keys [config ds body params] :as request}]
   (let [version (get-version request)
-        result (logic/user-logic-update ds body params version)]
+        result (logic/update ds body params version)]
     (-> response-no-content
         (location-header (get-detail-uri config result)))))
 
@@ -49,16 +51,16 @@
     (-> response-no-content
         (location-header (get-detail-uri config params)))))
 
-(defn user-api-disable
+(defn disable
   [request]
-  (perform-action request logic/user-logic-disable))
+  (perform-action request logic/disable))
 
-(defn user-api-activate
+(defn activate
   [request]
-  (perform-action request logic/user-logic-activate))
+  (perform-action request logic/activate))
 
-(defn user-api-delete
+(defn delete
   [{:keys [ds params] :as request}]
   (let [version (get-version request)]
-    (logic/user-logic-delete ds params version)
+    (logic/delete ds params version)
     response-no-content))

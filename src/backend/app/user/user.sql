@@ -1,14 +1,14 @@
--- :name list-all-users :? :*
+-- :name sql-list-all :? :*
 select *
 from user;
 
--- :name read-user :? :1
+-- :name sql-read :? :1
 select *
 from user
 where (username = :username)
       or (email = :username);
 
--- :name expand-users :? :*
+-- :name sql-expand :? :*
 select *
 from user
 where id in (:v*:ids);

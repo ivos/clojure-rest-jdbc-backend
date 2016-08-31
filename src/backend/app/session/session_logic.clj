@@ -37,7 +37,7 @@
   [ds entity switch-to]
   (db/with-db-transaction
     [tc ds]
-    (let [user (user/user-logic-read ds (select-keys entity [:username]))]
+    (let [user (user/read ds (select-keys entity [:username]))]
       (when-not switch-to
         (when (not= "active" (:status user))
           (validation/validation-failure {:user [[:invalid]]}))
@@ -53,7 +53,7 @@
         (db/insert! tc :session entity)
         (assoc entity :user user)))))
 
-(defn session-logic-create
+(defn create
   [ds body]
   (log/debug "Creating session" (util/filter-password body))
   (let [entity (validation/valid session-attributes body)
@@ -61,33 +61,33 @@
     (log/debug "Created session" result)
     result))
 
-(defn session-logic-switch-to-user
+(defn switch-to-user
   [ds params]
   (log/debug "Creating switch-to session" (util/filter-password params))
   (let [result (create-internal ds params true)]
     (log/debug "Created switch-to session" result)
     result))
 
-(defn session-logic-list-active
+(defn list-active
   [ds params]
   (log/debug "Listing active sessions" params)
   (db/with-db-transaction
     [tc ds]
     (let [now (t/now)
-          result (->> (list-active-sessions tc {:now (tc/to-sql-time now)})
+          result (->> (sql-list-active tc {:now (tc/to-sql-time now)})
                       (map entity/entity-listed)
-                      (entity/expand-list tc user/expand-users :user :id))]
+                      (entity/expand-list tc user/sql-expand :user :id))]
       (log/debug "Listed active sessions" result)
       result)))
 
-(defn session-logic-read-active
+(defn read-active
   [ds token]
   (log/debug "Reading active session for token" token)
   (db/with-db-transaction
     [tc ds]
     (let [now (t/now)
-          found (read-active-session tc {:token token
-                                         :now   (tc/to-sql-time now)})]
+          found (sql-read-active tc {:token token
+                                     :now   (tc/to-sql-time now)})]
       (when found
         (let [duration (:duration found)
               expires (calculate-expires duration now)
@@ -98,11 +98,11 @@
           (db/update! tc :session entity (repo/where-clause where))
           (let [result (->> found
                             entity/entity-listed
-                            (entity/expand-entity tc user/expand-users :user))]
+                            (entity/expand-entity tc user/sql-expand :user))]
             (log/debug "Read and touched active session" result)
             result))))))
 
-(defn session-logic-expire
+(defn expire
   [ds session]
   (let [now (t/now)
         entity {:expires (tc/to-sql-time now)}
