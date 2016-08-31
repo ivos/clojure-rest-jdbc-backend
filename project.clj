@@ -19,6 +19,7 @@
                  [clj-time "0.12.0"]
                  [camel-snake-kebab "0.4.0"]
                  [org.flatland/ordered "1.5.4"]
+                 [buddy/buddy-hashers "0.14.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.7"]
                  ]

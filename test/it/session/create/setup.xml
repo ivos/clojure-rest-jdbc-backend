@@ -2,12 +2,12 @@
 
 	<!--found-->
 	<user id="@auto" version="@auto" username="username_1" email="@auto" name="@auto"
-	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="active"
-	      roles="user"/>
+	      password_hash="bcrypt+sha512$134fa01351b077832dfd60d300cf72a6$12$a4adf524b18409f87891ee597b88ea92b789742d70e8181e"
+	      status="active" roles="user"/>
 
 	<!--disabled-->
 	<user id="@auto" version="@auto" username="username_disabled" email="@auto" name="@auto"
-	      password_hash="e5b9fc8796dcd695c57899867729a70cd471da41f1ea56f3af33bb90d7b61a17" status="disabled"
-	      roles="user"/>
+	      password_hash="bcrypt+sha512$134fa01351b077832dfd60d300cf72a6$12$a4adf524b18409f87891ee597b88ea92b789742d70e8181e"
+	      status="disabled" roles="user"/>
 
 </dataset>

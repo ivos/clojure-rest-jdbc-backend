@@ -6,6 +6,7 @@
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
             [flatland.ordered.map :refer [ordered-map]]
+            [buddy.hashers :as hashers]
             [backend.support.repo :as repo]
             [backend.support.ring :refer :all]
             [backend.support.entity :refer :all]
@@ -37,14 +38,13 @@
 (defn session-logic-create
   [ds body]
   (log/debug "Creating session" (filter-password body))
-  (let [entity (-> (valid session-attributes body)
-                   hash-entity)]
+  (let [entity (valid session-attributes body)]
     (db/with-db-transaction
       [tc ds]
-      (let [user (user-logic-read ds entity)]
+      (let [user (user-logic-read ds (select-keys entity [:username]))]
         (when (not= "active" (:status user))
           (validation-failure {:user [[:invalid]]}))
-        (when (not= (:passwordHash entity) (:passwordHash user))
+        (when (not (hashers/check (:password entity) (:passwordHash user)))
           (validation-failure {:password [[:invalid]]}))
         (let [now (t/now)
               duration 90
