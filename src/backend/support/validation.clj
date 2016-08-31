@@ -44,8 +44,8 @@
 (defn- valid-date?
   [value]
   (= value (-> value
-               tc/to-local-date
-               str)))
+               (tc/to-local-date)
+               (str))))
 
 (defn- valid-time?
   [value]
@@ -56,8 +56,8 @@
 (defn- valid-timestamp?
   [value]
   (= value (-> value
-               tc/to-date-time
-               str)))
+               (tc/to-date-time)
+               (str))))
 
 (defn- validate-type
   [attr-name validation value]

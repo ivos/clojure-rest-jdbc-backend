@@ -72,7 +72,7 @@
   (db/with-db-transaction
     [tc ds]
     (let [result (->> (sql-read tc params)
-                      entity/entity-read)]
+                      (entity/entity-read))]
       (log/debug "Read user" result)
       result)))
 

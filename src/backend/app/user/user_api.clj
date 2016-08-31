@@ -33,7 +33,7 @@
 (defn read
   [{:keys [ds params]}]
   (let [result (->> (logic/read ds params)
-                    util/filter-password)]
+                    (util/filter-password))]
     (-> (resp/response (api/entity-result logic/attributes result))
         (etag-header result))))
 

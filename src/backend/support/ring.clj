@@ -44,4 +44,4 @@
 
 (defn get-deploy-url
   [config & uri]
-  (apply str (-> config :app :deploy-url) uri))
+  (apply str (get-in config [:app :deploy-url]) uri))

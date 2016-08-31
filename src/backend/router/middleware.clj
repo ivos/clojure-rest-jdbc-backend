@@ -44,19 +44,23 @@
   [handler]
   (fn
     [request]
-    (let [request-info
-          (clojure.string/join
-            " "
-            [(:protocol request)
-             (-> request :request-method name clojure.string/upper-case)
-             (:uri request)])
-          body (when-not (#{:get :head :delete} (:request-method request))
+    (let [request-method (:request-method request)
+          request-method-label (-> request-method
+                                   (name)
+                                   (clojure.string/upper-case))
+          request-info (clojure.string/join
+                         " "
+                         [(:protocol request)
+                          request-method-label
+                          (:uri request)])
+          body (when-not (#{:get :head :delete} request-method)
                  (util/filter-password (:body request)))]
       (log/info ">>> Request"
                 request-info
                 "Params:" (:params request)
                 "Body:" body
-                "Headers:" (-> request :headers (dissoc "host" "content-length")))
+                "Headers:" (-> (:headers request)
+                               (dissoc "host" "content-length")))
       (let [response (handler request)]
         (log/info "<<< Response" request-info response)
         response))))

@@ -19,7 +19,9 @@
                            (if-let [data-type (get-in attributes [%1 :type])]
                              (case data-type
                                (:date :time) (str value)
-                               :timestamp (-> value tc/to-date-time str)
+                               :timestamp (-> value
+                                              (tc/to-date-time)
+                                              (str))
                                (:integer :number) value)
                              value))
         values (map format-attribute keys)]

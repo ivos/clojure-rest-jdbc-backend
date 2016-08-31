@@ -6,7 +6,10 @@
 
 (defn- parse-edn-resource
   [file-name]
-  (-> file-name io/resource slurp edn/read-string))
+  (-> file-name
+      (io/resource)
+      (slurp)
+      (edn/read-string)))
 
 (defrecord ConfigComponent [config-file-name config]
   component/Lifecycle
