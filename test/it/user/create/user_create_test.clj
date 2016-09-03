@@ -11,7 +11,7 @@
 
 (defn- create-request
   [body]
-  (-> (mock/request :post "/users" body)
+  (-> (mock/request :post "/api/users" body)
       (mock/content-type "application/json")))
 
 (defn- ok

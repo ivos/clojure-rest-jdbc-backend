@@ -12,7 +12,7 @@
 
 (defn create-request
   [token]
-  (-> (mock/request :get "/sessions")
+  (-> (mock/request :get "/api/sessions")
       (auth-header token)))
 
 (deftest session-list-empty

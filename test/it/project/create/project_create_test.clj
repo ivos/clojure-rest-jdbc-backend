@@ -11,7 +11,7 @@
 
 (defn create-request
   [body]
-  (-> (mock/request :post "/projects" body)
+  (-> (mock/request :post "/api/projects" body)
       (mock/content-type "application/json")
       (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 

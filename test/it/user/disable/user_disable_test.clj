@@ -11,7 +11,7 @@
 
 (defn- create-request
   [username version token]
-  (-> (mock/request :put (str "/users/" username "/actions/disable"))
+  (-> (mock/request :put (str "/api/users/" username "/actions/disable"))
       (if-match-header version)
       (auth-header token)))
 

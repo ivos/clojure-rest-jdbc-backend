@@ -43,7 +43,8 @@
             [lein-uberwar "0.2.0"]]
   :ring {:init    backend.lein-ring/init
          :handler backend.lein-ring/handler
-         :destroy backend.lein-ring/destroy}
+         :destroy backend.lein-ring/destroy
+         :adapter {:port 8000}}
   :uberwar {:init    backend.lein-ring/init
             :handler backend.lein-ring/handler
             :destroy backend.lein-ring/destroy}

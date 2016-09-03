@@ -11,7 +11,7 @@
 
 (defn create-request
   [token]
-  (-> (mock/request :delete (str "/sessions"))
+  (-> (mock/request :delete (str "/api/sessions"))
       (auth-header token)))
 
 (deftest session-delete-ok

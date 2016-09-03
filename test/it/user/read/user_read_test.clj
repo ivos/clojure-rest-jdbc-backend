@@ -11,7 +11,7 @@
 
 (defn create-request
   [username]
-  (-> (mock/request :get (str "/users/" username))
+  (-> (mock/request :get (str "/api/users/" username))
       (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (deftest user-read

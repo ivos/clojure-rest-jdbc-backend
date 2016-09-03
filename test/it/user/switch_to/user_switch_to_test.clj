@@ -13,7 +13,7 @@
 
 (defn- create-request
   []
-  (-> (mock/request :post "/users/username_to/actions/switch-to")
+  (-> (mock/request :post "/api/users/username_to/actions/switch-to")
       (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 
 (defn- ok

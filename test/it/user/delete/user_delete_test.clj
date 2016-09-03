@@ -11,7 +11,7 @@
 
 (defn- create-request
   [username version]
-  (-> (mock/request :delete (str "/users/" username))
+  (-> (mock/request :delete (str "/api/users/" username))
       (if-match-header version)
       (auth-header "7b0e6756-d9e4-4001-9d53-000000000001")))
 

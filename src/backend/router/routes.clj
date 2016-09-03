@@ -41,7 +41,9 @@
 
 (defroutes app-handler
            (GET "/" [] "<h1>Backend</h1>")
-           user-routes
-           session-routes
-           project-routes
+           (context "/api" []
+             user-routes
+             session-routes
+             project-routes
+             )
            (route/not-found (fn [_] (resp/not-found {:code :route.not.found}))))
