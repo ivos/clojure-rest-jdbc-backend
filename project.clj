@@ -33,7 +33,7 @@
                                         [org.clojure/tools.nrepl "0.2.12"]
                                         [midje "1.8.3"]
                                         [ring/ring-mock "0.3.0"]
-                                        [net.sf.lightair/light-air "3.0.0-SNAPSHOT"]
+                                        [net.sf.lightair/light-air "3.0.1"]
                                         ]
                        :source-paths   ["dev/src"]
                        :resource-paths ["dev/resources"]
