@@ -37,12 +37,20 @@
       (:status response) => (status-code :ok)
       )))
 
-(deftest disbled-roles
+(deftest user-disabled-roles
   (facts
-    "disbled-roles"
+    "user-disabled-roles"
     (db-setup prefix "authorized-setup")
     (let [request (create-request "disabled")
           response (call-handler request)]
-      (verify-response response {:status :forbidden
-                                 :body   "[\"missing.role\",[\"admin\"],[]]"})
+      (verify-response response {:status :unauthorized})
+      )))
+
+(deftest session-expired-roles
+  (facts
+    "session-expired-roles"
+    (db-setup prefix "authorized-setup")
+    (let [request (create-request "expired")
+          response (call-handler request)]
+      (verify-response response {:status :unauthorized})
       )))

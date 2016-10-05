@@ -40,15 +40,19 @@
     (log/debug "Anonymous request allowed.")
     (handler request)))
 
+(defn- verify-authenticated
+  [request]
+  (log/debug "Verifying user authenticated.")
+  (when-not (:session request)
+    (log/warn "User not authenticated.")
+    (throw+ {:type     :custom-response
+             :response {:status (status-code :unauthorized)}})))
+
 (defn authenticated
   [handler]
   (fn
     [request]
-    (log/debug "Verifying user authenticated.")
-    (when-not (:session request)
-      (log/warn "User not authenticated.")
-      (throw+ {:type     :custom-response
-               :response {:status (status-code :unauthorized)}}))
+    (verify-authenticated request)
     (handler request)))
 
 (defn- get-current-user-roles
@@ -63,6 +67,7 @@
   [roles handler]
   (fn
     [request]
+    (verify-authenticated request)
     (log/debug "Verifying user authorized.")
     (let [current-user-roles (get-current-user-roles request)]
       (when (empty? (set/intersection (set roles) current-user-roles))
@@ -76,6 +81,7 @@
   [handler]
   (fn
     [request]
+    (verify-authenticated request)
     (log/debug "Verifying own user.")
     (let [current-username (get-in request [:session :user :username])
           request-username (get-in request [:params :username])]

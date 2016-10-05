@@ -15,9 +15,14 @@
 	      status="active" roles="user,admin,other1"/>
 	<session token="multiple" created="@auto" duration="90" expires="@timestamp+PT1M" user="1534984903"/>
 
-	<!--disabled-->
+	<!--user disabled-->
 	<user id="1534984904" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
 	      status="disabled" roles="admin"/>
 	<session token="disabled" created="@auto" duration="90" expires="@timestamp+PT1M" user="1534984904"/>
+
+	<!--session expired-->
+	<user id="1534984905" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="admin"/>
+	<session token="expired" created="@auto" duration="90" expires="@timestamp-PT1M" user="1534984905"/>
 
 </dataset>

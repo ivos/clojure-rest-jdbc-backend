@@ -1,0 +1,28 @@
+<dataset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../dataset.xsd">
+
+	<user id="1534984901" version="@auto" username="@auto" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+
+	<!--found-->
+	<user id="1534984902" version="12302" username="username_2" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="90" expires="@timestamp+PT1M"
+	         user="1534984902"/>
+
+	<!--other-->
+	<user id="1534984903" version="@auto" username="username_3" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+
+	<!--user disabled-->
+	<user id="1534984904" version="@auto" username="disabled" email="@auto" name="@auto" password_hash="@auto"
+	      status="disabled" roles="user"/>
+	<session token="7b0e6756-d9e4-4001-9d53-disabled0000" created="@auto" duration="90" expires="@timestamp+PT1M"
+	         user="1534984904"/>
+
+	<!--session expired-->
+	<user id="1534984905" version="@auto" username="expired" email="@auto" name="@auto" password_hash="@auto"
+	      status="active" roles="user"/>
+	<session token="7b0e6756-d9e4-4001-9d53-expired00000" created="@auto" duration="90" expires="@timestamp-PT1M"
+	         user="1534984905"/>
+
+</dataset>

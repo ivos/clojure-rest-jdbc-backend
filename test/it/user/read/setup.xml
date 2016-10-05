@@ -9,8 +9,4 @@
 	<session token="7b0e6756-d9e4-4001-9d53-000000000001" created="@auto" duration="90" expires="@timestamp+PT1M"
 	         user="1534984902"/>
 
-	<!--other-->
-	<user id="1534984903" version="@auto" username="username_3" email="@auto" name="@auto" password_hash="@auto"
-	      status="active" roles="user"/>
-
 </dataset>
