@@ -11,12 +11,17 @@
 	         owner="1534984902"/>
 
 	<!--found-->
-	<project id="@auto" version="12302" code="code_2" name="@auto" visibility="public" description="@auto"
+	<project id="@auto" version="12303" code="code_2" name="@auto" visibility="public" description="@auto"
 	         start="2016-10-11" duration="@auto" budget="@auto" daily_meeting_at="11:12:13"
 	         kick_off="2016-10-12T13:45:01Z" created="2016-09-11T12:34:56.987Z" owner="1534984901"/>
 
 	<project id="@auto" version="@auto" code="code_3" name="@auto" visibility="private" description="@auto"
 	         start="@auto" duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"
 	         owner="1534984901"/>
+
+	<!--minimal-->
+	<project id="@auto" version="12305" code="code_minimal" name="@auto" visibility="public" description="@null"
+	         start="@null" duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null"
+	         created="2016-09-11T12:34:56.987Z" owner="1534984901"/>
 
 </dataset>

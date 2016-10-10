@@ -5,8 +5,8 @@
 	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="public" description="@auto" start="@auto"
 	         duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"
 	         owner="1534984902"/>
-	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" description="@auto" start="@auto"
-	         duration="@auto" budget="@auto" daily_meeting_at="@auto" kick_off="@auto" created="@auto"
+	<project id="@auto" version="@auto" code="@auto" name="@auto" visibility="private" description="@null" start="@null"
+	         duration="@null" budget="@null" daily_meeting_at="@null" kick_off="@null" created="@auto"
 	         owner="1534984901"/>
 
 	<!--explicit temporal values-->

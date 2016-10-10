@@ -1,0 +1,19 @@
+{
+	"code": "code_minimal",
+	"name": "name 1558336505",
+	"visibility": "public",
+	"description": null,
+	"start": null,
+	"duration": null,
+	"budget": null,
+	"dailyMeetingAt": null,
+	"kickOff": null,
+	"created": "2016-09-11T12:34:56.987Z",
+	"owner": {
+		"username": "username 1534928001",
+		"email": "email 1534942101",
+		"name": "name 1534936501",
+		"status": "active",
+		"roles": "user"
+	}
+}

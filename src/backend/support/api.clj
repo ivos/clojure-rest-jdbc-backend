@@ -15,7 +15,7 @@
 (defn- format-data-types
   [attributes entity]
   (let [keys (keys entity)
-        format-attribute #(let [value (get entity %1)]
+        format-attribute #(if-let [value (get entity %1)]
                            (if-let [data-type (get-in attributes [%1 :type])]
                              (case data-type
                                (:date :time) (str value)
@@ -23,7 +23,8 @@
                                               (tc/to-date-time)
                                               (str))
                                (:integer :number) value)
-                             value))
+                             value)
+                           nil)
         values (map format-attribute keys)]
     (apply ordered-map (interleave keys values))))
 
