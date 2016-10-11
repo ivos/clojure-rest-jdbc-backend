@@ -16,7 +16,7 @@
     (let [request (create-request "username_3" "7b0e6756-d9e4-4001-9d53-000000000001")
           response (call-handler request)]
       (verify-response response {:status :forbidden
-                                 :body   "[\"not.own.user\",\"username_3\",\"username_2\"]"})
+                                 :body   "[\"missing.role\",[\"admin\"],[\"user\"]]"})
       )))
 
 (deftest user-disabled-own-user

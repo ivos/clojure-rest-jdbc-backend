@@ -2,7 +2,7 @@
   (:require [compojure.core :refer [defroutes context POST GET PUT DELETE]]
             [compojure.route :as route]
             [ring.util.response :as resp]
-            [backend.router.security :refer [anonymous authenticated roles own-user]]
+            [backend.router.security :refer [anonymous authenticated roles own-user own-user-or-roles]]
             [backend.app.user.user-api :as user]
             [backend.app.session.session-api :as session]
             [backend.app.project.project-api :as project]
@@ -13,7 +13,7 @@
              (POST "/" [] (anonymous user/create))
              (GET "/" [] (roles [:admin] user/list))
              (context "/:username" []
-               (GET "/" [] (own-user user/read))
+               (GET "/" [] (own-user-or-roles [:admin] user/read))
                (PUT "/" [] (own-user user/update))
                (DELETE "/" [] (own-user user/delete))
                (context "/actions" []
