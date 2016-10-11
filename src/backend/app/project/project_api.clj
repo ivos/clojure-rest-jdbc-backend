@@ -17,8 +17,8 @@
     (resp/created (get-detail-uri config result))))
 
 (defn list
-  [{:keys [config ds params]}]
-  (let [data (logic/list ds params)
+  [{:keys [config ds session params]}]
+  (let [data (logic/list ds session params)
         result (map (comp
                       (partial user/update-entity-result :owner)
                       (partial api/list-entity-result get-detail-uri logic/attributes config)

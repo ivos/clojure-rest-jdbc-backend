@@ -54,15 +54,17 @@
         result))))
 
 (defn list
-  [ds params]
-  (log/debug "Listing projects" params)
-  (db/with-db-transaction
-    [tc ds]
-    (let [result (->> (sql-list-all tc)
-                      (map entity/entity-listed)
-                      (entity/expand-list tc user/sql-expand :owner :id))]
-      (log/debug "Listed projects" result)
-      result)))
+  [ds session params]
+  (let [current-user-id (get-in session [:user :id])
+        where {:owner current-user-id}]
+    (log/debug "Listing projects" params)
+    (db/with-db-transaction
+      [tc ds]
+      (let [result (->> (sql-list-own tc where)
+                        (map entity/entity-listed)
+                        (entity/expand-list tc user/sql-expand :owner :id))]
+        (log/debug "Listed projects" result)
+        result))))
 
 (defn read
   [ds session params]

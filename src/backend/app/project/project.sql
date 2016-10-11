@@ -1,6 +1,7 @@
--- :name sql-list-all :? :*
+-- :name sql-list-own :? :*
 select *
-from project;
+from project
+where owner = :owner;
 
 -- :name sql-read :? :1
 select *
